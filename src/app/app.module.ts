@@ -4,13 +4,14 @@ import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login-page/login-page';
 import { AuthService } from '../providers/auth-service';
-import { Storage } from '@ionic/storage';
+import { RegisterPage } from '../pages/register/register';
  
 @NgModule({
   declarations: [
     MyApp,
     HomePage,
     LoginPage,
+    RegisterPage
   ],
   imports: [
     IonicModule.forRoot(MyApp)
@@ -20,7 +21,8 @@ import { Storage } from '@ionic/storage';
     MyApp,
     HomePage,
     LoginPage,
+    RegisterPage
   ],
-  providers: [AuthService, Storage]
+  providers: [AuthService]
 })
 export class AppModule {}
