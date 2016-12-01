@@ -5,13 +5,19 @@ import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login-page/login-page';
 import { AuthService } from '../providers/auth-service';
 import { RegisterPage } from '../pages/register/register';
+import { MisReservasPage } from '../pages/mis-reservas/mis-reservas';
+import { CocherasPage } from '../pages/cocheras/cocheras';
+import { TabsPage } from '../pages/tabs/tabs';
  
 @NgModule({
   declarations: [
     MyApp,
     HomePage,
     LoginPage,
-    RegisterPage
+    RegisterPage,
+	TabsPage,
+	MisReservasPage,
+	CocherasPage
   ],
   imports: [
     IonicModule.forRoot(MyApp)
@@ -21,7 +27,10 @@ import { RegisterPage } from '../pages/register/register';
     MyApp,
     HomePage,
     LoginPage,
-    RegisterPage
+    RegisterPage,
+	TabsPage,
+	MisReservasPage,
+	CocherasPage
   ],
   providers: [AuthService]
 })

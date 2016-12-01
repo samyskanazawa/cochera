@@ -21800,3 +21800,15 @@ page-login .login-content .register-btn {
   color: #000000;
   font-size: 0.8em;
 }
+
+page-tabs .tab {
+  color: #B5E61D;
+}
+
+page-tabs .tab-item.tab-item-active, page-tabs .tab-item.active, page-tabs .tab-item.activated {
+  opacity: 1;
+}
+
+page-tabs .tab-item.tab-item-active, page-tabs .tab-item.active, page-tabs .tab-item.activated {
+  color: red;
+}
