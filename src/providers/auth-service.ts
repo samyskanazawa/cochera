@@ -8,7 +8,7 @@ export class User {
   isLogged: boolean;
   rememberMe: boolean;
  
-  constructor(name: string, email: string, isLogged: boolean, rememberMe: boolean) {
+  constructor(name: string, email: string, isLogged: boolean, rememberMe: boolean ,password2: string) {
     this.name = name;
     this.email = email;
 	this.isLogged = isLogged;
@@ -48,7 +48,7 @@ export class AuthService {
   }*/
   
   public register(credentials) {
-    if (credentials.email === null || credentials.password === null) {
+    if (credentials.email === null || credentials.password === null|| credentials.password === credentials.password2) {
       return Observable.throw("Please insert credentials");
     } else {
       // At this point store the credentials to your backend!

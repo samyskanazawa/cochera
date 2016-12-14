@@ -3,6 +3,8 @@ import { NavController, AlertController, LoadingController, Loading } from 'ioni
 import { AuthService } from '../../providers/auth-service';
 import { TabsPage } from '../tabs/tabs';
 import { RegisterPage } from '../register/register';
+
+
  
 @Component({
   selector: 'page-login',
@@ -11,12 +13,14 @@ import { RegisterPage } from '../register/register';
 export class LoginPage {
   loading: Loading;
   registerCredentials = {email: '', password: ''};
+  private emailingresado: string;
  
   constructor(private nav: NavController, private auth: AuthService, private alertCtrl: AlertController, private loadingCtrl: LoadingController) {}
  
   public createAccount() {
     this.nav.push(RegisterPage);
   }
+
  
   public login() {
     this.showLoading()
@@ -54,6 +58,16 @@ export class LoginPage {
     });
     alert.present(prompt);
   }
+
+
+ validarEmail() {
+  if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3,4})+$/.test(this.emailingresado)){
+   this.showError("La dirección de email " + this.emailingresado + " es correcta.");
+  } else {
+   this.showError("La dirección de email es incorrecta.");
+  }
+}
+
 }
 	
 

@@ -14,7 +14,18 @@ import { AlertController } from 'ionic-angular';
 })
 export class MisReservasPage {
 
-  constructor(public navCtrl: NavController, public alertCtrl: AlertController) {}
+  private tieneReserva:boolean;
+  private mensaje: string;
+  private horarioDesde:string;
+
+  constructor(public navCtrl: NavController, public alertCtrl: AlertController) {
+	this.tieneReserva = false;
+	if (this.tieneReserva){
+		this.mensaje = "*Esta cochera tiene una reserva a partir de las 14:00 por otro usuario";
+	} else {
+		this.mensaje = "";
+	}
+  }
 
   
   showPrompt() {
@@ -30,7 +41,7 @@ export class MisReservasPage {
 		  placeholder: 'Hasta'
 		},
       ],
-	  message: "*Esta cochera tiene una reserva a partir de las 14:00 por otro usuario",
+	  message: this.mensaje,
       buttons: [
         {
           text: 'Guardar',
@@ -48,6 +59,29 @@ export class MisReservasPage {
     });
     prompt.present();
   }
+  
+  eliminarReserva() {
+  let alert = this.alertCtrl.create({
+    title: 'Eliminar Reserva',
+    message: '¿Desea eliminar esta reserva?',
+    buttons: [
+      {
+        text: 'Volver',
+        role: 'cancel',
+        handler: () => {
+          console.log('Cancel clicked');
+        }
+      },
+      {
+        text: 'Eliminar',
+        handler: () => {
+          console.log('Buy clicked');
+        }
+      }
+    ]
+  });
+  alert.present();
+}
 
   ionViewDidLoad() {
     console.log('Hello MisReservasPage Page');

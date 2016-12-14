@@ -20,7 +20,9 @@ import { TabsPage } from '../pages/tabs/tabs';
 	CocherasPage
   ],
   imports: [
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp, {
+		backButtonText: "Volver"
+	})
   ],
   bootstrap: [IonicApp],
   entryComponents: [

@@ -1,3 +1,64 @@
 page-cocheras {
 
+  .submit-btn {
+       background: #B5E61D;
+       border-radius: 30px !important;
+       border: 2px solid #000000;
+	   width: 100%;
+     }
+	 
+	.header .col {
+		background-color:lightgrey;
+		align-items: center!important;
+		text-align: center;
+		justify-content: center;
+		display: flex;
+		font-size: 16px;
+	}
+	
+	.label_accion {
+		font-size: 18px;
+		text-align: center;
+	}
+	
+	.icono {
+		font-size: 30px;
+	}
+	
+	.label_cocheras {
+		font-size: 20px;
+	}
+
+.col {
+    border: solid 1px grey;
+    border-bottom-style: none;
+    border-right-style: none;
+	align-items: center!important;
+	justify-content: center;
+	display: flex;
+	font-size: 16px;
+}
+
+.col:last-child {
+    border-right: solid 1px grey;
+	align-items: center!important;
+	justify-content: center;
+	display: flex;
+	font-size: 16px;
+}
+
+.row:last-child .col {
+    border-bottom: solid 1px grey;
+	align-items: center!important;
+	justify-content: center;
+	display: flex;
+	font-size: 16px;
+}
+
+::-webkit-scrollbar,
+    *::-webkit-scrollbar {
+      display: none;
+    }
+
+
 }

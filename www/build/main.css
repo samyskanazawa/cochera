@@ -21749,6 +21749,121 @@ sub {
   }
 }
 
+page-cocheras .submit-btn {
+  background: #B5E61D;
+  border-radius: 30px !important;
+  border: 2px solid #000000;
+  width: 100%;
+}
+
+page-cocheras .header .col {
+  background-color: lightgrey;
+  -webkit-align-items: center !important;
+  -ms-flex-align: center !important;
+  align-items: center !important;
+  text-align: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  font-size: 16px;
+}
+
+page-cocheras .label_accion {
+  font-size: 18px;
+  text-align: center;
+}
+
+page-cocheras .icono {
+  font-size: 30px;
+}
+
+page-cocheras .label_cocheras {
+  font-size: 20px;
+}
+
+page-cocheras .col {
+  border: solid 1px grey;
+  border-bottom-style: none;
+  border-right-style: none;
+  -webkit-align-items: center !important;
+  -ms-flex-align: center !important;
+  align-items: center !important;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  font-size: 16px;
+}
+
+page-cocheras .col:last-child {
+  border-right: solid 1px grey;
+  -webkit-align-items: center !important;
+  -ms-flex-align: center !important;
+  align-items: center !important;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  font-size: 16px;
+}
+
+page-cocheras .row:last-child .col {
+  border-bottom: solid 1px grey;
+  -webkit-align-items: center !important;
+  -ms-flex-align: center !important;
+  align-items: center !important;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  font-size: 16px;
+}
+
+page-cocheras ::-webkit-scrollbar,
+page-cocheras *::-webkit-scrollbar {
+  display: none;
+}
+
+page-home .header .col {
+  background-color: lightgrey;
+}
+
+page-home .col {
+  border: solid 1px grey;
+  border-bottom-style: none;
+  border-right-style: none;
+}
+
+page-home .col:last-child {
+  border-right: solid 1px grey;
+}
+
+page-home .row:last-child .col {
+  border-bottom: solid 1px grey;
+}
+
+page-home .titulo {
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  -ms-grid-row-align: center;
+  align-items: center;
+  text-align: center;
+}
+
+page-home ::-webkit-scrollbar,
+page-home *::-webkit-scrollbar {
+  display: none;
+}
+
 page-login .login-content {
   background: #ffffff;
 }
@@ -21801,12 +21916,92 @@ page-login .login-content .register-btn {
   font-size: 0.8em;
 }
 
+page-login ::-webkit-scrollbar,
+page-login *::-webkit-scrollbar {
+  display: none;
+}
+
+page-mis-reservas .header .col {
+  background-color: lightgrey;
+}
+
+page-mis-reservas .col {
+  border: solid 1px grey;
+  border-bottom-style: none;
+  border-right-style: none;
+}
+
+page-mis-reservas .col:last-child {
+  border-right: solid 1px grey;
+}
+
+page-mis-reservas .row:last-child .col {
+  border-bottom: solid 1px grey;
+}
+
+page-mis-reservas ::-webkit-scrollbar,
+page-mis-reservas *::-webkit-scrollbar {
+  display: none;
+}
+
+page-register .login-content {
+  background: #ffffff;
+}
+
+page-register .login-content .login-box {
+  background: #ffffff;
+  padding: 20px 20px 0px 20px;
+  margin-top: 30px;
+}
+
+page-register .login-content ion-row {
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  -ms-grid-row-align: center;
+  align-items: center;
+  text-align: center;
+}
+
+page-register .login-content ion-item {
+  border-radius: 30px !important;
+  padding-left: 30px !important;
+  font-size: 0.9em;
+  margin-bottom: 10px;
+  border: 1px solid #000000 !important;
+  box-shadow: none !important;
+}
+
+page-register .login-content .signup-col {
+  margin: 0px 16px 0px 16px;
+  padding-bottom: 20px;
+}
+
+page-register .login-content .item-inner {
+  box-shadow: none !important;
+}
+
+page-register .login-content .submit-btn {
+  background: #B5E61D;
+  border-radius: 30px !important;
+  border: 2px solid #000000;
+}
+
+page-register ::-webkit-scrollbar,
+page-register *::-webkit-scrollbar {
+  display: none;
+}
+
 page-tabs .tab {
   color: #B5E61D;
 }
 
 page-tabs .tab-item.tab-item-active, page-tabs .tab-item.active, page-tabs .tab-item.activated {
   opacity: 1;
+}
+
+page-tabs ::-webkit-scrollbar,
+page-tabs *::-webkit-scrollbar {
+  display: none;
 }
 
 page-tabs .tab-item.tab-item-active, page-tabs .tab-item.active, page-tabs .tab-item.activated {

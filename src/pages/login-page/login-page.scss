@@ -48,5 +48,10 @@ page-login {
        font-size: 0.8em;
      }
   }
+  
+  ::-webkit-scrollbar,
+    *::-webkit-scrollbar {
+      display: none;
+    }
  
 }
