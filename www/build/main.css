@@ -21921,6 +21921,13 @@ page-login *::-webkit-scrollbar {
   display: none;
 }
 
+.alert-md .alert-wrapper {
+  max-width: 350px;
+  border-radius: 30px;
+  background-color: #b5e61d;
+  box-shadow: 0 16px 20px rgba(0, 0, 0, 0.4);
+}
+
 page-mis-reservas .header .col {
   background-color: lightgrey;
 }
@@ -21992,7 +21999,7 @@ page-register *::-webkit-scrollbar {
 }
 
 page-tabs .tab {
-  color: #B5E61D;
+  color: #a04242 !important;
 }
 
 page-tabs .tab-item.tab-item-active, page-tabs .tab-item.active, page-tabs .tab-item.activated {
@@ -22006,4 +22013,8 @@ page-tabs *::-webkit-scrollbar {
 
 page-tabs .tab-item.tab-item-active, page-tabs .tab-item.active, page-tabs .tab-item.activated {
   color: red;
+}
+
+.tabs-md .tabbar {
+  background: #b5e61d;
 }
