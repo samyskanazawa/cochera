@@ -16,7 +16,7 @@ export class MisReservasPage {
 
   private tieneReserva:boolean;
   private mensaje: string;
-
+  private horarioDesde:string;
 
   constructor(public navCtrl: NavController, public alertCtrl: AlertController) {
 	this.tieneReserva = false;
