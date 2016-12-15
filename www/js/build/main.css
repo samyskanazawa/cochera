@@ -5192,9 +5192,9 @@ ion-alert input {
 }
 
 .alert-md .alert-wrapper {
-  max-width: 280px;
-  border-radius: 2px;
-  background-color: #fafafa;
+   max-width: 280px !important;
+  border-radius: 2px !important;
+  background-color: #fafafa !important;
   box-shadow: 0 16px 20px rgba(0, 0, 0, 0.4);
 }
 
