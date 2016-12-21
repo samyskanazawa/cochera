@@ -66,4 +66,28 @@ page-login {
     border-radius: 30px;
     background-color: #b5e61d;
     box-shadow: 0 16px 20px rgba(0, 0, 0, 0.4);
+        color: #222;
     }
+    .alert-title {
+    font-size: 22px;
+    text-align: center;
+}
+.alert-md .alert-button .button-inner {
+     justify-content: center;
+         color: #222;
+}
+
+
+
+
+.alert-button-group {
+    -webkit-flex-wrap: wrap-reverse;
+    -ms-flex-wrap: wrap-reverse;
+    flex-wrap: wrap-reverse;
+    -webkit-justify-content: flex-end;
+    -ms-flex-pack: end;
+    justify-content: flex-end;
+    padding: 8px 8px 8px 24px;
+    display: flex;
+    margin: auto;
+}
