@@ -20,3 +20,8 @@ page-tabs {
 .tabs-md .tabbar {
     background: #b5e61d;
 }
+
+.tabs-md .tab-button[aria-selected=true] {
+    padding: 6px 0 10px 0;
+    color: #222;
+}
