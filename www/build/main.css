@@ -21927,6 +21927,7 @@ page-login *::-webkit-scrollbar {
   background-color: #b5e61d;
   box-shadow: 0 16px 20px rgba(0, 0, 0, 0.4);
 }
+
 page-mis-reservas .header .col {
   background-color: lightgrey;
 }
@@ -22018,3 +22019,4 @@ page-tabs .tab-item.tab-item-active, page-tabs .tab-item.active, page-tabs .tab-
 .tabs-md .tabbar {
   background: #b5e61d;
 }
+

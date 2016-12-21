@@ -25,8 +25,6 @@ export class MisReservasPage {
       console.log(data);
       this.reservas = data;
     });
-
-    
   }
   
   constructor(public navCtrl: NavController, public reservasService: Reservas, public alertCtrl: AlertController) {

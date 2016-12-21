@@ -35,7 +35,6 @@ this.registerCredentials.password="";
  } 
  }
 
- 
   public createAccount() {
     this.nav.push(RegisterPage);
   }
@@ -77,6 +76,28 @@ this.registerCredentials.password="";
     });
     alert.present(prompt);
   }
+
+  showAdv(text) {
+    setTimeout(() => {
+      this.loading.dismiss();
+    });
+ 
+    let alert = this.alertCtrl.create({
+      title: 'Advertencia',
+      subTitle: text,
+      buttons: ['OK']
+    });
+    alert.present(prompt);
+  }
+
+
+ validarEmail() {
+  if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3,4})+$/.test(this.emailingresado)){
+   this.showError("La dirección de email " + this.emailingresado + " es correcta.");
+  } else {
+   this.showError("La dirección de email es incorrecta.");
+  }
+}
 
 }
 	
