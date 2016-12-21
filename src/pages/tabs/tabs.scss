@@ -1,6 +1,6 @@
 page-tabs {
 	.tab {
-		color: #B5E61D;
+		color: #a04242 !important;
 	}
 	
 	.tab-item.tab-item-active, .tab-item.active, .tab-item.activated {
@@ -16,4 +16,7 @@ page-tabs {
     color: red;
 }
 
+}
+.tabs-md .tabbar {
+    background: #b5e61d;
 }

@@ -11,14 +11,14 @@
 			  <ion-col class="col" ></ion-col>
 			  <ion-col class="col" ></ion-col>
 			</ion-row >
-			<ion-row class="row">
-			  <ion-col class="col">13/12</ion-col>
-			  <ion-col class="col">Maipu942</ion-col>
-			  <ion-col class="col">5</ion-col>
-			  <ion-col class="col">08:00</ion-col>
-			  <ion-col class="col">20:00</ion-col>
-			  <ion-col class="col" style="text-align: center"><ion-icon name="create" (click)="showPrompt()"></ion-icon></ion-col>
-			  <ion-col class="col" style="text-align: center"><ion-icon name="trash" (click)="eliminarReserva()"></ion-icon></ion-col>
+			<ion-row class="row" *ngFor="let reserva of reservas; let i of reservas.length">
+			  <ion-col class="col">{{reserva.fechaRese}}</ion-col>
+			  <ion-col class="col">{{reserva.nombreCochera}}</ion-col>
+			  <ion-col class="col" >{{reserva.espacio}}</ion-col>
+			  <ion-col class="col">{{reserva.horaDesde}}</ion-col>
+			  <ion-col class="col">{{reserva.horaHasta}}</ion-col>
+			  <ion-col class="col" style="text-align: center"><ion-icon name="create" mode="icono" (click)="showPrompt(i)"></ion-icon></ion-col>
+			  <ion-col class="col" style="text-align: center"><ion-icon name="trash" (click)="eliminarReserva(reserva)"></ion-icon></ion-col>
 			</ion-row>
 		</ion-content>
 	</ion-content>

@@ -1,0 +1,22 @@
+package ejecucion;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.webmvc.RepositoryRestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+@RepositoryRestController
+public class ReservaSearchController {
+
+	@Autowired
+	private ReservaRepository reservaRepository;
+    
+	  @RequestMapping(value = "/reserva/search/findByQuery", method = RequestMethod.GET)
+	    public List<Reserva> findByQuery(String nombreCochera, int espacioCochera, String fechaRese, String estado) {
+
+		  	List<Reserva> reserva = reservaRepository.findByQuery(nombreCochera, espacioCochera, fechaRese, estado);
+	        return reserva;
+	    }
+}
