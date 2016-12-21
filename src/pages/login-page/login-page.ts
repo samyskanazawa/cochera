@@ -13,26 +13,21 @@ import { RegisterPage } from '../register/register';
 export class LoginPage {
   loading: Loading;
   registerCredentials = {email: '', password: ''};
-  private emailingresado: string;
  
   constructor(private nav: NavController, private auth: AuthService, private alertCtrl: AlertController, private loadingCtrl: LoadingController) {}
  
- validate(password)
- {
-  if (password.length < 8)
-  {
-this.showAdv("La contraseña debe ser mayor de 8 digitos")
-this.registerCredentials.password="";
- }
- }
+ /*validate(password) {
+	  if (password.length < 8) {
+		this.showAdv("La contraseña debe ser mayor de 8 digitos")
+		this.registerCredentials.password="";
+	 }
+ }*/
 
- validateEmail(email)
- {
- if (! /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/.test(email))
- {
- this.showAdv("La dirección de email es incorrecta.");
- this.registerCredentials.email="";
- } 
+ validateEmail(email) {
+	 if (! /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/.test(email)) {
+		 this.showAdv("La dirección de email es incorrecta.");
+		 this.registerCredentials.email="";
+	 } 
  }
 
   public createAccount() {
@@ -89,16 +84,6 @@ this.registerCredentials.password="";
     });
     alert.present(prompt);
   }
-
-
- validarEmail() {
-  if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3,4})+$/.test(this.emailingresado)){
-   this.showError("La dirección de email " + this.emailingresado + " es correcta.");
-  } else {
-   this.showError("La dirección de email es incorrecta.");
-  }
-}
-
 }
 	
 

@@ -3,22 +3,22 @@
 	<ion-content padding>
 		<ion-content overflow-scroll="false">
 			<ion-row class="row header">
-			  <ion-col class="col">Día</ion-col>
-			  <ion-col class="col">Dirección</ion-col>
-			  <ion-col class="col">N°</ion-col>
-			  <ion-col class="col">Desde</ion-col>
-			  <ion-col class="col">Hasta</ion-col>
-			  <ion-col class="col" ></ion-col>
-			  <ion-col class="col" ></ion-col>
+			  <ion-col width-15 class="col">Fecha</ion-col>
+			  <ion-col width-25 class="col">Dirección</ion-col>
+			  <ion-col width-10 class="col">N°</ion-col>
+			  <ion-col width-15 class="col">Desde</ion-col>
+			  <ion-col width-15 class="col">Hasta</ion-col>
+			  <ion-col width-10 class="col" ></ion-col>
+			  <ion-col width-10 class="col" ></ion-col>
 			</ion-row >
 			<ion-row class="row" *ngFor="let reserva of reservas; let i of reservas.length">
-			  <ion-col class="col">{{reserva.fechaRese}}</ion-col>
-			  <ion-col class="col">{{reserva.nombreCochera}}</ion-col>
-			  <ion-col class="col" >{{reserva.espacio}}</ion-col>
-			  <ion-col class="col">{{reserva.horaDesde}}</ion-col>
-			  <ion-col class="col">{{reserva.horaHasta}}</ion-col>
-			  <ion-col class="col" style="text-align: center"><ion-icon name="create" mode="icono" (click)="showPrompt(i)"></ion-icon></ion-col>
-			  <ion-col class="col" style="text-align: center"><ion-icon name="trash" (click)="eliminarReserva(reserva)"></ion-icon></ion-col>
+			  <ion-col class="col">{{(reserva.fechaRese).substr(0,5)}}</ion-col>
+			  <ion-col width-25 class="col">{{reserva.nombreCochera}}</ion-col>
+			  <ion-col width-10 class="col" >{{reserva.espacio}}</ion-col>
+			  <ion-col width-15 class="col">{{reserva.horaDesde}}</ion-col>
+			  <ion-col width-15 class="col">{{reserva.horaHasta}}</ion-col>
+			  <ion-col width-10 class="col" style="text-align: center"><ion-icon name="create" mode="icono" (click)="showPrompt(i)"></ion-icon></ion-col>
+			  <ion-col width-10 class="col" style="text-align: center"><ion-icon name="trash" (click)="eliminarReserva(reserva)"></ion-icon></ion-col>
 			</ion-row>
 		</ion-content>
 	</ion-content>

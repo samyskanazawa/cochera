@@ -2,20 +2,37 @@ page-mis-reservas {
 
 .header .col {
 		background-color:lightgrey;
+		align-items: center!important;
+		text-align: center;
+		justify-content: center;
+		display: flex;
+		font-size: 14px;
 	}
 	
 .col {
     border: solid 1px grey;
     border-bottom-style: none;
     border-right-style: none;
+	align-items: center!important;
+	justify-content: center;
+	display: flex;
+	font-size: 16px;
 }
 
 .col:last-child {
     border-right: solid 1px grey;
+	align-items: center!important;
+	justify-content: center;
+	display: flex;
+	font-size: 16px;
 }
 
 .row:last-child .col {
     border-bottom: solid 1px grey;
+	align-items: center!important;
+	justify-content: center;
+	display: flex;
+	font-size: 16px;
 }
 
 ::-webkit-scrollbar,
