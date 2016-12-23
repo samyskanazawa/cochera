@@ -25,7 +25,7 @@ export class LoginPage {
 
  validateEmail(email) {
 	 if (! /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/.test(email)) {
-		 this.showAdv("La dirección de email es incorrecta.");
+		 this.showAdv2("La dirección de email es incorrecta.");
 		 this.registerCredentials.email="";
 	 } 
  }
@@ -79,6 +79,19 @@ export class LoginPage {
  
     let alert = this.alertCtrl.create({
       title: 'Advertencia',
+      subTitle: text,
+      buttons: ['OK']
+    });
+    alert.present(prompt);
+  }
+
+   showAdv2(text) {
+    setTimeout(() => {
+      this.loading.dismiss();
+    });
+ 
+    let alert = this.alertCtrl.create({
+      title: 'Credenciales incorrectas',
       subTitle: text,
       buttons: ['OK']
     });
