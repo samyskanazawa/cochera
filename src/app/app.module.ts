@@ -5,6 +5,8 @@ import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login-page/login-page';
 import { AuthService } from '../providers/auth-service';
 import { Reservas } from '../providers/reservas';
+import { Usuarios } from '../providers/usuarios';
+import { Cocheras } from '../providers/cocheras';
 import { RegisterPage } from '../pages/register/register';
 import { MisReservasPage } from '../pages/mis-reservas/mis-reservas';
 import { CocherasPage } from '../pages/cocheras/cocheras';
@@ -35,6 +37,6 @@ import { TabsPage } from '../pages/tabs/tabs';
 	MisReservasPage,
 	CocherasPage
   ],
-  providers: [AuthService, Reservas]
+  providers: [AuthService, Reservas, Usuarios, Cocheras]
 })
 export class AppModule {}

@@ -17,23 +17,26 @@ export class MisReservasPage {
 
   private tieneReserva:boolean;
   private mensaje: string;
+  private indice: number;
   
   reservas: any;
+  radios: any;
   
   ionViewDidLoad() {
-    this.reservasService.getReservas().then((data) => {
+    this.getReservas();
+  }
+  
+  getReservas(){
+	  this.reservasService.getReservas().then((data) => {
       console.log(data);
       this.reservas = data;
+	  this.reservas[0].checked = true;
     });
   }
   
   constructor(public navCtrl: NavController, public reservasService: Reservas, public alertCtrl: AlertController) {
 	this.tieneReserva = false;
-	if (this.tieneReserva){
-		this.mensaje = "*Esta cochera tiene una reserva a partir de las 14:00 por otro usuario";
-	} else {
-		this.mensaje = "";
-	}
+	
   }
 
   deleteReserva(reserva){
@@ -47,10 +50,35 @@ export class MisReservasPage {
  
     //Remove from database
 	this.reservasService.deleteReserva((reserva._links.self.href).substr(30));
+	this.indice = null;
   }
   
-  showPrompt(i) {
-	let index = this.reservas.indexOf(i);
+   marcarRadioButton(i){
+ 
+	 this.indice = i;
+  }
+  
+    checkeadoPorDefault(i){
+		if(i == 0){
+			return true;
+		}
+	}
+  
+  setMensaje(index){
+	this.mensaje = "";
+	this.tieneReserva = false;
+	
+	if (index === 0){
+		this.tieneReserva = true;
+	}
+	if (this.tieneReserva == true){
+		this.mensaje = "";
+	}
+  }
+  
+  showPrompt() {
+	var index = this.reservas.indexOf(this.indice);
+	this.setMensaje(index);
     let prompt = this.alertCtrl.create({
       title: 'Día: ' + this.reservas[index].fechaRese,
 	  cssClass: 'alertcss',
@@ -85,10 +113,11 @@ export class MisReservasPage {
     prompt.present();
   }
   
-  eliminarReserva(reserva) {
+  eliminarReserva() {
+	var index = this.reservas.indexOf(this.indice);
 	let alert = this.alertCtrl.create({
-    title: 'Eliminar Reserva ' + reserva.ObjectId,
-    message: '¿Desea eliminar esta reserva?',
+    title: 'Eliminar Reserva ',
+    subTitle: '¿Desea eliminar esta reserva?',
     buttons: [
       {
         text: 'Volver',
@@ -97,7 +126,7 @@ export class MisReservasPage {
       {
         text: 'Eliminar',
         handler: () => {
-			this.deleteReserva(reserva);
+			this.deleteReserva(this.reservas[index]);
 		}
       }
     ]

@@ -14,13 +14,13 @@ public class ReservaRepositoryImpl implements ReservaRepositoryCustom{
 	private Class<Reserva> clazz = Reserva.class;
 
 	@Override
-	public List<Reserva> findByQuery(String nombreCochera, int espacioCochera, String fechaRese, String estado) {
+	public List<Reserva> findByQuery(String nombreCochera, Integer espacioCochera, String fechaRese) {
 		Query query = new Query();
 		query.addCriteria(Criteria
-				.where("nombreCochera").is(nombreCochera)
-				.and("espacioCochera").is(espacioCochera)
-				.and("fechaRese").is(fechaRese)
-				.and("estado").is(estado));
+			.where("nombreCochera").is(nombreCochera)
+			.and("espacioCochera").is(espacioCochera)
+			.and("fechaRese").is(fechaRese));
+				
 		
 		return mongoTemplate.find(query, clazz);
 	}

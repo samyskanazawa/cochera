@@ -4,8 +4,8 @@ import { AlertController } from 'ionic-angular';
 import { Reservas } from '../../providers/reservas';
 import { Cocheras } from '../../providers/cocheras';
 import { Usuarios } from '../../providers/usuarios';
-import { TmpDispo } from '../../providers/tmpDispo';
-import { TmpNoDispo } from '../../providers/tmpNoDispo';
+//import { TmpDispo } from '../../providers/tmpDispo';
+//import { TmpNoDispo } from '../../providers/tmpNoDispo';
 
 /*
   Generated class for the Cocheras page.
@@ -26,11 +26,12 @@ export class CocherasPage {
 	private noDisponibles: any;
 	private tmpDispo: any;
 	private tmpNoDispo: any;
+	private habilitarBoton: string;
 	
 	reservas: any;
 	
   constructor(public navCtrl: NavController, public reservasService: Reservas, public usuariosService: Usuarios, 
-					public cocherasService: Cocheras, public tmpDispoService: TmpDispo, public tmpNoDispoService: TmpNoDispo,
+					public cocherasService: Cocheras, /*public tmpDispoService: TmpDispo, public tmpNoDispoService: TmpNoDispo,*/
 						public alertCtrl: AlertController) {
 	this.ocultarResultados = true;
     //console.log(this.today);
@@ -46,20 +47,21 @@ export class CocherasPage {
   
   setDia(){
 	  this.today  = new Date().toISOString();
+	  console.log(this.today);
+	  this.habilitarBoton = this.today;
   }
   
   buscar(){
-	  //this.obtenerCocherasSinRango(this.today);
+	  var v_nombre = "Maipu 942";
+	  var v_espacio:number = 3;
+	  var estado = "Ocupado";
+	  var v_fecha = "23/12/2016";
+	  var allreservasArray;
+	  allreservasArray = this.obtenerCocherasSinRango(v_fecha);
+	  console.log(allreservasArray);
 	  this.ocultarResultados = false;
   }
   
-  
-  /*buscarReservas(v_nombre: string, v_espacio: number, v_fecha: string, estado: string){
-  return this.reservasService.findByQuery(v_nombre , v_espacio ,v_fecha, estado).then((data) => {
-      console.log(data);
-      //this.reviews = data;
-    });
-  }
   
   obtenerCocherasSinRango(v_fecha: string){
 	  
@@ -70,6 +72,7 @@ export class CocherasPage {
 	var v_espacio;
 	var allreservasArray;
 	var z;
+	var a;
 	var v_array;
 	var v_Dispo;
 	var horadesde;
@@ -77,18 +80,25 @@ export class CocherasPage {
 	var horafin_libre;
 	var	allUsuariosArray;
 	var	v_telefono;
+	var estado: string;
 	
 	v_mail = "hernan.ruiz@softtek.com";
 	
 	v_items = this.cocherasService.getCocheras();
 	
-	while(v_items.hasNext()) {
+	while(v_items.next) {
 		v_item = v_items.next();
 		v_nombre = v_item.nombre;
 		v_espacio = v_item.espacio;
 		
-		allreservasArray = this.buscarReservas(v_nombre, v_espacio, v_fecha, "libre");
-	
+		allreservasArray = this.reservasService.findByQuery(v_nombre , v_espacio ,v_fecha);
+		
+		while (allreservasArray.next){
+			i(allreservasArray[a].estado = "Libre"){
+				allreservasArray.splice(a, 1);
+			}
+		}
+		
 		if (allreservasArray.length <= 0) {
 			var horaDesde = "8:00";
 			var horaHasta = "20:00";
@@ -140,7 +150,7 @@ export class CocherasPage {
 	
 	this.disponibles = this.tmpDispo;
 	this.noDisponibles = this.tmpNoDispo;
- }*/
+ }
 	  
   showPrompt() {
     let prompt = this.alertCtrl.create({

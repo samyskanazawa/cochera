@@ -37,16 +37,24 @@ export class Reservas {
   
   
   
- /*findByQuery( nombreCochera: string, espacioCochera: number, fechaRese: string, estado: string){
+ findByQuery( nombreCochera: string, espacioCochera: number, fechaRese: string){
  
     if (this.data) {
       return Promise.resolve(this.data);
     }
  
+	/*let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+ 
+	var body = new FormData;
+	body.append('nombreCochera', nombreCochera);
+	body.append('espacioCochera', espacioCochera);
+	body.append('fechaRese', fechaRese);
+	body.append('estado', estado);*/
+ 
     return new Promise(resolve => {
  
-      this.http.get('http://localhost:8080/cochera/search/findByQuery?nombreCochera=' 
-						+ nombreCochera + '&espacioCochera=' + espacioCochera, '&fechaRese=' + fechaRese, '&estado=' + estado)
+      this.http.get('http://localhost:8080/reserva/search/findByQuery?nombreCochera='+ nombreCochera + '&espacioCochera=' + espacioCochera + '&fechaRese=' + fechaRese)
         .map(res => res.json())
         .subscribe(data => {
           this.data = data;
@@ -54,7 +62,7 @@ export class Reservas {
         });
     });
  
-  }*/
+  }
  
   editReserva(reserva, horaDesde, horaHasta){
  
