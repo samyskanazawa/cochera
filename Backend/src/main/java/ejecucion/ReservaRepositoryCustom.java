@@ -6,6 +6,6 @@ public interface ReservaRepositoryCustom {
 	  
 	  List<Reserva> 
 	    findByQuery(String nombreCochera, Integer espacioCochera, 
-				String fechaRese);
+				String fechaRese, String estado);
 	}
 

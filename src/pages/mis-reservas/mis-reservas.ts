@@ -58,6 +58,19 @@ export class MisReservasPage {
 	 this.indice = i;
   }
   
+  devolverColorFila(i){
+	//[ngStyle]="{'background-color': devolverColorFila(i)}"
+	var index = this.reservas.indexOf(i);
+	switch (this.reservas[index].estado) {
+            case 'Libre':
+                return "green";
+            case 'Reservado':
+                return "yellow";
+            default:
+				return "red";
+        }
+  }
+  
     checkeadoPorDefault(i){
 		if(i == 0){
 			return true;

@@ -2,7 +2,7 @@
 	<h1>Cocheras</h1><br/>
 		<ion-item><ion-label>Día: </ion-label><ion-datetime displayFormat="DD/MM/YYYY" 
 		pickerFormat="DD MMMM YYYY" monthNames="Enero, Febrero, Marzo, Abril, Mayo, Jnio, Julio, Agosto, Septiembre, Octubre, Noviembre, Diciembre"
-		cancelText="Cancelar" doneText="Acpetar" [(ngModel)]="today" (click)="setDia()"></ion-datetime></ion-item>
+		cancelText="Cancelar" doneText="Aceptar" [(ngModel)]="today" (click)="setDia()"></ion-datetime></ion-item>
 		<br/>
 		<ion-row>
 			<!--<ion-col><ion-item><ion-label>Desde: </ion-label><ion-datetime displayFormat="HH:00" hourValues="08, 09, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20" cancelText="Cancelar" doneText="Acpetar" [(ngModel)]="horaDesde" (click)="setHoraDesde()"></ion-datetime></ion-item></ion-col>
@@ -24,11 +24,11 @@
 					  <ion-col width-25 class="col">Hasta</ion-col>
 					  <ion-col width-10 class="col"></ion-col>
 					</ion-row >
-					<ion-row class="row" *ngFor="let reserva of disponibles; let i of disponibles.length">
-					  <ion-col class="col">{{reserva.nombre}}</ion-col>
-					  <ion-col width-10 class="col">{{reserva.espacio}}</ion-col>
-					  <ion-col width-25 class="col">{{reserva.horaDesde}}</ion-col>
-					  <ion-col width-25 class="col">{{reserva.horaHasta}}</ion-col>
+					<ion-row class="row" *ngFor="let item of disponibles; let i of disponibles.length">
+					  <ion-col class="col">{{item.v_nombre}}</ion-col>
+					  <ion-col width-10 class="col">{{item.v_espacio}}</ion-col>
+					  <ion-col width-25 class="col">{{item.horadesde_libre}}</ion-col>
+					  <ion-col width-25 class="col">{{item.horafin_libre}}</ion-col>
 					  <ion-col width-10 class="col"><ion-checkbox></ion-checkbox></ion-col>
 					</ion-row>
 			</div>
@@ -45,10 +45,10 @@
 					  <ion-col width-10 class="col"></ion-col>
 					</ion-row >
 					<ion-row class="row" *ngFor="let reserva of noDisponibles; let i of noDisponibles.length">
-					  <ion-col class="col">{{reserva.nombre}}</ion-col>
-					  <ion-col width-25 class="col">{{reserva.horaDesde}}</ion-col>
-					  <ion-col width-25 class="col">{{reserva.horaHasta}}</ion-col>
-					  <ion-col width-25 class="col">{{reserva.mail}}</ion-col>
+					  <ion-col class="col">{{reserva.v_nombre}}</ion-col>
+					  <ion-col width-25 class="col">{{reserva.horadesde_libre}}</ion-col>
+					  <ion-col width-25 class="col">{{reserva.horafin_libre}}</ion-col>
+					  <ion-col width-25 class="col">{{reserva.v_mail}}</ion-col>
 					  <ion-col width-10 class="col"><ion-checkbox></ion-checkbox></ion-col>
 					</ion-row>
 			</div>

@@ -37,7 +37,7 @@ export class Reservas {
   
   
   
- findByQuery( nombreCochera: string, espacioCochera: number, fechaRese: string){
+ findByQuery( nombreCochera: string, espacioCochera: number, fechaRese: string, estado: string){
  
     if (this.data) {
       return Promise.resolve(this.data);
@@ -54,7 +54,7 @@ export class Reservas {
  
     return new Promise(resolve => {
  
-      this.http.get('http://localhost:8080/reserva/search/findByQuery?nombreCochera='+ nombreCochera + '&espacioCochera=' + espacioCochera + '&fechaRese=' + fechaRese)
+      this.http.get('http://localhost:8080/reserva/search/findByQuery?nombreCochera='+ nombreCochera + '&espacioCochera=' + espacioCochera + '&fechaRese=' + fechaRese + '&estado' + estado)
         .map(res => res.json())
         .subscribe(data => {
           this.data = data;

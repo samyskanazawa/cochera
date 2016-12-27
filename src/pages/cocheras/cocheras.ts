@@ -24,9 +24,9 @@ export class CocherasPage {
 	private ocultarResultados: boolean;
 	private disponibles: any;
 	private noDisponibles: any;
-	private tmpDispo: any;
-	private tmpNoDispo: any;
 	private habilitarBoton: string;
+	private tmpDispo;
+	private tmpNoDispo;
 	
 	reservas: any;
 	
@@ -52,13 +52,8 @@ export class CocherasPage {
   }
   
   buscar(){
-	  var v_nombre = "Maipu 942";
-	  var v_espacio:number = 3;
-	  var estado = "Ocupado";
-	  var v_fecha = "23/12/2016";
-	  var allreservasArray;
-	  allreservasArray = this.obtenerCocherasSinRango(v_fecha);
-	  console.log(allreservasArray);
+	  var v_fecha = "26/12/2016";
+	  this.obtenerCocherasSinRango(v_fecha);
 	  this.ocultarResultados = false;
   }
   
@@ -84,72 +79,87 @@ export class CocherasPage {
 	
 	v_mail = "hernan.ruiz@softtek.com";
 	
-	v_items = this.cocherasService.getCocheras();
-	
-	while(v_items.next) {
-		v_item = v_items.next();
-		v_nombre = v_item.nombre;
-		v_espacio = v_item.espacio;
+	this.cocherasService.getCocheras().then((data) => {
 		
-		allreservasArray = this.reservasService.findByQuery(v_nombre , v_espacio ,v_fecha);
-		
-		while (allreservasArray.next){
-			i(allreservasArray[a].estado = "Libre"){
-				allreservasArray.splice(a, 1);
-			}
-		}
-		
-		if (allreservasArray.length <= 0) {
-			var horaDesde = "8:00";
-			var horaHasta = "20:00";
-			var horasDispo = 1200;
-			this.tmpDispo.push({v_mail , v_nombre, v_espacio, v_fecha, horaDesde , horaHasta, horasDispo});
-		}
-		else {
-			//Busca rango disponible
-			z = 0;
-			horadesde = "8:00";
-			while(z < allreservasArray.length) {
-				//Cochera Disponible
-				if (Number(horadesde.replace(":","")) < Number(allreservasArray[z].horaDesde.replace(":",""))) {
-		//			printjson("Entra");
-					horadesde_libre = horadesde;
-					horafin_libre = allreservasArray[z].horaDesde;
-					v_Dispo = Number(horafin_libre.replace(":","")) - Number(
-					this.tmpDispo[z] = {v_mail , v_nombre, v_espacio, v_fecha, horadesde_libre, horafin_libre, v_Dispo});
-					//db.tmpDispo.insert( {"mail" : v_mail , "nombreCochera" : v_nombre, "espacioCochera" : v_espacio, "fechaDispo" : v_fecha, "horaDesde" : horadesde_libre , "horaHasta" : horafin_libre , "horasDispo" : v_Dispo});
-				}
-
-				//Cochera no disponible
-				horadesde_libre = allreservasArray[z].horaDesde;
-				horafin_libre = allreservasArray[z].horaHasta;
-				v_Dispo = Number(horafin_libre.replace(":","")) - Number(horadesde_libre.replace(":",""));
-
-				//Busco el teléfono
-				allUsuariosArray = this.usuariosService.getUsuarios();
-				if (allUsuariosArray.length >= 0 ) {
-					v_telefono = allUsuariosArray[0].telefono;
-				}
-
-				//Coloca como disponible a la cochera para el rango hallado
-				this.tmpNoDispo[z] = {v_mail , v_nombre, v_espacio, v_fecha, horadesde_libre, horafin_libre, v_Dispo, v_telefono};
-				//db.tmpNoDispo.insert( {"mail" : v_mail , "nombreCochera" : v_nombre, "espacioCochera" : v_espacio, "fechaDispo" : v_fecha, "horaDesde" : horadesde_libre , "horaHasta" : horafin_libre , "horasDispo" : v_Dispo, telefono : v_telefono});
+		v_items = data;
+		this.tmpDispo = [];
+		this.tmpNoDispo = [];
+		for (let item of v_items) {
+			v_item = item;
+			v_nombre = v_item.nombre;
+			//debugger;
+			v_espacio = v_item.espacio;
+			estado = "Libre";
+			
+			this.reservasService.findByQuery(v_nombre , v_espacio ,v_fecha, estado).then((data2) => {
+				console.log(data2);
 				
-				horadesde = allreservasArray[z].horaHasta;
-				z = z + 1;
-			}
+				//var jason = this.reservasService.findByQuery(v_nombre , v_espacio ,v_fecha, estado);
+				allreservasArray = data2;
+				console.log(allreservasArray);
+				
+				if (allreservasArray.length <= 0) {
+					var horaDesde = "08:00";
+					var horaHasta = "20:00";
+					var horasDispo = 1200;
+					this.tmpDispo.push({v_mail , v_nombre, v_espacio, v_fecha, horadesde_libre , horafin_libre, horasDispo});
+					//debugger;
+				}
+				else {
+					//Busca rango disponible
+					z = 0;
+					horadesde = "8:00";
+					while(z < allreservasArray.length) {
+						//Cochera Disponible
+						
+						if (Number(horadesde.replace(":","")) < Number(allreservasArray[z].horaDesde.replace(":",""))) {
+				//			printjson("Entra");
+							horadesde_libre = horadesde;
+							horafin_libre = allreservasArray[z].horaDesde;
+							v_Dispo = Number(horafin_libre.replace(":","")) - Number(horadesde_libre.replace(":",""));
+							this.tmpDispo.push( {v_mail , v_nombre, v_espacio, v_fecha, horadesde_libre, horafin_libre, v_Dispo});
+							//db.tmpDispo.insert( {"mail" : v_mail , "nombreCochera" : v_nombre, "espacioCochera" : v_espacio, "fechaDispo" : v_fecha, "horaDesde" : horadesde_libre , "horaHasta" : horafin_libre , "horasDispo" : v_Dispo});
+						}
 
-			if (horadesde != "20:00"){
-				v_Dispo = 2000 - Number(horadesde.replace(":",""));
-				//Coloca como disponible a la cochera para el rango hallado
-				var horaHasta = "20:00"
-				this.tmpDispo.push({v_mail, v_nombre, v_espacio, v_fecha, horadesde, horaHasta, v_Dispo});
-			}
+						//Cochera no disponible
+						horadesde_libre = allreservasArray[z].horaDesde;
+						horafin_libre = allreservasArray[z].horaHasta;
+						v_Dispo = Number(horafin_libre.replace(":","")) - Number(horadesde_libre.replace(":",""));
+
+						//Busco el teléfono
+						allUsuariosArray = this.usuariosService.getUsuarios();
+						if (allUsuariosArray.length >= 0 ) {
+							v_telefono = allUsuariosArray[0].telefono;
+						}
+
+						//Coloca como disponible a la cochera para el rango hallado
+						this.tmpNoDispo.push({v_mail , v_nombre, v_espacio, v_fecha, horadesde_libre, horafin_libre, v_Dispo, v_telefono});
+						//db.tmpNoDispo.insert( {"mail" : v_mail , "nombreCochera" : v_nombre, "espacioCochera" : v_espacio, "fechaDispo" : v_fecha, "horaDesde" : horadesde_libre , "horaHasta" : horafin_libre , "horasDispo" : v_Dispo, telefono : v_telefono});
+						
+						horadesde = allreservasArray[z].horaHasta;
+						z = z + 1;
+					}
+
+					if (horadesde != "20:00"){
+						v_Dispo = 2000 - Number(horadesde.replace(":",""));
+						//Coloca como disponible a la cochera para el rango hallado
+						var horaHasta = "20:00"
+						this.tmpDispo.push({v_mail, v_nombre, v_espacio, v_fecha, horadesde, horaHasta, v_Dispo});
+					}
+					
+				}
+				
+			});
+			
 		}
-	}
+		
+		
+		this.disponibles = this.tmpDispo;
+		this.noDisponibles = this.tmpNoDispo;
+		
+	});
+		
 	
-	this.disponibles = this.tmpDispo;
-	this.noDisponibles = this.tmpNoDispo;
  }
 	  
   showPrompt() {
