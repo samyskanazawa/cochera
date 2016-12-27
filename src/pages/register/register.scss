@@ -46,9 +46,17 @@ page-register {
     }
 }
 
- .navbar{
-    background: #b5e61d;
+    .navbar2 {
+      background: #ffffff;
+      padding: 20px 20px 0px 20px;
+      margin-top: 30px;
     }
-    #navbar{
-     background: #b5e61d;
-    }
+
+    .toolbar-background-md {
+    background: rgb(225, 245, 164);
+}
+
+.alert-md .alert-input:focus {
+  margin-bottom: 4px;
+  border-bottom: 2px solid #222;
+}
