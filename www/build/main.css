@@ -21848,6 +21848,7 @@ page-cocheras *::-webkit-scrollbar {
 }
 
 .picker-md .picker-toolbar {
+  box-shadow: 0 0 10px #222 inset;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
@@ -21859,6 +21860,7 @@ page-cocheras *::-webkit-scrollbar {
 }
 
 .picker-md .picker-columns {
+  box-shadow: 0 0 10px #222 inset;
   height: 216px;
   -webkit-perspective: 1800px;
   perspective: 1800px;
@@ -21942,6 +21944,19 @@ page-home *::-webkit-scrollbar {
   background-color: transparent;
   width: 100%;
   border: solid;
+}
+
+.alert-md .alert-message {
+  max-height: 240px;
+  overflow-y: hidden;
+  font-size: 15px;
+}
+
+.alert-md .alert-wrapper {
+  max-width: 280px;
+  border-radius: 2px;
+  background-color: #a9b77d;
+  box-shadow: 0 0 15px #000 inset !important;
 }
 
 page-login .login-content {

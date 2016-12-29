@@ -77,6 +77,7 @@ scroll-content {
     margin: 10px 3px 12px 0;
 }
 .picker-md .picker-toolbar {
+    box-shadow: 0 0 10px #222 inset;
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
@@ -87,6 +88,7 @@ scroll-content {
       background: #b5e61d;
 }
 .picker-md .picker-columns {
+    box-shadow: 0 0 10px #222 inset;
     height: 216px;
     -webkit-perspective: 1800px;
     perspective: 1800px;

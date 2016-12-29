@@ -55,3 +55,15 @@ page-home {
     width: 100%;
     border: solid;
 }
+.alert-md .alert-message {
+    max-height: 240px;
+    overflow-y: hidden;
+    font-size: 15px;
+}
+
+.alert-md .alert-wrapper {
+    max-width: 280px;
+    border-radius: 2px;
+    background-color: #a9b77d;
+    box-shadow: 0 0 15px #000 inset !important;
+}
