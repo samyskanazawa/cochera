@@ -50,7 +50,7 @@ page-home {
     font-weight: 500;
     text-align: right;
     text-transform: uppercase;
-    color: rgba(51, 51, 51, 0.47);
+       color: #B5E61D !important;
     background-color: transparent;
     width: 100%;
     border: solid;
@@ -64,6 +64,12 @@ page-home {
 .alert-md .alert-wrapper {
     max-width: 280px;
     border-radius: 2px;
-    background-color: #a9b77d;
+    background: #f4f4f4;
     box-shadow: 0 0 15px #000 inset !important;
+    background-color: #f4f4f4 !important;
+}
+.boton {
+   background: #B5E61D;
+   border-radius: 30px !important;
+   border: 2px solid #000000;
 }
