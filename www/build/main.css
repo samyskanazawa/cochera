@@ -21828,9 +21828,61 @@ page-cocheras .row:last-child .col {
   font-size: 16px;
 }
 
+page-cocheras scroll-content {
+  overflow-y: auto;
+}
+
 page-cocheras ::-webkit-scrollbar,
 page-cocheras *::-webkit-scrollbar {
   display: none;
+}
+
+.boton {
+  background: #B5E61D;
+  border-radius: 30px !important;
+  border: 2px solid #000000;
+}
+
+.label-md {
+  margin: 10px 3px 12px 0;
+}
+
+.picker-md .picker-toolbar {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-justify-content: flex-end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+  height: 44px;
+  background: #b5e61d;
+}
+
+.picker-md .picker-columns {
+  height: 216px;
+  -webkit-perspective: 1800px;
+  perspective: 1800px;
+  background: #f4f4f4;
+  /* border-radius: 20px; */
+}
+
+.picker-md .picker-wrapper {
+  height: 260px;
+  border-top: 0.55px solid #dedede;
+  background: #fff;
+  border-radius: 27px;
+}
+
+.picker-md .picker-button, .picker-md .picker-button.activated {
+  margin: 0;
+  height: 50px;
+  color: #222;
+  background: transparent;
+  box-shadow: currentColor;
+}
+
+.picker-md .picker-prefix, .picker-md .picker-suffix, .picker-md .picker-opt.picker-opt-selected {
+  color: #b5e61d;
 }
 
 page-home .header .col {
@@ -21862,6 +21914,34 @@ page-home .titulo {
 page-home ::-webkit-scrollbar,
 page-home *::-webkit-scrollbar {
   display: none;
+}
+
+.alert-button-group {
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.alert-button:hover {
+  background-color: rgba(23, 90, 204, 0.22) !important;
+  transition: 90ms all ease-in-out !important;
+  border: solid !important;
+  color: #3474e1 !important;
+}
+
+.alert-md .alert-button {
+  position: relative;
+  overflow: hidden;
+  margin: 7px 8px -1px 200px;
+  padding: 10px;
+  border-radius: 20px;
+  font-weight: 500;
+  text-align: right;
+  text-transform: uppercase;
+  color: rgba(51, 51, 51, 0.47);
+  background-color: transparent;
+  width: 100%;
+  border: solid;
 }
 
 page-login .login-content {
@@ -21924,26 +22004,117 @@ page-login *::-webkit-scrollbar {
 .alert-md .alert-wrapper {
   max-width: 350px;
   border-radius: 30px;
-  background-color: #b5e61d;
+  background-color: #e1f5a4;
   box-shadow: 0 16px 20px rgba(0, 0, 0, 0.4);
+  color: #222;
+}
+
+.alert-title {
+  font-size: 22px;
+  text-align: center;
+}
+
+.alert-md .alert-button .button-inner {
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  color: #222;
+}
+
+.alert-button-group {
+  -webkit-flex-wrap: wrap-reverse;
+  -ms-flex-wrap: wrap-reverse;
+  flex-wrap: wrap-reverse;
+  -webkit-justify-content: flex-end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+  padding: 8px 8px 8px 24px;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  margin: auto;
+}
+
+.alert-md .alert-sub-title {
+  font-size: 16px;
+  text-align: center;
 }
 
 page-mis-reservas .header .col {
   background-color: lightgrey;
+  -webkit-align-items: center !important;
+  -ms-flex-align: center !important;
+  align-items: center !important;
+  text-align: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  font-size: 14px;
 }
 
 page-mis-reservas .col {
   border: solid 1px grey;
   border-bottom-style: none;
   border-right-style: none;
+  -webkit-align-items: center !important;
+  -ms-flex-align: center !important;
+  align-items: center !important;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  font-size: 16px;
 }
 
 page-mis-reservas .col:last-child {
   border-right: solid 1px grey;
+  -webkit-align-items: center !important;
+  -ms-flex-align: center !important;
+  align-items: center !important;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  font-size: 16px;
+}
+
+page-mis-reservas .label {
+  -webkit-align-items: center !important;
+  -ms-flex-align: center !important;
+  align-items: center !important;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+page-mis-reservas .boton {
+  background: #B5E61D;
+  border-radius: 30px !important;
+  border: 2px solid #000000;
 }
 
 page-mis-reservas .row:last-child .col {
   border-bottom: solid 1px grey;
+  -webkit-align-items: center !important;
+  -ms-flex-align: center !important;
+  align-items: center !important;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  font-size: 16px;
 }
 
 page-mis-reservas ::-webkit-scrollbar,
@@ -21951,6 +22122,9 @@ page-mis-reservas *::-webkit-scrollbar {
   display: none;
 }
 
+.alertcss {
+  color: #e74c3c;
+}
 
 page-register .login-content {
   background: #ffffff;
@@ -21999,6 +22173,21 @@ page-register *::-webkit-scrollbar {
   display: none;
 }
 
+.navbar2 {
+  background: #ffffff;
+  padding: 20px 20px 0px 20px;
+  margin-top: 30px;
+}
+
+.toolbar-background-md {
+  background-color: #b5e61d;
+}
+
+.alert-md .alert-input:focus {
+  margin-bottom: 4px;
+  border-bottom: 2px solid #222;
+}
+
 page-tabs .tab {
   color: #a04242 !important;
 }
@@ -22020,3 +22209,7 @@ page-tabs .tab-item.tab-item-active, page-tabs .tab-item.active, page-tabs .tab-
   background: #b5e61d;
 }
 
+.tabs-md .tab-button[aria-selected=true] {
+  padding: 6px 0 10px 0;
+  color: #222;
+}

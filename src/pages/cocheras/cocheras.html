@@ -19,9 +19,7 @@
 				<ion-row><ion-label class="label_cocheras" text-center><b>Cocheras Disponibles</b></ion-label></ion-row>
 					<ion-row class="row header">
 					  <ion-col class="col">Dirección</ion-col>
-					  <ion-col width-10 class="col">N°</ion-col>
-					  <ion-col width-25 class="col">Desde</ion-col>
-					  <ion-col width-25 class="col">Hasta</ion-col>
+					  <ion-col width-25 class="col">Horario</ion-col>
 					  <ion-col width-10 class="col"></ion-col>
 					</ion-row >
 					<ion-row class="row" *ngFor="let item of disponibles; let i of disponibles.length">
@@ -32,15 +30,15 @@
 					  <ion-col width-10 class="col"><ion-checkbox></ion-checkbox></ion-col>
 					</ion-row>
 			</div>
-			
-			<ion-label class="label_accion">Reservar: <ion-icon class="icono" name="car" (click)="showPrompt()"></ion-icon></ion-label>
+			<ion-label class="label"><b> </b>
+		<button ion-button type="button" class="boton" style="color: #222;"  (click)="showPrompt()"><ion-label style="text-align: center">Reservar: <ion-icon name="car"></ion-icon></ion-label></button>
+	</ion-label>
 			
 			<div>
 				<ion-row><ion-label class="label_cocheras" text-center><b>Cocheras sin Disponibilidad</b></ion-label></ion-row>
 					<ion-row class="row header">
 					  <ion-col width-25 class="col">Dirección</ion-col>
-					  <ion-col width-5 class="col">Desde</ion-col>
-					  <ion-col width-5 class="col">Hasta</ion-col>
+					  <ion-col width-25 class="col">Horario</ion-col>
 					  <ion-col width-25 class="col">Usuario</ion-col>
 					  <ion-col width-10 class="col"></ion-col>
 					</ion-row >
@@ -52,7 +50,10 @@
 					  <ion-col width-10 class="col"><ion-checkbox></ion-checkbox></ion-col>
 					</ion-row>
 			</div>
-			<ion-label class="label_accion">Llamar: <ion-icon class="icono" name="call"></ion-icon></ion-label>
+
+			<ion-label class="label"><b> </b>
+		<button ion-button type="button" class="boton" style="color: #222;" [disabled]="indice==null" (click)="showPrompt()"><ion-label style="text-align: center">Llamar: <ion-icon name="call"></ion-icon></ion-label></button>
+		</ion-label>
 		
 		</div>
 </ion-content>

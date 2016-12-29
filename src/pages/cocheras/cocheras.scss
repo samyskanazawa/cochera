@@ -66,3 +66,46 @@ scroll-content {
 
 
 }
+
+.boton {
+   background: #B5E61D;
+   border-radius: 30px !important;
+   border: 2px solid #000000;
+}
+
+.label-md {
+    margin: 10px 3px 12px 0;
+}
+.picker-md .picker-toolbar {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-justify-content: flex-end;
+    -ms-flex-pack: end;
+    justify-content: flex-end;
+    height: 44px;
+      background: #b5e61d;
+}
+.picker-md .picker-columns {
+    height: 216px;
+    -webkit-perspective: 1800px;
+    perspective: 1800px;
+          background: #f4f4f4;
+    /* border-radius: 20px; */
+}
+.picker-md .picker-wrapper {
+    height: 260px;
+    border-top: 0.55px solid #dedede;
+    background: #fff;
+    border-radius: 27px;
+}
+.picker-md .picker-button, .picker-md .picker-button.activated {
+    margin: 0;
+    height: 50px;
+    color: #222;
+    background: transparent;
+    box-shadow: currentColor;
+}
+.picker-md .picker-prefix, .picker-md .picker-suffix, .picker-md .picker-opt.picker-opt-selected {
+       color: #b5e61d;
+}

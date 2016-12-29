@@ -25,7 +25,7 @@ export class LoginPage {
 
  validateEmail(email) {
 	 if (! /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/.test(email)) {
-		 this.showAdv2("La dirección de email es incorrecta.");
+		 this.showAdv("Dominio Incorrecto");
 		 this.registerCredentials.email="";
 	 } 
  }

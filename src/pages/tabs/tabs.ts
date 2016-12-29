@@ -18,7 +18,7 @@ export class TabsPage {
   private estaOcupandoCochera:boolean;
   
   constructor(public alertCtrl: AlertController) {
-		this.tieneReserva = false;
+		this.tieneReserva = true;
 		this.estaOcupandoCochera = false;
   }
   
