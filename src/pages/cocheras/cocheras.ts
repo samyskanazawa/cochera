@@ -4,6 +4,7 @@ import { AlertController } from 'ionic-angular';
 import { Reservas } from '../../providers/reservas';
 import { Cocheras } from '../../providers/cocheras';
 import { Usuarios } from '../../providers/usuarios';
+import { OrderBy } from '../../pipes/sort';
 //import { TmpDispo } from '../../providers/tmpDispo';
 //import { TmpNoDispo } from '../../providers/tmpNoDispo';
 
@@ -17,6 +18,7 @@ import { Usuarios } from '../../providers/usuarios';
   selector: 'page-cocheras',
   templateUrl: 'cocheras.html'
 })
+
 export class CocherasPage {
 	private today: string;
 	private horaDesde: string;
@@ -27,16 +29,33 @@ export class CocherasPage {
 	private habilitarBoton: string;
 	private tmpDispo;
 	private tmpNoDispo;
+	private allUsuariosArray = [];
 	
 	reservas: any;
 	
   constructor(public navCtrl: NavController, public reservasService: Reservas, public usuariosService: Usuarios, 
 					public cocherasService: Cocheras, /*public tmpDispoService: TmpDispo, public tmpNoDispoService: TmpNoDispo,*/
 						public alertCtrl: AlertController) {
+	
 	this.ocultarResultados = true;
-    //console.log(this.today);
   }
 
+  devolverColorFilaDisponible(i){
+	//[ngStyle]="{'background-color': devolverColorFila(i)}"
+	var indexDisponibles = this.disponibles.indexOf(i);
+	
+	switch (this.disponibles[indexDisponibles].v_Dispo) {
+		case 1200:
+			return "green";
+		default:
+			return "yellow";
+    }
+  }
+  
+  devolverColorFilaNoDisponible(){
+	  return "red";
+  }
+  
   setHoraDesde(){
 	  this.horaDesde = new Date().toISOString();
   }
@@ -47,14 +66,152 @@ export class CocherasPage {
   
   setDia(){
 	  this.today  = new Date().toISOString();
-	  console.log(this.today);
 	  this.habilitarBoton = this.today;
   }
   
+  formatearFecha(fecha) {
+	  var date = new Date(fecha);
+	  var mm = date.getMonth() + 1; // getMonth() is zero-based
+	  var dd = date.getDate();
+
+	  return [(dd>9 ? '' : '0') + dd, (mm>9 ? '' : '0') + mm, date.getFullYear()].join('/');
+			 
+  };
+  
   buscar(){
-	  var v_fecha = "26/12/2016";
+	  var fecha = this.formatearFecha(this.today);
+	  var v_fecha = fecha;
 	  this.obtenerCocherasSinRango(v_fecha);
 	  this.ocultarResultados = false;
+  }
+  
+  queryReservas(v_nombre,v_espacio, v_fecha, estado, v_mail, horaDesde, horaHasta, allreservasArray ){
+	  this.reservasService.findByQuery(v_nombre, v_espacio, v_fecha, estado).then((data2) => {
+				
+		var z;
+		var v_Dispo;
+		var horadesde;
+		var horaDesdeNoDisponible;
+		var horaHastaNoDiponible;
+		var	v_telefono;
+		var telefonos = []
+		var nombreCompleto = [];
+		var v_nombreCompleto;
+		var temporal = [];
+		var mailTemporal = [];
+		var vectorHoraHasta = [];
+		var indice;
+		var i = 0;
+		var h = 0;
+		var item;
+		var posicion = 0;
+		allreservasArray = data2;
+
+		if (allreservasArray.length <= 0) {
+			horaDesde = "08:00";
+			horaHasta = "20:00";
+			v_Dispo = 1200;
+			this.tmpDispo.push({v_mail , v_nombre, v_espacio, v_fecha, horaDesde , horaHasta, v_Dispo});
+		}
+		else {
+			
+			//Busca rango disponible
+			z = 0;
+			horadesde = "08:00";
+			
+			while(z < allreservasArray.length) {
+				
+					temporal.push(allreservasArray[z].horaDesde);
+					temporal.push(allreservasArray[z].horaHasta);
+					temporal.sort();
+					
+				//Cochera con horario/s dsponible/s - tomo un máximo de 2 reservas en el día para la cochera
+				if(temporal.length == (allreservasArray.length)*2){
+					
+					var horaDesde1 = temporal[0];
+					var horaHasta1 = temporal [1];
+					var horaDesde2 = temporal[2];
+					var horaHasta2 = temporal [3];
+					
+					//Primera reserva: insertamos como horario desde las 08:00 hasta su comienzo,
+					//o pasa a ser horario ocupado si comienza a las 08:00
+					if (Number(horadesde.replace(":","")) < horaDesde1.replace(":","")) {
+						horaDesde = horadesde;
+						horaHasta = horaDesde1;
+						//debugger;
+						v_Dispo = Number(horaHasta.replace(":","")) - Number(horaDesde.replace(":",""));
+						this.tmpDispo.push({v_mail , v_nombre, v_espacio, v_fecha, horaDesde, horaHasta, v_Dispo});
+						horadesde = horaHasta1;
+					} else {
+						horadesde = horaHasta1;
+					}
+					
+					//Segunda reserva: insertamos como diponible el tramo desde el final de la reserva
+					//anterior al comienzo de la segunda.
+					if (horaDesde2 != null && horaHasta2 != null){
+						horaDesde = horaHasta1;
+						horaHasta = horaDesde2;
+						v_Dispo = Number(horaHasta.replace(":","")) - Number(horaDesde.replace(":",""));
+						this.tmpDispo.push({v_mail , v_nombre, v_espacio, v_fecha, horaDesde, horaHasta, v_Dispo});
+						horadesde = horaHasta2;
+					}
+				}
+					
+				//Horario/s no disponible/s de la cochera
+				vectorHoraHasta.push({"espacio" :v_espacio , horaHasta : allreservasArray[z].horaHasta, "horaHastaNumero" : Number((allreservasArray[z].horaHasta).replace(":",""))});
+				mailTemporal.push(allreservasArray[z].mail);
+				
+				//Busco los datos de quien ocupa la cochera
+				var outerThis = this;
+				var vectorHoras = i;
+				
+				//Si hay ,más de una reserva, las itero para agregar dichos tramos como no disponibles 
+				for (item in mailTemporal){
+					this.buscarsUsuarios(mailTemporal[item], function (){
+						if (outerThis.allUsuariosArray.length >= 0 && i <= (mailTemporal.length)-1) {
+							
+							telefonos.push(outerThis.allUsuariosArray[i].telefono);
+							nombreCompleto.push({item : outerThis.allUsuariosArray[item].nombre + " " + outerThis.allUsuariosArray[item].apellido});
+
+							var horaDesde = temporal[vectorHoras];
+							var horaHasta = temporal [vectorHoras+1];
+							var v_mail = mailTemporal[i];
+							v_Dispo = Number(horaHasta.replace(":","")) - Number(horaDesde.replace(":",""));
+							v_nombreCompleto = outerThis.allUsuariosArray[i].nombre + " " + outerThis.allUsuariosArray[i].apellido;
+							v_telefono = telefonos[i];
+							vectorHoras = vectorHoras +2;
+							i = i+1;
+							
+							//Colocamos como no disponible a la cochera para el rango de horarios hallado
+							outerThis.tmpNoDispo.push({v_mail, v_nombre, v_espacio, v_fecha, horaDesde, horaHasta, v_Dispo, v_telefono, v_nombreCompleto});
+						}
+					});
+				}
+
+				z = z + 1;		
+			}
+
+			//Tramo final: si la última reserva termina antes de las 20:00, inserto como horario
+			//disponible el tramo desde el final de la reserva hasta las 20:00			
+			if (horadesde != "20:00"){
+				
+				v_Dispo = 2000 - Number(horadesde.replace(":",""));
+				//Coloca como disponible a la cochera para el rango hallado
+				horaHasta = "20:00"
+				horaDesde = horadesde;
+				this.tmpDispo.push({v_mail, v_nombre, v_espacio, v_fecha, horaDesde, horaHasta, v_Dispo});
+			}
+		}
+	});
+  };
+  
+  
+  buscarsUsuarios (mail: string, callback) {
+	  this.usuariosService.getUsuariosByMail(mail).then((data) => {
+
+		this.allUsuariosArray = data;
+		callback();
+	});
   }
   
   
@@ -66,102 +223,41 @@ export class CocherasPage {
 	var v_nombre;
 	var v_espacio;
 	var allreservasArray;
-	var z;
-	var a;
-	var v_array;
-	var v_Dispo;
-	var horadesde;
-	var horadesde_libre;
-	var horafin_libre;
-	var	allUsuariosArray;
-	var	v_telefono;
 	var estado: string;
+	var horaDesde:string;
+	var horaHasta: string;
 	
 	v_mail = "hernan.ruiz@softtek.com";
 	
+	//Traigo de la base todas las cocheras
 	this.cocherasService.getCocheras().then((data) => {
 		
 		v_items = data;
 		this.tmpDispo = [];
 		this.tmpNoDispo = [];
+		this.disponibles =  [];
+		this.noDisponibles = [];
+		this.allUsuariosArray = [];
+		
+		//Itero las cocheras encontradas para buscar reservas en el día seleccionado
 		for (let item of v_items) {
+			
 			v_item = item;
 			v_nombre = v_item.nombre;
-			//debugger;
 			v_espacio = v_item.espacio;
+			
+			//Se buscará por estado diferente a "Libre"
 			estado = "Libre";
 			
-			this.reservasService.findByQuery(v_nombre , v_espacio ,v_fecha, estado).then((data2) => {
-				console.log(data2);
-				
-				//var jason = this.reservasService.findByQuery(v_nombre , v_espacio ,v_fecha, estado);
-				allreservasArray = data2;
-				console.log(allreservasArray);
-				
-				if (allreservasArray.length <= 0) {
-					var horaDesde = "08:00";
-					var horaHasta = "20:00";
-					var horasDispo = 1200;
-					this.tmpDispo.push({v_mail , v_nombre, v_espacio, v_fecha, horadesde_libre , horafin_libre, horasDispo});
-					//debugger;
-				}
-				else {
-					//Busca rango disponible
-					z = 0;
-					horadesde = "8:00";
-					while(z < allreservasArray.length) {
-						//Cochera Disponible
-						
-						if (Number(horadesde.replace(":","")) < Number(allreservasArray[z].horaDesde.replace(":",""))) {
-				//			printjson("Entra");
-							horadesde_libre = horadesde;
-							horafin_libre = allreservasArray[z].horaDesde;
-							v_Dispo = Number(horafin_libre.replace(":","")) - Number(horadesde_libre.replace(":",""));
-							this.tmpDispo.push( {v_mail , v_nombre, v_espacio, v_fecha, horadesde_libre, horafin_libre, v_Dispo});
-							//db.tmpDispo.insert( {"mail" : v_mail , "nombreCochera" : v_nombre, "espacioCochera" : v_espacio, "fechaDispo" : v_fecha, "horaDesde" : horadesde_libre , "horaHasta" : horafin_libre , "horasDispo" : v_Dispo});
-						}
-
-						//Cochera no disponible
-						horadesde_libre = allreservasArray[z].horaDesde;
-						horafin_libre = allreservasArray[z].horaHasta;
-						v_Dispo = Number(horafin_libre.replace(":","")) - Number(horadesde_libre.replace(":",""));
-
-						//Busco el teléfono
-						allUsuariosArray = this.usuariosService.getUsuarios();
-						if (allUsuariosArray.length >= 0 ) {
-							v_telefono = allUsuariosArray[0].telefono;
-						}
-
-						//Coloca como disponible a la cochera para el rango hallado
-						this.tmpNoDispo.push({v_mail , v_nombre, v_espacio, v_fecha, horadesde_libre, horafin_libre, v_Dispo, v_telefono});
-						//db.tmpNoDispo.insert( {"mail" : v_mail , "nombreCochera" : v_nombre, "espacioCochera" : v_espacio, "fechaDispo" : v_fecha, "horaDesde" : horadesde_libre , "horaHasta" : horafin_libre , "horasDispo" : v_Dispo, telefono : v_telefono});
-						
-						horadesde = allreservasArray[z].horaHasta;
-						z = z + 1;
-					}
-
-					if (horadesde != "20:00"){
-						v_Dispo = 2000 - Number(horadesde.replace(":",""));
-						//Coloca como disponible a la cochera para el rango hallado
-						var horaHasta = "20:00"
-						this.tmpDispo.push({v_mail, v_nombre, v_espacio, v_fecha, horadesde, horaHasta, v_Dispo});
-					}
-					
-				}
-				
-			});
-			
+			this.queryReservas(v_nombre, v_espacio, v_fecha, estado, v_mail, horaDesde, horaHasta, allreservasArray );
 		}
-		
 		
 		this.disponibles = this.tmpDispo;
 		this.noDisponibles = this.tmpNoDispo;
-		
 	});
-		
-	
  }
-	  
+
+ 
   showPrompt() {
     let prompt = this.alertCtrl.create({
       title: 'Día:',
@@ -195,7 +291,7 @@ export class CocherasPage {
   }
   
   ionViewDidLoad() {
-    console.log('Hello CocherasPage Page');
+    console.log('Página Cocheras');
   }
 
 }

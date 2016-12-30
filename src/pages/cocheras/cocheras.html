@@ -1,60 +1,55 @@
 <ion-content padding>
-	<h1>Cocheras</h1><br/>
-		<ion-item><ion-label>Día: </ion-label><ion-datetime displayFormat="DD/MM/YYYY" 
-		pickerFormat="DD MMMM YYYY" monthNames="Enero, Febrero, Marzo, Abril, Mayo, Jnio, Julio, Agosto, Septiembre, Octubre, Noviembre, Diciembre"
-		cancelText="Cancelar" doneText="Aceptar" [(ngModel)]="today" (click)="setDia()"></ion-datetime></ion-item>
-		<br/>
-		<ion-row>
-			<!--<ion-col><ion-item><ion-label>Desde: </ion-label><ion-datetime displayFormat="HH:00" hourValues="08, 09, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20" cancelText="Cancelar" doneText="Acpetar" [(ngModel)]="horaDesde" (click)="setHoraDesde()"></ion-datetime></ion-item></ion-col>
-			<ion-col><ion-item><ion-label>Hasta: </ion-label><ion-datetime displayFormat="HH:00" hourValues="08, 09, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20" cancelText="Cancelar" doneText="Acpetar" [(ngModel)]="horaHasta" (click)="setHoraHasta()"></ion-datetime></ion-item></ion-col>-->
-		</ion-row>
-		<ion-col class="signup-col">
-          <button ion-button type="button" style="color: #222;" (click)="buscar()" [disabled]="habilitarBoton==null" class="submit-btn"><b>Buscar</b></button>
-        </ion-col>
-		
-		<br/>
-		
-		<div [hidden]="ocultarResultados">
-			<div>
-				<ion-row><ion-label class="label_cocheras" text-center><b>Cocheras Disponibles</b></ion-label></ion-row>
-					<ion-row class="row header">
-					  <ion-col class="col">Dirección</ion-col>
-					  <ion-col width-10 class="col">N°</ion-col>
-					  <ion-col width-25 class="col">Desde</ion-col>
-					  <ion-col width-25 class="col">Hasta</ion-col>
-					  <ion-col width-10 class="col"></ion-col>
-					</ion-row >
-					<ion-row class="row" *ngFor="let item of disponibles; let i of disponibles.length">
-					  <ion-col class="col">{{item.v_nombre}}</ion-col>
-					  <ion-col width-10 class="col">{{item.v_espacio}}</ion-col>
-					  <ion-col width-25 class="col">{{item.horadesde_libre}}</ion-col>
-					  <ion-col width-25 class="col">{{item.horafin_libre}}</ion-col>
-					  <ion-col width-10 class="col"><ion-checkbox></ion-checkbox></ion-col>
-					</ion-row>
-			</div>
+
+		<h1>Cocheras</h1><br/>
+			<ion-item><ion-label>Día: </ion-label><ion-datetime displayFormat="DD/MM/YYYY" 
+			pickerFormat="DD MMMM YYYY" monthNames="Enero, Febrero, Marzo, Abril, Mayo, Jnio, Julio, Agosto, Septiembre, Octubre, Noviembre, Diciembre"
+			cancelText="Cancelar" doneText="Aceptar" [(ngModel)]="today" (click)="setDia()"></ion-datetime></ion-item>
+			<br/>
+			<ion-row>
+				<!--<ion-col><ion-item><ion-label>Desde: </ion-label><ion-datetime displayFormat="HH:00" hourValues="08, 09, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20" cancelText="Cancelar" doneText="Acpetar" [(ngModel)]="horaDesde" (click)="setHoraDesde()"></ion-datetime></ion-item></ion-col>
+				<ion-col><ion-item><ion-label>Hasta: </ion-label><ion-datetime displayFormat="HH:00" hourValues="08, 09, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20" cancelText="Cancelar" doneText="Acpetar" [(ngModel)]="horaHasta" (click)="setHoraHasta()"></ion-datetime></ion-item></ion-col>-->
+			</ion-row>
+			<ion-col class="signup-col">
+			  <button ion-button type="button" style="color: #222;" (click)="buscar()" [disabled]="habilitarBoton==null" class="submit-btn"><b>Buscar</b></button>
+			</ion-col>
 			
-			<ion-label class="label_accion">Reservar: <ion-icon class="icono" name="car" (click)="showPrompt()"></ion-icon></ion-label>
+			<br/>
 			
-			<div>
-				<ion-row><ion-label class="label_cocheras" text-center><b>Cocheras sin Disponibilidad</b></ion-label></ion-row>
-					<ion-row class="row header">
-					  <ion-col width-25 class="col">Dirección</ion-col>
-					  <ion-col width-5 class="col">Desde</ion-col>
-					  <ion-col width-5 class="col">Hasta</ion-col>
-					  <ion-col width-25 class="col">Usuario</ion-col>
-					  <ion-col width-10 class="col"></ion-col>
-					</ion-row >
-					<ion-row class="row" *ngFor="let reserva of noDisponibles; let i of noDisponibles.length">
-					  <ion-col class="col">{{reserva.v_nombre}}</ion-col>
-					  <ion-col width-25 class="col">{{reserva.horadesde_libre}}</ion-col>
-					  <ion-col width-25 class="col">{{reserva.horafin_libre}}</ion-col>
-					  <ion-col width-25 class="col">{{reserva.v_mail}}</ion-col>
-					  <ion-col width-10 class="col"><ion-checkbox></ion-checkbox></ion-col>
-					</ion-row>
+			<div [hidden]="ocultarResultados">
+				<div>
+					<ion-row><ion-label class="label_cocheras" text-center><b>Cocheras Disponibles</b></ion-label></ion-row>
+						<ion-row class="row header">
+						  <ion-col class="col">Dirección y Espacio</ion-col>
+						  <ion-col width-25 class="col">Horario</ion-col>
+						  <ion-col width-10 class="col"></ion-col>
+						</ion-row >
+						<ion-row class="row" *ngFor="let item of disponibles | orderBy : ['-v_Dispo']; let i of disponibles.length" [ngStyle]="{'background-color': devolverColorFilaDisponible(i)}">
+						  <ion-col class="col">{{item.v_nombre}} - {{item.v_espacio}}</ion-col>
+						  <ion-col width-25 class="col">{{item.horaDesde}}<br>{{item.horaHasta}}</ion-col>
+						  <ion-col width-10 class="col"><ion-checkbox></ion-checkbox></ion-col>
+						</ion-row>
+				</div>
+			
+				<ion-label class="label_accion">Reservar: <ion-icon class="icono" name="car" (click)="showPrompt()"></ion-icon></ion-label>
+				
+				<div>
+					<ion-row><ion-label class="label_cocheras" text-center><b>Cocheras sin Disponibilidad</b></ion-label></ion-row>
+						<ion-row class="row header">
+						  <ion-col width-30 class="col">Dirección</ion-col>
+						  <ion-col width-15 class="col">Horario</ion-col>
+						  <ion-col width-30 class="col">Usuario</ion-col>
+						  <ion-col width-10 class="col"></ion-col>
+						</ion-row>
+						<ion-row class="row" *ngFor="let item of noDisponibles | orderBy : ['v_espacio']; let i of noDisponibles.length" [ngStyle]="{'background-color': devolverColorFilaNoDisponible()}">
+						  <ion-col width-30 class="col">{{item.v_nombre}} - {{item.v_espacio}}</ion-col>
+						  <ion-col width-15 class="col">{{item.horaDesde}}<br/>{{item.horaHasta}}</ion-col>
+						  <ion-col width-30 class="col">{{item.v_nombreCompleto}}</ion-col>
+						  <ion-col width-10 class="col"><ion-checkbox></ion-checkbox></ion-col>
+						</ion-row>
+				</div>
+				<ion-label class="label_accion">Llamar: <ion-icon class="icono" name="call"></ion-icon></ion-label>
+			
 			</div>
-			<ion-label class="label_accion">Llamar: <ion-icon class="icono" name="call"></ion-icon></ion-label>
-		
-		</div>
 </ion-content>
 			   
 	

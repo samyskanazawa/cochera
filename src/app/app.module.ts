@@ -11,6 +11,7 @@ import { RegisterPage } from '../pages/register/register';
 import { MisReservasPage } from '../pages/mis-reservas/mis-reservas';
 import { CocherasPage } from '../pages/cocheras/cocheras';
 import { TabsPage } from '../pages/tabs/tabs';
+import { OrderBy } from '../pipes/sort';
  
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { TabsPage } from '../pages/tabs/tabs';
     RegisterPage,
 	TabsPage,
 	MisReservasPage,
-	CocherasPage
+	CocherasPage,
+	OrderBy
   ],
   imports: [
     IonicModule.forRoot(MyApp, {
