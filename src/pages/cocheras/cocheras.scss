@@ -66,3 +66,83 @@ scroll-content {
 
 
 }
+
+.boton {
+   background: #B5E61D;
+   border-radius: 30px !important;
+   border: 2px solid #000000;
+}
+
+.label-md {
+    margin: 10px 3px 12px 0;
+}
+.picker-md .picker-toolbar {
+    box-shadow: 0 0 10px #222 inset;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-justify-content: flex-end;
+    -ms-flex-pack: end;
+    justify-content: flex-end;
+    height: 44px;
+      background: #b5e61d;
+}
+.picker-md .picker-columns {
+    box-shadow: 0 0 10px #222 inset;
+    height: 216px;
+    -webkit-perspective: 1800px;
+    perspective: 1800px;
+          background: #f4f4f4;
+    /* border-radius: 20px; */
+}
+.picker-md .picker-wrapper {
+    height: 260px;
+    border-top: 0.55px solid #dedede;
+    background: #fff;
+    border-radius: 27px;
+}
+.picker-md .picker-button, .picker-md .picker-button.activated {
+    margin: 0;
+      height: 35px;
+    color: #222;
+    background: transparent;
+    box-shadow: currentColor;
+}
+.picker-md .picker-prefix, .picker-md .picker-suffix, .picker-md .picker-opt.picker-opt-selected {
+       color: #b5e61d;
+}
+.datetime-md {
+    padding: 15px 15px 16px 16px;
+    /* left: 10px; */
+    left: 50px;
+    position: absolute;
+}
+.picker-md .picker-button, .picker-md .picker-button.activated {
+    color: #222;
+    box-shadow: currentColor;
+    right: 145px;
+        padding: 10px;
+    border-radius: 20px;
+    font-weight: 500;
+    text-align: right;
+    text-transform: uppercase;
+    color: rgba(51, 51, 51, 0.47);
+    background-color: transparent;
+    width: 100%;
+    border: solid;
+}
+
+.picker-button:hover {
+    background-color: rgba(23, 90, 204, 0.22) !important;
+    transition: 90ms all ease-in-out !important;
+    border: solid !important;
+    color: #3474e1 !important;
+}
+
+.picker-md .picker-button, .picker-md .picker-button.activated {
+    margin: 5px;
+    height: 36px;
+    color: #222;
+    background: transparent;
+    box-shadow: currentColor;
+}

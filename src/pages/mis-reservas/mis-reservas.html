@@ -19,6 +19,6 @@
 		</div>
 		<ion-label class="label"><b> </b>
 		<button ion-button type="button" class="boton" style="color: #222;" [disabled]="indice==null" (click)="showPrompt()"><ion-label style="text-align: center">Editar: <ion-icon name="create"></ion-icon></ion-label></button>
-		<button ion-button type="button" class="boton" style="color: #222;" [disabled]="indice==null" (click)="ocuparReserva()"><ion-label style="text-align: center">Reservar: <ion-icon name="create"></ion-icon></ion-label></button>
-		<button ion-button type="button" class="boton" style="color: #222;" [disabled]="indice==null" (click)="eliminarReserva()"><ion-label style="text-align: center">Eliminar: <ion-icon name="trash"></ion-icon></ion-label></button></ion-label>
+		<button ion-button type="button" class="boton" style="color: #222;" [disabled]="indice==null || (estado == 'Ocupado') " (click)="ocuparReserva()"><ion-label style="text-align: center">Ocupar: <ion-icon name="create"></ion-icon></ion-label></button>
+		<button ion-button type="button" class="boton" style="color: #222;" [disabled]="indice==null" (click)="eliminarReserva()"><ion-label style="text-align: center">Liberar: <ion-icon name="trash"></ion-icon></ion-label></button></ion-label>
 </ion-content>

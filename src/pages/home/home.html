@@ -5,34 +5,51 @@
 		<ion-row><ion-label>Capital</ion-label></ion-row>
 		<div>
 		<ion-row class="row header">
+		<ion-col class="col" style="text-align: center">Usuario</ion-col>
+		<ion-col class="col" style="text-align: center">Estado</ion-col>
 		  <ion-col class="col" style="text-align: center">Dirección y Espacio</ion-col>
 		  <ion-col class="col" style="text-align: center">Horario</ion-col>
 		  <ion-col with-10 class="col" style="text-align: center"></ion-col>
 		</ion-row>
 		<ion-row class="row">
+		<ion-col class="col" style="text-align: center">Emiliano Dato</ion-col>
+		<ion-col class="col" style="text-align: center">Ocupada</ion-col>
 		  <ion-col class="col" style="text-align: center">Maipu 942 - 4</ion-col>
 		  <ion-col class="col" style="text-align: center">08:00<br/>16:00</ion-col>
 		  <ion-col with-10 class="col" style="text-align: center"><ion-radio></ion-radio></ion-col>
 		</ion-row>
 		</div>
+		<ion-col class="signup-col">
+          <button ion-button type="button" [disabled]="habilitarBoton==null" style="background: #B5E61D;border-radius: 30px !important;border: 2px solid #000000;width: 100%;color: #222;" name="car"  class="submit-btn"><b>Reservar:<ion-icon name="car"></ion-icon></b></button>
+        </ion-col>
 		
+		<!--
 		<ion-label style="text-align: center">Acción: <ion-icon name="car"></ion-icon></ion-label>	
+		-->
 		<br/>
 		<div>
 		<ion-row><ion-label>La Plata</ion-label></ion-row>
 		<ion-row class="row header">
+			<ion-col class="col" style="text-align: center">Usuario</ion-col>
+		<ion-col class="col" style="text-align: center">Estado</ion-col>
 		  <ion-col class="col" style="text-align: center">Dirección y Espacio</ion-col>
 		  <ion-col class="col" style="text-align: center">Horario</ion-col>
 		  <ion-col with-10 class="col" style="text-align: center"></ion-col>
 		</ion-row >
 		<ion-row class="row">
+		<ion-col class="col" style="text-align: center">Leandro Fragala</ion-col>
+		<ion-col class="col" style="text-align: center">Ocupada</ion-col>
 		  <ion-col class="col" style="text-align: center">Maipu 942 - 4</ion-col>
 		  <ion-col class="col" style="text-align: center">08:00<br/>16:00</ion-col>
 		  <ion-col with-10 class="col" style="text-align: center"><ion-radio></ion-radio></ion-col>
 		</ion-row>
 		</div>
-		
+		<ion-col class="signup-col">
+          <button ion-button type="button" [disabled]="habilitarBoton==null" style="background: #B5E61D;border-radius: 30px !important;border: 2px solid #000000;width: 100%;color: #222;" name="car"  class="submit-btn"><b>Llamar:<ion-icon name="call"></ion-icon></b></button>
+        </ion-col>
+		<!--
 		<ion-label style="text-align: center">Acción: <ion-icon name="call"></ion-icon></ion-label>	
+		-->
 		
 	</div>
 </ion-content>

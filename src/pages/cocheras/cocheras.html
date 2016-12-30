@@ -1,9 +1,9 @@
 <ion-content padding>
 
 		<h1>Cocheras</h1><br/>
-			<ion-item><ion-label>Día: </ion-label><ion-datetime displayFormat="DD/MM/YYYY" 
+			<ion-item><ion-label style="Sposition: absolute;">Día: </ion-label><ion-datetime displayFormat="DD/MM/YYYY" 
 			pickerFormat="DD MMMM YYYY" monthNames="Enero, Febrero, Marzo, Abril, Mayo, Jnio, Julio, Agosto, Septiembre, Octubre, Noviembre, Diciembre"
-			cancelText="Cancelar" doneText="Aceptar" [(ngModel)]="today" (click)="setDia()"></ion-datetime></ion-item>
+			cancelText="Cancelar" style="width: 700px;" doneText="Aceptar" [(ngModel)]="today" (click)="setDia()"></ion-datetime></ion-item>
 			<br/>
 			<ion-row>
 				<!--<ion-col><ion-item><ion-label>Desde: </ion-label><ion-datetime displayFormat="HH:00" hourValues="08, 09, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20" cancelText="Cancelar" doneText="Acpetar" [(ngModel)]="horaDesde" (click)="setHoraDesde()"></ion-datetime></ion-item></ion-col>
@@ -29,8 +29,11 @@
 						  <ion-col width-10 class="col"><ion-checkbox></ion-checkbox></ion-col>
 						</ion-row>
 				</div>
-			
-				<ion-label class="label_accion">Reservar: <ion-icon class="icono" name="car" (click)="showPrompt()"></ion-icon></ion-label>
+				<ion-label class="label"><b> </b>
+					<button ion-button type="button" class="boton" style="color: #222;"  (click)="showPrompt()">
+						<ion-label style="text-align: center">Reservar: <ion-icon name="car"></ion-icon></ion-label>
+					</button>
+				</ion-label>
 				
 				<div>
 					<ion-row><ion-label class="label_cocheras" text-center><b>Cocheras sin Disponibilidad</b></ion-label></ion-row>
@@ -47,8 +50,11 @@
 						  <ion-col width-10 class="col"><ion-checkbox></ion-checkbox></ion-col>
 						</ion-row>
 				</div>
-				<ion-label class="label_accion">Llamar: <ion-icon class="icono" name="call"></ion-icon></ion-label>
-			
+				<ion-label class="label"><b> </b>
+					<button ion-button type="button" class="boton" style="color: #222;" [disabled]="indice==null" (click)="showPrompt()">
+						<ion-label style="text-align: center">Llamar: <ion-icon name="call"></ion-icon></ion-label>
+					</button>
+				</ion-label>
 			</div>
 </ion-content>
 			   

@@ -19,6 +19,11 @@ export class MisReservasPage {
   private mensaje: string;
   private indice: number;
   
+   estado: any;
+
+  
+
+
   reservas: any;
   radios: any;
   
@@ -56,6 +61,9 @@ export class MisReservasPage {
    marcarRadioButton(i){
  
 	 this.indice = i;
+   this.estado = this.indice.estado;
+   
+
   }
   
   devolverColorFila(i){
@@ -125,7 +133,19 @@ export class MisReservasPage {
     });
     prompt.present();
   }
+
+
+
+
+  ocuparReserva()
+  {
+      var hoy = new Date();
+  var index = this.reservas.indexOf(this.indice);
+  }
   
+
+
+
   eliminarReserva() {
 	var index = this.reservas.indexOf(this.indice);
 	let alert = this.alertCtrl.create({
