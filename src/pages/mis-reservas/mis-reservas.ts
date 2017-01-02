@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, ViewController } from 'ionic-angular';
 import { AlertController } from 'ionic-angular';
 import { Reservas } from '../../providers/reservas';
 import { OrderBy } from '../../pipes/sort';
@@ -24,12 +24,23 @@ export class MisReservasPage {
   reservas: any;
   radios: any;
   
+  
   ionViewDidLoad() {
-    this.reservasService.getReservasByMail(this.mail).then((data) => {
-      console.log(data);
-      this.reservas = data;
+    
+	this.reservasService.getReservasByMail(this.mail).then((data) => {
+	  console.log(data);
+	  this.reservas = data;
 	  this.reservas[0].checked = true;
 	});
+  }
+  
+    ionViewLoaded() {
+	 // const index = this.viewCtrl.index;
+      //this.navCtrl.insert(index, MisReservasPage);
+  }
+  
+  ionViewWillLeave() {
+	  
   }
   
   getReservas(){
@@ -43,7 +54,7 @@ export class MisReservasPage {
     });
   }
   
-  constructor(public navCtrl: NavController, public reservasService: Reservas, public alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController, public reservasService: Reservas, private viewCtrl: ViewController, public alertCtrl: AlertController) {
 	this.tieneReserva = false;
 	
   }

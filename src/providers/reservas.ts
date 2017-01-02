@@ -144,5 +144,38 @@ export class Reservas {
     });    
  
   }
+  
+  obtenerDiferenciaDeTiempo(horaDesde: string, horaHasta: string){
+	var s = horaDesde.split(':');
+	var e = horaHasta.split(':');
+	var min = Number(e[1])-Number(s[1]);
+	var minuto: string;
+	var hora_adicional = 0;
+	
+	if(min < 0){
+	   min += 60;
+	   hora_adicional += 1;
+	}
+	
+	var hora = Number(e[0]) - Number(s[0]) - hora_adicional;
+	//var min = (min/60)*100;
+	minuto = min.toString();
+	
+	if (min < 10){
+		minuto = '0' + minuto;
+	};
+	
+	var diferencia = hora.toString() + (minuto).substring(0,2);
+	return Number(diferencia);
+  }
+  
+  formatearFecha(fecha) {
+	  var date = new Date(fecha);
+	  var mm = date.getMonth() + 1; // getMonth() inicia en 0
+	  var dd = date.getDate() + 1;
+
+	  return [(dd>9 ? '' : '0') + dd, (mm>9 ? '' : '0') + mm, date.getFullYear()].join('/');
+			 
+  };
 
 }
