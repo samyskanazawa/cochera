@@ -3,7 +3,7 @@
 		<h1>Cocheras</h1><br/>
 			<ion-item><ion-label style="Sposition: absolute;">Día: </ion-label><ion-datetime displayFormat="DD/MM/YYYY" 
 			pickerFormat="DD MMMM YYYY" monthNames="Enero, Febrero, Marzo, Abril, Mayo, Jnio, Julio, Agosto, Septiembre, Octubre, Noviembre, Diciembre"
-			cancelText="Cancelar" style="width: 700px;" doneText="Aceptar" [(ngModel)]="today" (click)="setDia()"></ion-datetime></ion-item>
+			cancelText="Cancelar" style="width: 700px;" doneText="Aceptar" [(ngModel)]="hola" (ionChange)="changeDate(hola)"></ion-datetime></ion-item>
 			<br/>
 			<ion-row>
 				<!--<ion-col><ion-item><ion-label>Desde: </ion-label><ion-datetime displayFormat="HH:00" hourValues="08, 09, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20" cancelText="Cancelar" doneText="Acpetar" [(ngModel)]="horaDesde" (click)="setHoraDesde()"></ion-datetime></ion-item></ion-col>
@@ -43,7 +43,7 @@
 						  <ion-col width-30 class="col">Usuario</ion-col>
 						  <ion-col width-10 class="col"></ion-col>
 						</ion-row>
-						<ion-row class="row" *ngFor="let item of noDisponibles | orderBy : ['v_espacio']; let i of noDisponibles.length" [ngStyle]="{'background-color': devolverColorFilaNoDisponible()}">
+						<ion-row class="row" *ngFor="let item of noDisponibles | orderBy : ['v_espacio'];" [ngStyle]="{'background-color': 'red'}">
 						  <ion-col width-30 class="col">{{item.v_nombre}} - {{item.v_espacio}}</ion-col>
 						  <ion-col width-15 class="col">{{item.horaDesde}}<br/>{{item.horaHasta}}</ion-col>
 						  <ion-col width-30 class="col">{{item.v_nombreCompleto}}</ion-col>

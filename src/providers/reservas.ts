@@ -35,22 +35,47 @@ export class Reservas {
  
   }
   
+  getReservasByFecha(fecha: string){
+ 
+    if (this.data) {
+      return Promise.resolve(this.data);
+    }
+ 
+    return new Promise(resolve => {
+ 
+      this.http.get('http://localhost:8080/reserva/search/findByFechaRese?fechaRese=' + fecha)
+        .map(res => res.json())
+        .subscribe(data => {
+          this.data = data._embedded.reserva;
+          resolve(this.data);
+        });
+    });
+ 
+  }
   
+  getReservasByMail(mail: string){
+ 
+    if (this.data) {
+      return Promise.resolve(this.data);
+    }
+ 
+    return new Promise(resolve => {
+ 
+      this.http.get('http://localhost:8080/reserva/search/findByMail?mail=' + mail)
+        .map(res => res.json())
+        .subscribe(data => {
+          this.data = data._embedded.reserva;
+          resolve(this.data);
+        });
+    });
+ 
+  }
   
  findByQuery( nombreCochera: string, espacioCochera: number, fechaRese: string, estado: string){
  
     if (this.data) {
       return Promise.resolve(this.data);
     }
- 
-	/*let headers = new Headers();
-    headers.append('Content-Type', 'application/json');
- 
-	var body = new FormData;
-	body.append('nombreCochera', nombreCochera);
-	body.append('espacioCochera', espacioCochera);
-	body.append('fechaRese', fechaRese);
-	body.append('estado', estado);*/
  
     return new Promise(resolve => {
  

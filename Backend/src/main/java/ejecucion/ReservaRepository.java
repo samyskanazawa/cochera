@@ -10,4 +10,5 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 public interface ReservaRepository extends MongoRepository<Reserva, String>, ReservaRepositoryCustom {
 
 	List<Reserva> findByMail(@Param("mail") String mail);
+	List<Reserva> findByFechaRese(@Param("fechaRese") String fecha);
 }

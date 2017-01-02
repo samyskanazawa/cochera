@@ -9,7 +9,7 @@
 			  <ion-col width-10 class="col" ></ion-col>
 			</ion-row >
 			<ion-list radio-group>
-				<ion-row class="row" *ngFor="let reserva of reservas; let i of reservas.length">
+				<ion-row class="row" *ngFor="let reserva of reservas | orderBy : ['fechaRese']; let i of reservas.length">
 				  <ion-col width-15 class="col">{{(reserva.fechaRese).substr(0,5)}}</ion-col>
 				  <ion-col width-50 class="col">{{reserva.nombreCochera}} - ({{reserva.espacio}})</ion-col>
 				  <ion-col width-15 class="col">{{reserva.horaDesde}}<br/>{{reserva.horaHasta}}</ion-col>
@@ -19,6 +19,6 @@
 		</div>
 		<ion-label class="label"><b> </b>
 		<button ion-button type="button" class="boton" style="color: #222;" [disabled]="indice==null" (click)="showPrompt()"><ion-label style="text-align: center">Editar: <ion-icon name="create"></ion-icon></ion-label></button>
-		<button ion-button type="button" class="boton" style="color: #222;" [disabled]="indice==null || (estado == 'Ocupado') " (click)="ocuparReserva()"><ion-label style="text-align: center">Ocupar: <ion-icon name="create"></ion-icon></ion-label></button>
+		<button ion-button type="button" class="boton" style="color: #222;" [disabled]="indiceOcupado==null" (click)="ocuparReserva()"><ion-label style="text-align: center">Ocupar: <ion-icon name="create"></ion-icon></ion-label></button>
 		<button ion-button type="button" class="boton" style="color: #222;" [disabled]="indice==null" (click)="eliminarReserva()"><ion-label style="text-align: center">Liberar: <ion-icon name="trash"></ion-icon></ion-label></button></ion-label>
 </ion-content>

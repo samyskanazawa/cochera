@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { AlertController } from 'ionic-angular';
 import { Reservas } from '../../providers/reservas';
+import { OrderBy } from '../../pipes/sort';
 
 /*
   Generated class for the MisReservas page.
@@ -18,21 +19,24 @@ export class MisReservasPage {
   private tieneReserva:boolean;
   private mensaje: string;
   private indice: number;
-  
-   estado: any;
-
-  
-
-
+  private indiceOcupado;
+  private mail: string = "hernan.ruiz@softtek.com"
   reservas: any;
   radios: any;
   
   ionViewDidLoad() {
-    this.getReservas();
+    this.reservasService.getReservasByMail(this.mail).then((data) => {
+      console.log(data);
+      this.reservas = data;
+	  this.reservas[0].checked = true;
+	});
   }
   
   getReservas(){
-	  this.reservasService.getReservas().then((data) => {
+	  var fecha = new Date().toISOString();
+	  debugger;
+	  var fechaTransformada = this.formatearFecha(fecha);
+	  this.reservasService.getReservasByFecha(fechaTransformada).then((data) => {
       console.log(data);
       this.reservas = data;
 	  this.reservas[0].checked = true;
@@ -44,6 +48,15 @@ export class MisReservasPage {
 	
   }
 
+  formatearFecha(fecha) {
+	  var date = new Date(fecha);
+	  var mm = date.getMonth() + 1; // getMonth() is zero-based
+	  var dd = date.getDate();
+
+	  return [(dd>9 ? '' : '0') + dd, (mm>9 ? '' : '0') + mm, date.getFullYear()].join('/');
+			 
+  };
+  
   deleteReserva(reserva){
  
     //Remove locally
@@ -60,10 +73,13 @@ export class MisReservasPage {
   
    marcarRadioButton(i){
  
-	 this.indice = i;
-   this.estado = this.indice.estado;
-   
-
+	this.indice = i;
+	var index = this.reservas.indexOf(i);
+	var fecha = this.formatearFecha(new Date().toISOString());
+	
+	if(this.reservas[index].estado != "Ocupado" && this.reservas[index].fechaRese == fecha ){
+	   this.indiceOcupado = i;
+	}
   }
   
   devolverColorFila(i){
@@ -75,7 +91,7 @@ export class MisReservasPage {
             case 'Reservado':
                 return "yellow";
             default:
-				return "red";
+				 "red";
         }
   }
   
@@ -138,9 +154,9 @@ export class MisReservasPage {
 
 
   ocuparReserva()
-  {
+  {/*
       var hoy = new Date();
-  var index = this.reservas.indexOf(this.indice);
+  var index = this.reservas.indexOf(this.indice);*/
   }
   
 

@@ -20,7 +20,7 @@ import { OrderBy } from '../../pipes/sort';
 })
 
 export class CocherasPage {
-	private today: string;
+	private hola: any;
 	private horaDesde: string;
 	private horaHasta: string;
 	private ocultarResultados: boolean;
@@ -30,6 +30,7 @@ export class CocherasPage {
 	private tmpDispo;
 	private tmpNoDispo;
 	private allUsuariosArray = [];
+	private hoy: string;
 	
 	reservas: any;
 	
@@ -52,10 +53,6 @@ export class CocherasPage {
     }
   }
   
-  devolverColorFilaNoDisponible(){
-	  return "red";
-  }
-  
   setHoraDesde(){
 	  this.horaDesde = new Date().toISOString();
   }
@@ -65,23 +62,30 @@ export class CocherasPage {
   }
   
   setDia(){
-	  this.today  = new Date().toISOString();
-	  this.habilitarBoton = this.today;
+	  this.hoy = this.formatearFecha(this.hola);
+	  console.log(this.hoy);
+  }
+  
+  changeDate(hola) {
+	  this.hoy = new Date(hola).toISOString();
+	  this.hola = this.hoy;
+	  this.hoy = this.formatearFecha(this.hoy);
+	  console.log(this.hoy);
+	  this.habilitarBoton = this.hoy;
   }
   
   formatearFecha(fecha) {
 	  var date = new Date(fecha);
-	  var mm = date.getMonth() + 1; // getMonth() is zero-based
-	  var dd = date.getDate();
+	  var mm = date.getMonth() + 1; // getMonth() inicia en 0
+	  var dd = date.getDate() + 1;
 
 	  return [(dd>9 ? '' : '0') + dd, (mm>9 ? '' : '0') + mm, date.getFullYear()].join('/');
 			 
   };
   
   buscar(){
-	  var fecha = this.formatearFecha(this.today);
-	  var v_fecha = fecha;
-	  this.obtenerCocherasSinRango(v_fecha);
+	  var fecha = this.hoy;
+	  this.obtenerCocherasSinRango(fecha);
 	  this.ocultarResultados = false;
   }
   
@@ -99,14 +103,13 @@ export class CocherasPage {
 		var v_nombreCompleto;
 		var temporal = [];
 		var mailTemporal = [];
-		var vectorHoraHasta = [];
 		var indice;
 		var i = 0;
 		var h = 0;
 		var item;
 		var posicion = 0;
 		allreservasArray = data2;
-
+		
 		if (allreservasArray.length <= 0) {
 			horaDesde = "08:00";
 			horaHasta = "20:00";
@@ -121,9 +124,9 @@ export class CocherasPage {
 			
 			while(z < allreservasArray.length) {
 				
-					temporal.push(allreservasArray[z].horaDesde);
-					temporal.push(allreservasArray[z].horaHasta);
-					temporal.sort();
+				temporal.push(allreservasArray[z].horaDesde);
+				temporal.push(allreservasArray[z].horaHasta);
+				temporal.sort();
 					
 				//Cochera con horario/s dsponible/s - tomo un máximo de 2 reservas en el día para la cochera
 				if(temporal.length == (allreservasArray.length)*2){
@@ -157,15 +160,12 @@ export class CocherasPage {
 					}
 				}
 					
-				//Horario/s no disponible/s de la cochera
-				vectorHoraHasta.push({"espacio" :v_espacio , horaHasta : allreservasArray[z].horaHasta, "horaHastaNumero" : Number((allreservasArray[z].horaHasta).replace(":",""))});
-				mailTemporal.push(allreservasArray[z].mail);
-				
-				//Busco los datos de quien ocupa la cochera
+				//Horario/s no disponible/s de la cochera - Busco los datos de quien ocupa la cochera
 				var outerThis = this;
 				var vectorHoras = i;
+				mailTemporal.push(allreservasArray[z].mail);
 				
-				//Si hay ,más de una reserva, las itero para agregar dichos tramos como no disponibles 
+				//Si hay ,más de una reserva para una cochera, las itero para agregar dichos tramos como no disponibles 
 				for (item in mailTemporal){
 					this.buscarsUsuarios(mailTemporal[item], function (){
 						if (outerThis.allUsuariosArray.length >= 0 && i <= (mailTemporal.length)-1) {
