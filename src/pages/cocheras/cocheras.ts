@@ -33,6 +33,7 @@ export class CocherasPage {
 	private hoy: string;
 	private indiceCocheraDisponible: any
 	private indiceCocheraNoDisponible: any
+	private minDate;
 	
 	reservas: any;
 	
@@ -41,6 +42,7 @@ export class CocherasPage {
 						public alertCtrl: AlertController) {
 	
 	this.ocultarResultados = true;
+	this.setDia();
   }
 
   devolverColorFilaDisponible(i){
@@ -59,6 +61,10 @@ export class CocherasPage {
 	  this.indiceCocheraDisponible = i;
   }
   
+  marcarRadioCocheraNoDisponible(i){
+	  this.indiceCocheraNoDisponible = i;
+  }
+  
   setHoraDesde(){
 	  this.horaDesde = new Date().toISOString();
   }
@@ -68,17 +74,46 @@ export class CocherasPage {
   }
   
   setDia(){
-	  this.hoy = this.reservasService.formatearFecha(this.fechaElegida);
-	  console.log(this.hoy);
+	   this.minDate = new Date().toISOString();
   }
   
   changeDate(fechaElegida) {
-	  this.hoy = new Date(fechaElegida).toISOString();
-	  this.fechaElegida = this.hoy;
-	  this.hoy = this.reservasService.formatearFecha(this.hoy);
-	  console.log(this.hoy);
-	  this.habilitarBoton = this.hoy;
+	    
+	  var iguales = this.validarFecha(new Date(fechaElegida).toISOString(), new Date(this.minDate).toISOString());
+	  
+	  if(iguales){
+		  this.hoy = new Date(fechaElegida).toISOString();
+		  this.fechaElegida = this.hoy;
+		  this.hoy = this.reservasService.formatearFecha(this.hoy);
+		  console.log(this.hoy);
+		  this.habilitarBoton = this.hoy;
+	  } else {
+		  var titulo = 'Fecha inválida';
+		  var subtitulo = 'La fecha ingresada debe ser desde el día de hoy en adelante';
+		  this.alertGenerico(titulo, subtitulo);
+	  }
   }
+  
+    validarFecha(fecha1, fecha2) {
+
+	  var date1 = new Date(fecha1);
+	  var date2 = new Date(fecha2);
+	  var iguales: boolean = false;
+	  
+	  var mm1 = date1.getMonth() + 1; // getMonth() inicia en 0
+	  var dd1 = date1.getDate()+1;
+	  var yy1 = date1.getFullYear();
+	  
+	  var mm2 = date2.getMonth() + 1; // getMonth() inicia en 0
+	  var dd2 = date2.getDay() + 1;
+	  var yy2 = date2.getFullYear();
+	  
+	  if(yy1 >= yy2 && mm1 >= mm2 && dd1 >= dd2){
+		  iguales =true;
+	  } 
+	  
+	  return iguales;		 
+  };
   
   buscar(){
 	  var fecha = this.hoy;
@@ -262,13 +297,13 @@ export class CocherasPage {
       inputs: [
 	  
         {
-          name: 'Desde',
+          name: 'desde',
 		  placeholder: 'Desde',
 		  type: 'time',
 		  value: this.disponibles[index].horaDesde
         },
 		{
-		  name: 'Hasta',
+		  name: 'hasta',
 		  placeholder: 'Hasta',
 		  type: 'time',
 		  value: this.disponibles[index].horaHasta
@@ -294,17 +329,23 @@ export class CocherasPage {
 			var espacioCochera: String;
 			espacioCochera = (this.disponibles[index].v_espacio).toString();
 			var fechaRese = this.disponibles[index].v_fecha;
-			var horaDesde = this.disponibles[index].horaDesde;
-			var horaHasta = this.disponibles[index].horaHasta;
+			var horaDesde = data.desde;
+			var horaHasta = data.hasta;
 			var horaDesdeSort = Number(horaDesde.replace(":",""));
 			var estado = "Reservado";
 			var fechaAlta = "";
 			var fechaOcupa = "";
 			var fechaLibre = "";
 			
-			reserva.push({mail, nombreCochera, espacioCochera, fechaRese, horaDesde, horaHasta, fechaAlta, estado, fechaOcupa, fechaLibre, horaDesdeSort});
-            this.reservasService.createReserva(reserva[0]);
-			//this.buscar();
+			if(data.desde > this.disponibles[index].horadesde && data.hasta < this.disponibles[index].horaHasta){
+				reserva.push({mail, nombreCochera, espacioCochera, fechaRese, horaDesde, horaHasta, fechaAlta, estado, fechaOcupa, fechaLibre, horaDesdeSort});
+				this.reservasService.createReserva(reserva[0]);
+				//this.buscar();
+			} else {
+				var titulo = 'Horario Inválido';
+				var subtitulo = 'Los horarios ingresados no pueden quedar por fuera del rango seleccionado';
+				this.alertGenerico(titulo, subtitulo);
+			}
           }
         },
 		{
@@ -317,6 +358,20 @@ export class CocherasPage {
     });
     prompt.present();
   }
+  
+  alertGenerico(titulo: string, subtitulo: string) {
+	let alert = this.alertCtrl.create({
+    title: titulo,
+    subTitle: subtitulo,
+    buttons: [
+      {
+        text: 'OK',
+        role: 'cancel',
+      },
+    ]
+  });
+  alert.present();
+}
   
   ionViewDidLoad() {
     console.log('Página Cocheras');
