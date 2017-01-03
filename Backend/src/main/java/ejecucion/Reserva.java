@@ -8,7 +8,7 @@ public class Reserva {
 	
 	private String mail;
 	private String nombreCochera;
-	private int espacioCochera;
+	private String espacioCochera;
 	private String fechaRese;
 	private String horaDesde;
 	private String horaHasta;
@@ -34,11 +34,11 @@ public class Reserva {
 		this.nombreCochera = nombre;
 	}
 	
-	public int getEspacio() {
+	public String getEspacio() {
 		return espacioCochera;
 	}
 	
-	public void setEspacio(int espacio) {
+	public void setEspacio(String espacio) {
 		this.espacioCochera = espacio;
 	}
 	
@@ -122,11 +122,11 @@ public class Reserva {
 		this.nombreCochera = nombreCochera;
 	}
 
-	public int getEspacioCochera() {
+	public String getEspacioCochera() {
 		return espacioCochera;
 	}
 
-	public void setEspacioCochera(int espacioCochera) {
+	public void setEspacioCochera(String espacioCochera) {
 		this.espacioCochera = espacioCochera;
 	}
 }

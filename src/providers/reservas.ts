@@ -134,7 +134,6 @@ export class Reservas {
       .subscribe(res => {
         console.log(res.json());
       });
- 
   }
  
   deleteReserva(id){

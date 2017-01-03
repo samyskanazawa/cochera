@@ -17,7 +17,7 @@ public class ReservaSearchController {
 	private ReservaRepository reservaRepository;
     
 	  @RequestMapping(value = "/reserva/search/findByQuery", method = RequestMethod.GET)
-	    public HttpEntity<List<Reserva>> findByQuery(String nombreCochera, Integer espacioCochera, String fechaRese, String estado) {
+	    public HttpEntity<List<Reserva>> findByQuery(String nombreCochera, String espacioCochera, String fechaRese, String estado) {
 
 		  	List<Reserva> reserva = reservaRepository.findByQuery(nombreCochera, espacioCochera, fechaRese, estado);
 	        return new ResponseEntity<List<Reserva>>(reserva, HttpStatus.OK);

@@ -16,11 +16,11 @@ public class ReservaRepositoryImpl implements ReservaRepositoryCustom{
 	private Class<Reserva> clazz = Reserva.class;
 
 	@Override
-	public List<Reserva> findByQuery(String nombreCochera, Integer espacioCochera, String fechaRese, String estado) {
+	public List<Reserva> findByQuery(String nombreCochera, String espacioCochera, String fechaRese, String estado) {
 		Query query = new Query();
 		query.addCriteria(Criteria
 			.where("nombreCochera").is(nombreCochera)
-			.and("espacioCochera").is(String.valueOf(espacioCochera))
+			.and("espacioCochera").is(espacioCochera)
 			.and("fechaRese").is(fechaRese)
 			.and("estado").ne(estado)
 			);

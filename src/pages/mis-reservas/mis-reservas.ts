@@ -134,11 +134,13 @@ export class MisReservasPage {
         {
           name: 'desde',
 		  placeholder: 'Desde',
+		  type: 'time',
 		  value: this.reservas[index].horaDesde
         },
 		{
 		  name: 'hasta',
 		  placeholder: 'Hasta',
+		  type: 'time',
 		  value: this.reservas[index].horaHasta
 		},
       ],

@@ -105,7 +105,7 @@ export class CocherasPage {
 		var item;
 		var posicion = 0;
 		allreservasArray = data2;
-		
+		//debugger;
 		if (allreservasArray.length <= 0) {
 			horaDesde = "08:00";
 			horaHasta = "20:00";
@@ -139,7 +139,9 @@ export class CocherasPage {
 						horaHasta = horaDesde1;
 						v_Dispo = this.reservasService.obtenerDiferenciaDeTiempo(horaDesde, horaHasta);
 						//Number(horaHasta.replace(":","")) - Number(horaDesde.replace(":",""));
-						this.tmpDispo.push({v_mail , v_nombre, v_espacio, v_fecha, horaDesde, horaHasta, v_Dispo});
+						if(horaDesde != horaHasta){
+							this.tmpDispo.push({v_mail , v_nombre, v_espacio, v_fecha, horaDesde, horaHasta, v_Dispo});
+						}
 						horadesde = horaHasta1;
 					} else {
 						horadesde = horaHasta1;
@@ -151,7 +153,9 @@ export class CocherasPage {
 						horaDesde = horaHasta1;
 						horaHasta = horaDesde2;
 						v_Dispo = this.reservasService.obtenerDiferenciaDeTiempo(horaDesde, horaHasta);
-						this.tmpDispo.push({v_mail , v_nombre, v_espacio, v_fecha, horaDesde, horaHasta, v_Dispo});
+						if(horaDesde != horaHasta){
+							this.tmpDispo.push({v_mail , v_nombre, v_espacio, v_fecha, horaDesde, horaHasta, v_Dispo});
+						}
 						horadesde = horaHasta2;
 					}
 				}
@@ -215,9 +219,9 @@ export class CocherasPage {
 	var v_items;
 	var v_item;
 	var v_nombre;
-	var v_espacio;
+	var v_espacio: string;
 	var allreservasArray;
-	var estado: string;
+	var estado: String;
 	var horaDesde:string;
 	var horaHasta: string;
 	
@@ -242,7 +246,6 @@ export class CocherasPage {
 			
 			//Se buscará por estado diferente a "Libre"
 			estado = "Libre";
-			
 			this.queryReservas(v_nombre, v_espacio, v_fecha, estado, v_mail, horaDesde, horaHasta, allreservasArray );
 		}
 		
@@ -255,24 +258,26 @@ export class CocherasPage {
   showPrompt() {
 	var index = this.disponibles.indexOf(this.indiceCocheraDisponible);
     let prompt = this.alertCtrl.create({
-      title: 'Día: ' + this.disponibles[index].v_fecha + ' Cochera: ' + this.disponibles[index].v_espacio,
+      title: 'Día: ' + this.disponibles[index].v_fecha + ' - Cochera: ' + this.disponibles[index].v_espacio,
       inputs: [
 	  
         {
           name: 'Desde',
 		  placeholder: 'Desde',
+		  type: 'time',
 		  value: this.disponibles[index].horaDesde
         },
 		{
 		  name: 'Hasta',
 		  placeholder: 'Hasta',
+		  type: 'time',
 		  value: this.disponibles[index].horaHasta
 		},
 		/*{	
 			type: "checkbox",
 			name: 'Todo el día:',
 			label: 'Todo el día',
-			value: "Todo el día:"
+			value: 'Todo el día:'
 		},*/
 		
       ],
@@ -280,6 +285,30 @@ export class CocherasPage {
       buttons: [
         {
           text: 'Guardar',
+          handler: data => {
+			//({v_mail , v_nombre, v_espacio, v_fecha, horaDesde , horaHasta, v_Dispo});
+				//mail, nombreCochera, espacioCochera, fechaRese, horaDesde, horaHasta, estado, horaDesdeSort
+			var reserva = [];
+			var mail = this.disponibles[index].v_mail;
+			var nombreCochera = this.disponibles[index].v_nombre;
+			var espacioCochera: String;
+			espacioCochera = (this.disponibles[index].v_espacio).toString();
+			var fechaRese = this.disponibles[index].v_fecha;
+			var horaDesde = this.disponibles[index].horaDesde;
+			var horaHasta = this.disponibles[index].horaHasta;
+			var horaDesdeSort = Number(horaDesde.replace(":",""));
+			var estado = "Reservado";
+			var fechaAlta = "";
+			var fechaOcupa = "";
+			var fechaLibre = "";
+			
+			reserva.push({mail, nombreCochera, espacioCochera, fechaRese, horaDesde, horaHasta, fechaAlta, estado, fechaOcupa, fechaLibre, horaDesdeSort});
+            this.reservasService.createReserva(reserva[0]);
+			//this.buscar();
+          }
+        },
+		{
+          text: 'Cerrar',
           handler: data => {
             console.log('Cancel clicked');
           }

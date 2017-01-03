@@ -23,11 +23,13 @@
 						  <ion-col width-25 class="col">Horario</ion-col>
 						  <ion-col width-10 class="col"></ion-col>
 						</ion-row >
-						<ion-row class="row" *ngFor="let item of disponibles | orderBy : ['-v_Dispo']; let i of disponibles.length" [ngStyle]="{'background-color': devolverColorFilaDisponible(i)}">
-						  <ion-col class="col">{{item.v_nombre}} - {{item.v_espacio}}</ion-col>
-						  <ion-col width-25 class="col">{{item.horaDesde}}<br>{{item.horaHasta}}</ion-col>
-						  <ion-col width-10 class="col"><ion-radio style="border: 1px solid #000" (click)="marcarRadioCocheraDisponible(i)"></ion-radio></ion-col>
-						</ion-row>
+						<ion-list radio-group>
+							<ion-row class="row" *ngFor="let item of disponibles | orderBy : ['-v_Dispo']; let i of disponibles.length" [ngStyle]="{'background-color': devolverColorFilaDisponible(i)}">
+							  <ion-col class="col">{{item.v_nombre}} - {{item.v_espacio}}</ion-col>
+							  <ion-col width-25 class="col">{{item.horaDesde}}<br>{{item.horaHasta}}</ion-col>
+							  <ion-col width-10 class="col"><ion-radio style="border: 1px solid #000" (click)="marcarRadioCocheraDisponible(i)"></ion-radio></ion-col>
+							</ion-row>
+						</ion-list>
 				</div>
 				<ion-label class="label"><b> </b>
 					<button ion-button type="button" class="boton" style="color: #222;" [disabled]="indiceCocheraDisponible==null" (click)="showPrompt()">
@@ -36,19 +38,21 @@
 				</ion-label>
 				
 				<div>
-					<ion-row><ion-label class="label_cocheras" text-center><b>Cocheras sin Disponibilidad</b></ion-label></ion-row>
+						<ion-row><ion-label class="label_cocheras" text-center><b>Cocheras sin Disponibilidad</b></ion-label></ion-row>
 						<ion-row class="row header">
 						  <ion-col width-30 class="col">Dirección</ion-col>
 						  <ion-col width-15 class="col">Horario</ion-col>
 						  <ion-col width-30 class="col">Usuario</ion-col>
 						  <ion-col width-10 class="col"></ion-col>
 						</ion-row>
-						<ion-row class="row" *ngFor="let item of noDisponibles | orderBy : ['v_espacio'];" [ngStyle]="{'background-color': 'red'}">
-						  <ion-col width-30 class="col">{{item.v_nombre}} - {{item.v_espacio}}</ion-col>
-						  <ion-col width-15 class="col">{{item.horaDesde}}<br/>{{item.horaHasta}}</ion-col>
-						  <ion-col width-30 class="col">{{item.v_nombreCompleto}}</ion-col>
-						  <ion-col width-10 class="col"><ion-checkbox></ion-checkbox></ion-col>
-						</ion-row>
+						<ion-list radio-group>
+							<ion-row class="row" *ngFor="let item of noDisponibles | orderBy : ['v_espacio'];" [ngStyle]="{'background-color': 'red'}">
+							  <ion-col width-30 class="col">{{item.v_nombre}} - {{item.v_espacio}}</ion-col>
+							  <ion-col width-15 class="col">{{item.horaDesde}}<br/>{{item.horaHasta}}</ion-col>
+							  <ion-col width-30 class="col">{{item.v_nombreCompleto}}</ion-col>
+							  <ion-col width-10 class="col"><ion-radio style="border: 1px solid #000"></ion-radio></ion-col>
+							</ion-row>
+						</ion-list>
 				</div>
 				<ion-label class="label"><b> </b>
 					<button ion-button type="button" class="boton" style="color: #222;" [disabled]="indiceCocheraNoDisponible==null" (click)="showPrompt()">
