@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
+import { AlertController } from 'ionic-angular';
 import 'rxjs/add/operator/map';
 
 /*
@@ -13,7 +14,7 @@ export class Reservas {
 
   data: any;
  
-  constructor(public http: Http) {
+  constructor(public http: Http, public alertCtrl: AlertController) {
     this.data = null;
   }
  
@@ -130,10 +131,24 @@ export class Reservas {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
  
+	var titulo;
+	var subtitulo;
+ 
     this.http.post('http://localhost:8080/reserva', JSON.stringify(reserva), {headers: headers})
       .subscribe(res => {
-        console.log(res.json());
-      });
+		//Si falla, se mostrará un mensaje de error
+		if(res.status < 200 || res.status >= 300) {
+			titulo = "Error";
+			subtitulo = "La reserva no fue generada";
+		} 
+		//Si todo sale bien, se muestr mensaje confirmándolo
+		else {
+			titulo ="Reserva";
+			subtitulo="Reserva generada exitosamente para los horarios seleccionados";
+			console.log(res.json());
+		}
+		this.alertGenerico(titulo, subtitulo);
+	  });
   }
  
   deleteReserva(id){
@@ -176,5 +191,19 @@ export class Reservas {
 	  return [(dd>9 ? '' : '0') + dd, (mm>9 ? '' : '0') + mm, date.getFullYear()].join('/');
 			 
   };
+  
+  alertGenerico(titulo: string, subtitulo: string) {
+	let alert = this.alertCtrl.create({
+    title: titulo,
+    subTitle: subtitulo,
+    buttons: [
+      {
+        text: 'OK',
+        role: 'cancel',
+      },
+    ]
+  });
+  alert.present();
+}
 
 }

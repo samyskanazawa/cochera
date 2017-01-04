@@ -63,11 +63,11 @@ public class Usuario {
 		this.flag = flag;
 	}
 
-	public String getMmail() {
+	public String getMail() {
 		return mail;
 	}
 
-	public void setMmail(String mail) {
+	public void setMail(String mail) {
 		this.mail = mail;
 	}
 

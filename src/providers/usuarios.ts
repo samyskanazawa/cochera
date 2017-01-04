@@ -25,7 +25,7 @@ data: any;
  
     return new Promise(resolve => {
  
-      this.http.get('http://localhost:8080/usuario?mail=' + mail)
+      this.http.get('http://localhost:8080/usuario/search/findByMail?mail=' + mail)
         .map(res => res.json())
         .subscribe(data => {
           this.data = data._embedded.usuario;

@@ -4,7 +4,6 @@ import { AlertController } from 'ionic-angular';
 import { Reservas } from '../../providers/reservas';
 import { Cocheras } from '../../providers/cocheras';
 import { Usuarios } from '../../providers/usuarios';
-import { OrderBy } from '../../pipes/sort';
 //import { TmpDispo } from '../../providers/tmpDispo';
 //import { TmpNoDispo } from '../../providers/tmpNoDispo';
 
@@ -89,7 +88,7 @@ export class CocherasPage {
 		  this.habilitarBoton = this.hoy;
 	  } else {
 		  var titulo = 'Fecha inválida';
-		  var subtitulo = 'La fecha ingresada debe ser desde el día de hoy en adelante';
+		  var subtitulo = 'La fecha ingresada debe ser mayor o igual a la fecha actual';
 		  this.alertGenerico(titulo, subtitulo);
 	  }
   }
@@ -127,20 +126,18 @@ export class CocherasPage {
 		var z;
 		var v_Dispo;
 		var horadesde;
-		var horaDesdeNoDisponible;
-		var horaHastaNoDiponible;
 		var	v_telefono;
-		var telefonos = [];
 		var v_nombreCompleto;
 		var temporal = [];
 		var mailTemporal = [];
-		var indice;
 		var i = 0;
-		var h = 0;
 		var item;
-		var posicion = 0;
 		allreservasArray = data2;
-		//debugger;
+		
+		if(allreservasArray.length > 1){
+			allreservasArray.sort(function(a, b){return a.horaDesdeSort - b.horaDesdeSort});
+		}
+
 		if (allreservasArray.length <= 0) {
 			horaDesde = "08:00";
 			horaHasta = "20:00";
@@ -159,71 +156,70 @@ export class CocherasPage {
 				temporal.push(allreservasArray[z].horaHasta);
 				temporal.sort();
 					
-				//Cochera con horario/s dsponible/s - tomo un máximo de 2 reservas en el día para la cochera
+				//Cochera con horario/s dsponible/s
 				if(temporal.length == (allreservasArray.length)*2){
 					
-					var horaDesde1 = temporal[0];
-					var horaHasta1 = temporal [1];
-					var horaDesde2 = temporal[2];
-					var horaHasta2 = temporal [3];
+					var m: number = temporal.length;
+					var gruposN = m/2;
+					var n : number = 0;
+					var iterador;
 					
-					//Primera reserva: insertamos como horario desde las 08:00 hasta su comienzo,
-					//o pasa a ser horario ocupado si comienza a las 08:00
-					if (Number(horadesde.replace(":","")) < horaDesde1.replace(":","")) {
-						horaDesde = horadesde;
-						horaHasta = horaDesde1;
-						v_Dispo = this.reservasService.obtenerDiferenciaDeTiempo(horaDesde, horaHasta);
-						//Number(horaHasta.replace(":","")) - Number(horaDesde.replace(":",""));
-						if(horaDesde != horaHasta){
-							this.tmpDispo.push({v_mail , v_nombre, v_espacio, v_fecha, horaDesde, horaHasta, v_Dispo});
-						}
-						horadesde = horaHasta1;
-					} else {
-						horadesde = horaHasta1;
-					}
+					for(iterador = 0; iterador<gruposN; iterador++){
+						var horaDesde1 = temporal[n];
+						var horaHasta1 = temporal [n+1];
 					
-					//Segunda reserva: insertamos como diponible el tramo desde el final de la reserva
-					//anterior al comienzo de la segunda.
-					if (horaDesde2 != null && horaHasta2 != null){
-						horaDesde = horaHasta1;
-						horaHasta = horaDesde2;
-						v_Dispo = this.reservasService.obtenerDiferenciaDeTiempo(horaDesde, horaHasta);
-						if(horaDesde != horaHasta){
-							this.tmpDispo.push({v_mail , v_nombre, v_espacio, v_fecha, horaDesde, horaHasta, v_Dispo});
+						//Iteramos los horarios desde las 08:00 y entre reservas para colocarlos como disponibles
+						if (Number(horadesde.replace(":","")) < horaDesde1.replace(":","")) {
+							horaDesde = horadesde;
+							horaHasta = horaDesde1;
+							v_Dispo = this.reservasService.obtenerDiferenciaDeTiempo(horaDesde, horaHasta);
+							//Number(horaHasta.replace(":","")) - Number(horaDesde.replace(":",""));
+							if(horaDesde != horaHasta){
+								this.tmpDispo.push({v_mail , v_nombre, v_espacio, v_fecha, horaDesde, horaHasta, v_Dispo});
+							}
+							var desdeTemporal = horaHasta1;
+							horadesde = desdeTemporal;
+						} else {
+							var desdeTemporal = horaHasta1;
+							horadesde = desdeTemporal;
 						}
-						horadesde = horaHasta2;
+						
+						n = n + 2;
 					}
 				}
-					
-				//Horario/s no disponible/s de la cochera - Busco los datos de quien ocupa la cochera
-				var outerThis = this;
-				var vectorHoras = i;
-				mailTemporal.push(allreservasArray[z].mail);
 				
-				//Si hay ,más de una reserva para una cochera, las itero para agregar dichos tramos como no disponibles 
-				for (item in mailTemporal){
-					this.buscarsUsuarios(mailTemporal[item], function (){
+				mailTemporal.push(allreservasArray[z].mail);
+				z = z + 1;		
+			}
+				
+			//Horario/s no disponible/s de la cochera - Busco los datos de quien ocupa la cochera
+			var outerThis = this;
+			var vectorHoras = i;
+			var iteradorMails = 0;
+			
+			//Itero las reservas para agregar los tramos que las conforman como no disponibles 
+			for (item in mailTemporal){
+				this.buscarsUsuarios(mailTemporal[item], function (){
 						if (outerThis.allUsuariosArray.length >= 0 && i <= (mailTemporal.length)-1) {
-							
-							telefonos.push(outerThis.allUsuariosArray[i].telefono);
-							v_nombreCompleto = outerThis.allUsuariosArray[i].nombre + " " + outerThis.allUsuariosArray[i].apellido;
-							v_telefono = telefonos[i];
+							var usuario = outerThis.allUsuariosArray[0];
+							v_nombreCompleto = usuario.nombre + " " + usuario.apellido;
+							v_telefono = usuario.telefono;
 							var horaDesde = temporal[vectorHoras];
 							var horaHasta = temporal [vectorHoras+1];
-							var v_mail = mailTemporal[i];
-							
+							var v_mail = mailTemporal[iteradorMails];
 							v_Dispo = outerThis.reservasService.obtenerDiferenciaDeTiempo(horaDesde, horaHasta);
-							vectorHoras = vectorHoras +2;
-							i = i+1;
+
 							//Colocamos como no disponible a la cochera para el rango de horarios hallado
 							outerThis.tmpNoDispo.push({v_mail, v_nombre, v_espacio, v_fecha, horaDesde, horaHasta, v_Dispo, v_telefono, v_nombreCompleto});
+							
+							vectorHoras = vectorHoras + 2;
+							iteradorMails = iteradorMails + 1;
+							i++;
 						}
 					});
 				}
 
-				z = z + 1;		
-			}
-
+				
 			//Tramo final: si la última reserva termina antes de las 20:00, inserto como horario
 			//disponible el tramo desde el final de la reserva hasta las 20:00			
 			if (horadesde != "20:00"){
@@ -241,7 +237,6 @@ export class CocherasPage {
   
   buscarsUsuarios (mail: string, callback) {
 	  this.usuariosService.getUsuariosByMail(mail).then((data) => {
-
 		this.allUsuariosArray = data;
 		callback();
 	});
@@ -336,14 +331,16 @@ export class CocherasPage {
 			var fechaAlta = "";
 			var fechaOcupa = "";
 			var fechaLibre = "";
+			var contadorReservas = 0;
+			var item;
 			
-			if(data.desde > this.disponibles[index].horadesde && data.hasta < this.disponibles[index].horaHasta){
+			if(data.desde >= this.disponibles[index].horaDesde && data.hasta <= this.disponibles[index].horaHasta){
 				reserva.push({mail, nombreCochera, espacioCochera, fechaRese, horaDesde, horaHasta, fechaAlta, estado, fechaOcupa, fechaLibre, horaDesdeSort});
 				this.reservasService.createReserva(reserva[0]);
 				//this.buscar();
 			} else {
 				var titulo = 'Horario Inválido';
-				var subtitulo = 'Los horarios ingresados no pueden quedar por fuera del rango seleccionado';
+				var subtitulo = 'El horario permitido es entre las '+ this.disponibles[index].horaDesde + ' hs y las ' + this.disponibles[index].horaHasta + ' hs';
 				this.alertGenerico(titulo, subtitulo);
 			}
           }
