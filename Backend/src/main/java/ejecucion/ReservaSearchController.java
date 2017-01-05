@@ -22,4 +22,12 @@ public class ReservaSearchController {
 		  	List<Reserva> reserva = reservaRepository.findByQuery(nombreCochera, espacioCochera, fechaRese, estado);
 	        return new ResponseEntity<List<Reserva>>(reserva, HttpStatus.OK);
 	    }
+	  
+	  
+	  @RequestMapping(value = "/reserva/search/findByMailAndFechaRese", method = RequestMethod.GET)
+	    public HttpEntity<List<Reserva>> findByMailAndFechaRese(String mail, String fechaRese) {
+
+		  	List<Reserva> reserva = reservaRepository.findByMailAndFechaRese(mail, fechaRese);
+	        return new ResponseEntity<List<Reserva>>(reserva, HttpStatus.OK);
+	    }
 }

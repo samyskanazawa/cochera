@@ -20,30 +20,23 @@ export class MisReservasPage {
   private mensaje: string;
   private indice: number;
   private indiceOcupado;
-  private mail: string = "hernan.ruiz@softtek.com"
+  private mail: string = "hernan.ruiz@softtek.com";
+  private fechaRese = new Date().toISOString();
   reservas: any;
   radios: any;
   
   
   ionViewDidLoad() {
     
-	this.reservasService.getReservasByMail(this.mail).then((data) => {
+	this.reservasService.getReservasByMailAndFechaRese(this.mail, this.fechaRese).then((data) => {
 	  console.log(data);
 	  this.reservas = data;
 	  this.reservas[0].checked = true;
 	});
+	
   }
   
-    ionViewLoaded() {
-	 // const index = this.viewCtrl.index;
-      //this.navCtrl.insert(index, MisReservasPage);
-  }
-  
-  ionViewWillLeave() {
-	  
-  }
-  
-  getReservas(){
+  /*getReservas(){
 	  var fecha = new Date().toISOString();
 	  debugger;
 	  var fechaTransformada = this.formatearFecha(fecha);
@@ -52,7 +45,7 @@ export class MisReservasPage {
       this.reservas = data;
 	  this.reservas[0].checked = true;
     });
-  }
+  }*/
   
   constructor(public navCtrl: NavController, public reservasService: Reservas, private viewCtrl: ViewController, public alertCtrl: AlertController) {
 	this.tieneReserva = false;
@@ -60,10 +53,10 @@ export class MisReservasPage {
   }
 
   formatearFecha(fecha) {
+
 	  var date = new Date(fecha);
 	  var mm = date.getMonth() + 1; // getMonth() is zero-based
 	  var dd = date.getDate();
-
 	  return [(dd>9 ? '' : '0') + dd, (mm>9 ? '' : '0') + mm, date.getFullYear()].join('/');
 			 
   };

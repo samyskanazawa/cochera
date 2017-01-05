@@ -3,14 +3,12 @@ package ejecucion;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
 public class ReservaRepositoryImpl implements ReservaRepositoryCustom{
-
+	
 	@Autowired
 	private MongoTemplate mongoTemplate;
 	private Class<Reserva> clazz = Reserva.class;
@@ -26,6 +24,17 @@ public class ReservaRepositoryImpl implements ReservaRepositoryCustom{
 			);
 
 		return mongoTemplate.find(query, clazz);
+	}
+
+	@Override
+	public List<Reserva> findByMailAndFechaRese(String mail, String fechaRese) {
+			Query query = new Query();
+			query.addCriteria(Criteria
+				.where("mail").is(mail)
+				.and("fechaRese").gte(DateUtils.getDate(fechaRese))
+				);
+			
+			return mongoTemplate.find(query, clazz);
 	}
 
 }

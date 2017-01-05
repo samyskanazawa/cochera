@@ -36,19 +36,20 @@ export class Reservas {
  
   }
   
-  getReservasByFecha(fecha: string){
+  getReservasByMailAndFechaRese(mail: string, fecha: string){
  
-    if (this.data) {
+    /*if (this.data) {
       return Promise.resolve(this.data);
-    }
- 
+    }*/
+	
     return new Promise(resolve => {
  
-      this.http.get('http://localhost:8080/reserva/search/findByFechaRese?fechaRese=' + fecha)
+      this.http.get('http://localhost:8080/reserva/search/findByMailAndFechaRese?mail=' + mail + '&fechaRese=' + fecha)
         .map(res => res.json())
         .subscribe(data => {
-          this.data = data._embedded.reserva;
+          this.data = data;
           resolve(this.data);
+		  
         });
     });
  
@@ -56,9 +57,9 @@ export class Reservas {
   
   getReservasByMail(mail: string){
  
-    if (this.data) {
+    /*if (this.data) {
       return Promise.resolve(this.data);
-    }
+    }*/
  
     return new Promise(resolve => {
  
@@ -74,12 +75,12 @@ export class Reservas {
   
  findByQuery( nombreCochera: string, espacioCochera: number, fechaRese: string, estado: string){
  
-    if (this.data) {
+    /*if (this.data) {
       return Promise.resolve(this.data);
-    }
+    }*/
  
     return new Promise(resolve => {
- 
+	
       this.http.get('http://localhost:8080/reserva/search/findByQuery?nombreCochera='+ nombreCochera + '&espacioCochera=' + espacioCochera + '&fechaRese=' + fechaRese + '&estado' + estado)
         .map(res => res.json())
         .subscribe(data => {
@@ -92,13 +93,24 @@ export class Reservas {
  
   editReserva(reserva, horaDesde, horaHasta){
  
-	let id = (reserva._links.self.href).substr(30);
+	
+	//let id = (reserva._links.self.href).substr(30);
+	let id = reserva.id;
+	
+	var fechaR = reserva.fechaRese;
+	var fechaRese = new Date(this.formatearDateGuardar(fechaR)).toISOString();
+	console.log();
+	reserva.fechaRese = fechaRese;
+	
+	var fechaA = reserva.fechaAlta;
+	var fechaAlta = new Date(this.formatearDateGuardar(fechaA)).toISOString();
+	reserva.fechaAlta = fechaAlta;
+ 
+	reserva.horaDesde = horaDesde;
+	reserva.horaHasta = horaHasta;
  
 	let headers = new Headers();
     headers.append('Content-Type', 'application/json');
-	
-	reserva.horaDesde = horaDesde;
-	reserva.horaHasta = horaHasta;
  
     this.http.put('http://localhost:8080/reserva/' + id, JSON.stringify(reserva), {headers: headers})
       .subscribe(res => {
@@ -205,5 +217,37 @@ export class Reservas {
   });
   alert.present();
 }
+
+formatearDate(fecha :string){
+			
+		var mes = fecha.substr(4,3);
+		var dia = fecha.substr(8,2);
+		var anio = fecha.substr(24,28);
+		var monthNames = [
+		  "Jan", "Feb", "Mar",
+		  "Apr", "May", "Jun", "Jul",
+		  "Aug", "Sep", "Oct",
+		  "Nov", "Dec"
+		];
+		var mesADevolver = monthNames.indexOf(mes) + 1;
+
+		return(dia + '/' + ((mesADevolver > 9 ? '' : '0') + mesADevolver ) + '/' + anio); 
+  }
+  
+  formatearDateGuardar(fecha :string){
+		
+		var mes = fecha.substr(4,3);
+		var dia = fecha.substr(8,2);
+		var anio = fecha.substr(24,28);
+		var monthNames = [
+		  "Jan", "Feb", "Mar",
+		  "Apr", "May", "Jun", "Jul",
+		  "Aug", "Sep", "Oct",
+		  "Nov", "Dec"
+		];
+		var mesADevolver = monthNames.indexOf(mes) + 1;
+
+		return(((mesADevolver > 9 ? '' : '0') + mesADevolver ) + '/' + dia + '/' + anio); 
+  }
 
 }
