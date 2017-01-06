@@ -1,6 +1,10 @@
 package ejecucion;
 
+import java.util.Date;
+
 import org.springframework.data.annotation.Id;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 public class Reserva {
 
@@ -9,13 +13,24 @@ public class Reserva {
 	private String mail;
 	private String nombreCochera;
 	private String espacioCochera;
-	private String fechaRese;
+	
+	@DateTimeFormat(iso = ISO.DATE_TIME)
+	private Date fechaRese;
+	
 	private String horaDesde;
 	private String horaHasta;
-	private String fechaAlta;
+	
+	@DateTimeFormat(iso = ISO.DATE_TIME)
+	private Date fechaAlta;
+	
 	private String estado;
-	private String fechaOcupa;
-	private String fechaLibre;
+	
+	@DateTimeFormat(iso = ISO.DATE_TIME)
+	private Date fechaOcupa;
+	
+	@DateTimeFormat(iso = ISO.DATE_TIME)
+	private Date fechaLibre;
+	
 	private int horaDesdeSort;
 	
 	public String getMail() {
@@ -42,11 +57,11 @@ public class Reserva {
 		this.espacioCochera = espacio;
 	}
 	
-	public String getFechaRese() {
+	public Date getFechaRese() {
 		return fechaRese;
 	}
 	
-	public void setFechaRese(String fechaRese) {
+	public void setFechaRese(Date fechaRese) {
 		this.fechaRese = fechaRese;
 	}
 	
@@ -66,11 +81,11 @@ public class Reserva {
 		this.horaHasta = horaHasta;
 	}
 	
-	public String getFechaAlta() {
+	public Date getFechaAlta() {
 		return fechaAlta;
 	}
 	
-	public void setFechaAlta(String fechaAlta) {
+	public void setFechaAlta(Date fechaAlta) {
 		this.fechaAlta = fechaAlta;
 	}
 	
@@ -82,19 +97,19 @@ public class Reserva {
 		this.estado = estado;
 	}
 	
-	public String getFechaOcupa() {
+	public Date getFechaOcupa() {
 		return fechaOcupa;
 	}
 	
-	public void setFechaOcupa(String fechaOcupa) {
+	public void setFechaOcupa(Date fechaOcupa) {
 		this.fechaOcupa = fechaOcupa;
 	}
 	
-	public String getFechaLibre() {
+	public Date getFechaLibre() {
 		return fechaLibre;
 	}
 	
-	public void setFechaLibre(String fechaLibre) {
+	public void setFechaLibre(Date fechaLibre) {
 		this.fechaLibre = fechaLibre;
 	}
 	

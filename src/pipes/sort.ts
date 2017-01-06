@@ -4,7 +4,21 @@ import {Pipe, PipeTransform} from '@angular/core';
 export class OrderBy implements PipeTransform {
 
   static _orderByComparator(a:any, b:any):number{
-    
+
+	//debugger;
+
+	let isDate = typeof a == 'string' && Date.parse(a);
+		if (isDate){
+		  var dtastr = a.replace(/\D/g," ");
+		  var dtacomps = dtastr.split(" ");
+		  a = [dtacomps[0],dtacomps[1],dtacomps[2]].join('');
+		  
+		  var dtbstr = b.replace(/\D/g," ");
+		  var dtbcomps = dtbstr.split(" ");
+		  b = [dtbcomps[0],dtbcomps[1],dtbcomps[2]].join('');
+		}
+	
+	
     if((isNaN(parseFloat(a)) || !isFinite(a)) || (isNaN(parseFloat(b)) || !isFinite(b))){
       //Isn't a number so lowercase the string to properly compare
       if(a.toLowerCase() < b.toLowerCase()) return -1;

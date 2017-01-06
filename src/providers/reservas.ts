@@ -13,6 +13,7 @@ import 'rxjs/add/operator/map';
 export class Reservas {
 
   data: any;
+  private indice = 0;
  
   constructor(public http: Http, public alertCtrl: AlertController) {
     this.data = null;
@@ -93,19 +94,9 @@ export class Reservas {
  
   editReserva(reserva, horaDesde, horaHasta){
  
-	
 	//let id = (reserva._links.self.href).substr(30);
 	let id = reserva.id;
 	
-	var fechaR = reserva.fechaRese;
-	var fechaRese = new Date(this.formatearDateGuardar(fechaR)).toISOString();
-	console.log();
-	reserva.fechaRese = fechaRese;
-	
-	var fechaA = reserva.fechaAlta;
-	var fechaAlta = new Date(this.formatearDateGuardar(fechaA)).toISOString();
-	reserva.fechaAlta = fechaAlta;
- 
 	reserva.horaDesde = horaDesde;
 	reserva.horaHasta = horaHasta;
  
@@ -121,18 +112,31 @@ export class Reservas {
   }
   
   ocupar(reserva){
- 
-	let id = (reserva._links.self.href).substr(30);
- 
+
+	let id = reserva.id;
+	var titulo;
+	var subtitulo;
 	let headers = new Headers();
     headers.append('Content-Type', 'application/json');
 	
 	reserva.estado = "Ocupado";
-	reserva.fechaOcupa = "22/12/2016";
+	reserva.fechaOcupa = new Date().toISOString();
  
     this.http.put('http://localhost:8080/reserva/' + id, JSON.stringify(reserva), {headers: headers})
       .subscribe(res => {
-        console.log(res.json());
+		 //Si falla, se mostrará un mensaje de error
+		if(res.status < 200 || res.status >= 300) {
+			titulo = "Error";
+			subtitulo = "No se pudo ocupar la cochera";
+		} 
+		//Si todo sale bien, se muestr mensaje confirmándolo
+		else {
+			titulo ="Ocupando cochera";
+			subtitulo = "Usted está ocupando la cochera N° " + reserva.espacioCochera + " en " + reserva.nombreCochera + " para el horario de reserva seleccionado: " 
+							+ reserva.horaDesde + ' a ' + reserva.horaHasta;
+            console.log(res.json());
+		}
+		this.alertGenerico(titulo, subtitulo);
       });
 	  
 	this.getReservas();
@@ -195,14 +199,14 @@ export class Reservas {
 	return Number(diferencia);
   }
   
-  formatearFecha(fecha) {
+  /*formatearFecha(fecha) {
 	  var date = new Date(fecha);
 	  var mm = date.getMonth() + 1; // getMonth() inicia en 0
 	  var dd = date.getDate() + 1;
 
 	  return [(dd>9 ? '' : '0') + dd, (mm>9 ? '' : '0') + mm, date.getFullYear()].join('/');
 			 
-  };
+  };*/
   
   alertGenerico(titulo: string, subtitulo: string) {
 	let alert = this.alertCtrl.create({
@@ -218,8 +222,17 @@ export class Reservas {
   alert.present();
 }
 
-formatearDate(fecha :string){
-			
+formatearFecha(fecha) {
+	  var date = new Date(fecha);
+	  var mm = date.getMonth() + 1; // getMonth() is zero-based
+	  var dd = date.getDate();
+	  return [(dd>9 ? '' : '0') + dd, (mm>9 ? '' : '0') + mm, date.getFullYear()].join('/');
+			 
+  };
+
+/*formatearDate(fecha :string){
+		
+		this.indice++;
 		var mes = fecha.substr(4,3);
 		var dia = fecha.substr(8,2);
 		var anio = fecha.substr(24,28);
@@ -230,9 +243,34 @@ formatearDate(fecha :string){
 		  "Nov", "Dec"
 		];
 		var mesADevolver = monthNames.indexOf(mes) + 1;
-
+		
 		return(dia + '/' + ((mesADevolver > 9 ? '' : '0') + mesADevolver ) + '/' + anio); 
   }
+  
+  levantarDatos(reservas: any[]){
+
+	  var item;
+	  var i;
+	  if (this.flagGuardar == false){
+		  
+		  if (this.indice == reservas.length - 1){
+			  this.flagGuardar = true;
+			  this.indice = 0;
+		  }
+		  
+		  return this.formatearDate(reservas[this.indice].fechaRese);
+    
+	  } else {
+		  for (i = 0; i < reservas.length; i++){
+			  if (i == reservas.length - 1){
+				  this.flagGuardar = false;
+				  this.indice = 0;
+			  }
+			  return this.formatearFecha(reservas[i].fechaRese);
+		  }	  
+	  }
+  }
+  
   
   formatearDateGuardar(fecha :string){
 		
@@ -246,8 +284,8 @@ formatearDate(fecha :string){
 		  "Nov", "Dec"
 		];
 		var mesADevolver = monthNames.indexOf(mes) + 1;
-
+		
 		return(((mesADevolver > 9 ? '' : '0') + mesADevolver ) + '/' + dia + '/' + anio); 
-  }
+  }*/
 
 }

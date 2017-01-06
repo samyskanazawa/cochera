@@ -51,15 +51,6 @@ export class MisReservasPage {
 	this.tieneReserva = false;
 	
   }
-
-  formatearFecha(fecha) {
-
-	  var date = new Date(fecha);
-	  var mm = date.getMonth() + 1; // getMonth() is zero-based
-	  var dd = date.getDate();
-	  return [(dd>9 ? '' : '0') + dd, (mm>9 ? '' : '0') + mm, date.getFullYear()].join('/');
-			 
-  };
   
   deleteReserva(reserva){
  
@@ -71,17 +62,19 @@ export class MisReservasPage {
       }   
  
     //Remove from database
-	this.reservasService.deleteReserva((reserva._links.self.href).substr(30));
+	this.reservasService.deleteReserva(reserva.id);
 	this.indice = null;
   }
   
    marcarRadioButton(i){
- 
-	this.indice = i;
+   
+    this.indiceOcupado = null;
+    this.indice = i;
 	var index = this.reservas.indexOf(i);
-	var fecha = this.formatearFecha(new Date().toISOString());
-	
-	if(this.reservas[index].estado != "Ocupado" && this.reservas[index].fechaRese == fecha ){
+	var fecha = this.reservasService.formatearFecha(new Date().toISOString());
+	var fechaReserva = this.reservasService.formatearFecha(this.reservas[index].fechaRese);
+
+	if(this.reservas[index].estado != "Ocupado" && fechaReserva == fecha ){
 	   this.indiceOcupado = i;
 	}
   }
@@ -99,11 +92,6 @@ export class MisReservasPage {
         }
   }
   
-    checkeadoPorDefault(i){
-		if(i == 0){
-			return true;
-		}
-	}
   
   setMensaje(index){
 	this.mensaje = "";
@@ -121,7 +109,7 @@ export class MisReservasPage {
 	var index = this.reservas.indexOf(this.indice);
 	this.setMensaje(index);
     let prompt = this.alertCtrl.create({
-      title: 'Día: ' + this.reservas[index].fechaRese,
+      title: 'Día: ' + this.reservasService.formatearFecha(this.reservas[index].fechaRese),
 	  cssClass: 'alertcss',
       inputs: [
         {
@@ -145,43 +133,57 @@ export class MisReservasPage {
             this.reservasService.editReserva(this.reservas[index], data.desde, data.hasta);
           }
         },
-        {
-          text: 'Ocupar',
-          handler: data => {
-            this.reservasService.ocupar(this.reservas[index]);
-          }
-        }
       ]
     });
     prompt.present();
   }
 
-
-
-
-  ocuparReserva()
-  {/*
-      var hoy = new Date();
-  var index = this.reservas.indexOf(this.indice);*/
-  }
   
-
-
-
   eliminarReserva() {
 	var index = this.reservas.indexOf(this.indice);
+		if (this.reservas[index].estado == "Reservado"){
+			var titulo = 'Eliminar Reserva';
+			var subtitulo = '¿Desea eliminar esta reserva?';
+			var textoBoton = 'Eliminar';
+		} else {
+			var titulo = 'Liberar Cochera';
+			var subtitulo = '¿Desea liberar la cochera seleccionada?';
+			var textoBoton = 'Liberar';
+		}
 	let alert = this.alertCtrl.create({
-    title: 'Eliminar Reserva ',
-    subTitle: '¿Desea eliminar esta reserva?',
+    title: titulo,
+    subTitle: subtitulo,
     buttons: [
       {
         text: 'Volver',
         role: 'cancel',
       },
       {
-        text: 'Eliminar',
+        text: textoBoton,
         handler: () => {
 			this.deleteReserva(this.reservas[index]);
+		}
+      }
+    ]
+  });
+  alert.present();
+}
+
+ ocuparReserva() {
+	var index = this.reservas.indexOf(this.indice);
+	let alert = this.alertCtrl.create({
+    title: 'Ocupar Reserva ',
+    subTitle: '¿Desea ocupar la cochera en el horario de reserva seleccionado?',
+    buttons: [
+      {
+        text: 'Volver',
+        role: 'cancel',
+      },
+      {
+        text: 'Ocupar',
+        handler: () => {
+			this.reservasService.ocupar(this.reservas[index]);
+			this.marcarRadioButton(this.indice);
 		}
       }
     ]
