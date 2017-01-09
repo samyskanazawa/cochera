@@ -296,7 +296,7 @@ export class CocherasPage {
   showPrompt() {
 	var index = this.disponibles.indexOf(this.indiceCocheraDisponible);
     let prompt = this.alertCtrl.create({
-      title: 'Día: ' + this.disponibles[index].v_fecha + ' - Cochera: ' + this.disponibles[index].v_espacio,
+      title: 'Día: ' + this.reservasService.formatearFecha(this.disponibles[index].v_fecha) + ' - Cochera: ' + this.disponibles[index].v_espacio,
       inputs: [
 	  
         {
@@ -346,16 +346,15 @@ export class CocherasPage {
 			if(data.desde >= this.disponibles[index].horaDesde && data.hasta <= this.disponibles[index].horaHasta){
 				reserva.push({mail, nombreCochera, espacioCochera, fechaRese, horaDesde, horaHasta, fechaAlta, estado, fechaOcupa, fechaLibre, horaDesdeSort});
 				var outerThis = this;
-				this.crearReserva(reserva[0], function(){
-					outerThis.buscar();
+				this.reservasService.createReserva(reserva[0], function(resultado: boolean){
+						outerThis.buscar();
 				});
-
 			} else {
 				var titulo = 'Horario Inválido';
 				var subtitulo = 'El horario permitido es entre las '+ this.disponibles[index].horaDesde + ' hs y las ' + this.disponibles[index].horaHasta + ' hs';
 				this.alertGenerico(titulo, subtitulo);
 			}
-			
+			outerThis.buscar();
           }
         },
 		{
@@ -368,13 +367,6 @@ export class CocherasPage {
     });
     prompt.present();
   }
-  
-  
-  crearReserva(reserva: string, callback){
-	  this.reservasService.createReserva(reserva);
-	  callback();
-  }
-  
   
   alertGenerico(titulo: string, subtitulo: string) {
 	let alert = this.alertCtrl.create({

@@ -26,14 +26,13 @@ export class MisReservasPage {
   radios: any;
   
   
-  ionViewDidLoad() {
+  ionViewDidEnter() {
     
 	this.reservasService.getReservasByMailAndFechaRese(this.mail, this.fechaRese).then((data) => {
 	  console.log(data);
 	  this.reservas = data;
 	  this.reservas[0].checked = true;
 	});
-	
   }
   
   /*getReservas(){
@@ -73,7 +72,7 @@ export class MisReservasPage {
 	var index = this.reservas.indexOf(i);
 	var fecha = this.reservasService.formatearFecha(new Date().toISOString());
 	var fechaReserva = this.reservasService.formatearFecha(this.reservas[index].fechaRese);
-
+	
 	if(this.reservas[index].estado != "Ocupado" && fechaReserva == fecha ){
 	   this.indiceOcupado = i;
 	}
@@ -108,15 +107,41 @@ export class MisReservasPage {
   showPrompt() {
 	var index = this.reservas.indexOf(this.indice);
 	this.setMensaje(index);
-    let prompt = this.alertCtrl.create({
+	
+  if (this.reservas[index].estado == "Ocupado"){ 
+	let prompt = this.alertCtrl.create({
       title: 'Día: ' + this.reservasService.formatearFecha(this.reservas[index].fechaRese),
 	  cssClass: 'alertcss',
       inputs: [
+		{
+		  name: 'hasta',
+		  placeholder: 'Hasta',
+		  type: 'time',
+		  value: this.reservas[index].horaHasta
+		},
+      ],
+	  message: "Hora Desde: " + this.reservas[index].horaDesde + " " + this.mensaje,
+      buttons: [
         {
+          text: 'Guardar',
+          handler: data => {
+            this.reservasService.editReserva(this.reservas[index], this.reservas[index].horaDesde, data.hasta);
+          }
+        },
+      ]
+    });
+	prompt.present();
+   
+  } else {
+	  let prompt = this.alertCtrl.create({
+      title: 'Día: ' + this.reservasService.formatearFecha(this.reservas[index].fechaRese),
+	  cssClass: 'alertcss',
+      inputs: [
+		{
           name: 'desde',
 		  placeholder: 'Desde',
 		  type: 'time',
-		  value: this.reservas[index].horaDesde
+		  value: this.reservas[index].horaDesde,
         },
 		{
 		  name: 'hasta',
@@ -135,7 +160,9 @@ export class MisReservasPage {
         },
       ]
     });
-    prompt.present();
+	prompt.present();
+  }
+	
   }
 
   
