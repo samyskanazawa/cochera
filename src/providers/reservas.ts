@@ -14,27 +14,14 @@ export class Reservas {
 
   data: any;
   private indice = 0;
+  private resultado: boolean;
  
   constructor(public http: Http, public alertCtrl: AlertController) {
     this.data = null;
   }
  
-  getReservas(){
- 
-    if (this.data) {
-      return Promise.resolve(this.data);
-    }
- 
-    return new Promise(resolve => {
- 
-      this.http.get('http://localhost:8080/reserva')
-        .map(res => res.json())
-        .subscribe(data => {
-          this.data = data._embedded.reserva;
-          resolve(this.data);
-        });
-    });
- 
+  getResultado(){
+	  return this.resultado;
   }
   
   getReservasByMailAndFechaRese(mail: string, fecha: string){
@@ -79,7 +66,6 @@ export class Reservas {
     /*if (this.data) {
       return Promise.resolve(this.data);
     }*/
- 
     return new Promise(resolve => {
 	
       this.http.get('http://localhost:8080/reserva/search/findByQuery?nombreCochera='+ nombreCochera + '&espacioCochera=' + espacioCochera + '&fechaRese=' + fechaRese + '&estado' + estado)
@@ -108,7 +94,7 @@ export class Reservas {
         console.log(res.json());
       });
 	  
-	this.getReservas();
+	this.getReservasByMailAndFechaRese(reserva.mail, reserva.fechaRese);
   }
   
   ocupar(reserva){
@@ -139,7 +125,7 @@ export class Reservas {
 		this.alertGenerico(titulo, subtitulo);
       });
 	  
-	this.getReservas();
+	this.getReservasByMailAndFechaRese(reserva.mail, reserva.fechaRese);
   }
  
   createReserva(reserva){
@@ -149,6 +135,7 @@ export class Reservas {
  
 	var titulo;
 	var subtitulo;
+	var booleano: boolean;
  
     this.http.post('http://localhost:8080/reserva', JSON.stringify(reserva), {headers: headers})
       .subscribe(res => {
@@ -156,11 +143,13 @@ export class Reservas {
 		if(res.status < 200 || res.status >= 300) {
 			titulo = "Error";
 			subtitulo = "La reserva no fue generada";
+			booleano = false;
 		} 
 		//Si todo sale bien, se muestr mensaje confirmándolo
 		else {
 			titulo ="Reserva";
 			subtitulo="Reserva generada exitosamente para los horarios seleccionados";
+			booleano = true;
 			console.log(res.json());
 		}
 		this.alertGenerico(titulo, subtitulo);
@@ -222,6 +211,7 @@ export class Reservas {
   alert.present();
 }
 
+
 formatearFecha(fecha) {
 	  var date = new Date(fecha);
 	  var mm = date.getMonth() + 1; // getMonth() is zero-based
@@ -229,6 +219,7 @@ formatearFecha(fecha) {
 	  return [(dd>9 ? '' : '0') + dd, (mm>9 ? '' : '0') + mm, date.getFullYear()].join('/');
 			 
   };
+
 
 /*formatearDate(fecha :string){
 		

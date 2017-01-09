@@ -77,13 +77,14 @@ export class CocherasPage {
   }
   
   changeDate(fechaElegida) {
-	    
 	  var iguales = this.validarFecha(new Date(fechaElegida).toISOString(), new Date(this.minDate).toISOString());
 	  
 	  if(iguales){
 		  this.hoy = new Date(fechaElegida).toISOString();
-		  this.fechaElegida = this.hoy;
-		  this.hoy = this.reservasService.formatearFecha(this.hoy);
+		  var fechaHoy = this.hoy.substr(0,11);
+		  fechaHoy = fechaHoy + "03:00:00.000+0000";
+		  this.fechaElegida = fechaHoy;
+		  this.hoy = this.reservasService.formatearFecha(fechaHoy);
 		  console.log(this.hoy);
 		  this.habilitarBoton = this.hoy;
 	  } else {
@@ -94,17 +95,19 @@ export class CocherasPage {
   }
   
     validarFecha(fecha1, fecha2) {
-
-	  var date1 = new Date(fecha1);
-	  var date2 = new Date(fecha2);
+	
+	  var fecha1 = fecha1.substr(0,11);
+	  var fecha2 = fecha2.substr(0,11);
+	  var date1 = new Date(fecha1 + "03:00:00.000+0000");
+	  var date2 = new Date(fecha2 + "03:00:00.000+0000");
 	  var iguales: boolean = false;
 	  
 	  var mm1 = date1.getMonth() + 1; // getMonth() inicia en 0
-	  var dd1 = date1.getDate()+1;
+	  var dd1 = date1.getDate();
 	  var yy1 = date1.getFullYear();
 	  
 	  var mm2 = date2.getMonth() + 1; // getMonth() inicia en 0
-	  var dd2 = date2.getDay() + 1;
+	  var dd2 = date2.getDate();
 	  var yy2 = date2.getFullYear();
 	  
 	  if(yy1 >= yy2 && mm1 >= mm2 && dd1 >= dd2){
@@ -133,6 +136,8 @@ export class CocherasPage {
 		var i = 0;
 		var item;
 		allreservasArray = data2;
+		
+		//debugger;
 		
 		if(allreservasArray.length > 1){
 			allreservasArray.sort(function(a, b){return a.horaDesdeSort - b.horaDesdeSort});
@@ -266,6 +271,9 @@ export class CocherasPage {
 		this.disponibles =  [];
 		this.noDisponibles = [];
 		this.allUsuariosArray = [];
+		var v_fechaFormateada = this.reservasService.formatearFecha(v_fecha);
+		var fecha = new Date(v_fechaFormateada).toISOString();
+		v_fecha = fecha;
 		
 		//Itero las cocheras encontradas para buscar reservas en el día seleccionado
 		for (let item of v_items) {
@@ -333,16 +341,21 @@ export class CocherasPage {
 			var fechaLibre = "";
 			var contadorReservas = 0;
 			var item;
+			var resultado: boolean;
 			
 			if(data.desde >= this.disponibles[index].horaDesde && data.hasta <= this.disponibles[index].horaHasta){
 				reserva.push({mail, nombreCochera, espacioCochera, fechaRese, horaDesde, horaHasta, fechaAlta, estado, fechaOcupa, fechaLibre, horaDesdeSort});
-				this.reservasService.createReserva(reserva[0]);
-				//this.buscar();
+				var outerThis = this;
+				this.crearReserva(reserva[0], function(){
+					outerThis.buscar();
+				});
+
 			} else {
 				var titulo = 'Horario Inválido';
 				var subtitulo = 'El horario permitido es entre las '+ this.disponibles[index].horaDesde + ' hs y las ' + this.disponibles[index].horaHasta + ' hs';
 				this.alertGenerico(titulo, subtitulo);
 			}
+			
           }
         },
 		{
@@ -355,6 +368,13 @@ export class CocherasPage {
     });
     prompt.present();
   }
+  
+  
+  crearReserva(reserva: string, callback){
+	  this.reservasService.createReserva(reserva);
+	  callback();
+  }
+  
   
   alertGenerico(titulo: string, subtitulo: string) {
 	let alert = this.alertCtrl.create({
@@ -369,6 +389,10 @@ export class CocherasPage {
   });
   alert.present();
 }
+  
+  
+  
+  
   
   ionViewDidLoad() {
     console.log('Página Cocheras');

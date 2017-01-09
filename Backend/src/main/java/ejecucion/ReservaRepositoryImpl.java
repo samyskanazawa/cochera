@@ -1,5 +1,6 @@
 package ejecucion;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,11 +16,14 @@ public class ReservaRepositoryImpl implements ReservaRepositoryCustom{
 
 	@Override
 	public List<Reserva> findByQuery(String nombreCochera, String espacioCochera, String fechaRese, String estado) {
+		
+		Date[] vectorFechas = DateUtils.getDates(fechaRese);
+		
 		Query query = new Query();
 		query.addCriteria(Criteria
 			.where("nombreCochera").is(nombreCochera)
 			.and("espacioCochera").is(espacioCochera)
-			.and("fechaRese").is(fechaRese)
+			.and("fechaRese").gte(vectorFechas[0]).lte(vectorFechas[1])
 			.and("estado").ne(estado)
 			);
 
