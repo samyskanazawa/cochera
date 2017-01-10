@@ -22,6 +22,7 @@ export class MisReservasPage {
   private indiceOcupado;
   private mail: string = "hernan.ruiz@softtek.com";
   private fechaRese = new Date().toISOString();
+  private reservasArray: any;
   reservas: any;
   radios: any;
   
@@ -32,6 +33,8 @@ export class MisReservasPage {
 	  console.log(data);
 	  this.reservas = data;
 	  this.reservas[0].checked = true;
+	  this.indiceOcupado = null;
+	  this.indice = null;
 	});
   }
   
@@ -72,8 +75,18 @@ export class MisReservasPage {
 	var index = this.reservas.indexOf(i);
 	var fecha = this.reservasService.formatearFecha(new Date().toISOString());
 	var fechaReserva = this.reservasService.formatearFecha(this.reservas[index].fechaRese);
+	var d = new Date();
+	var hora = d.getHours();
+	var minutos = d.getMinutes();
 	
-	if(this.reservas[index].estado != "Ocupado" && fechaReserva == fecha ){
+	var horaDesdeReserva = (this.reservas[index].horaDesde).substr(0,2);
+	var minutosDesdeReserva = (this.reservas[index].horaDesde).substr(3,2);
+	var horaHastaReserva = (this.reservas[index].horaHasta).substr(0,2);
+			
+	//Valido para ocupar una cochera reservada: estado no Ocupado, fecha = hoy, hoario al hacer click en ocupar entre los horarios de reserva
+	if((this.reservas[index].estado != "Ocupado") && (fechaReserva == fecha) && (hora >= horaDesdeReserva) && (hora <= horaHastaReserva) && 
+		(minutos >= minutosDesdeReserva)){
+			
 	   this.indiceOcupado = i;
 	}
   }
@@ -92,76 +105,95 @@ export class MisReservasPage {
   }
   
   
-  setMensaje(index){
-	this.mensaje = "";
-	this.tieneReserva = false;
+  setMensaje(index, callback){
+	var reserva = this.reservas[index];
+	var outerThis = this;
+	var array;
+	var texto = "";
 	
-	if (index === 0){
-		this.tieneReserva = true;
-	}
-	if (this.tieneReserva == true){
-		this.mensaje = "";
-	}
+	this.reservasService.findByQuery(reserva.nombreCochera, reserva.espacioCochera, reserva.fechaRese, reserva.estado).then((data2) => {
+		
+		outerThis.reservasArray = data2;
+		
+		callback();
+	});
+	
   }
   
   showPrompt() {
 	var index = this.reservas.indexOf(this.indice);
-	this.setMensaje(index);
-	
-  if (this.reservas[index].estado == "Ocupado"){ 
-	let prompt = this.alertCtrl.create({
-      title: 'Día: ' + this.reservasService.formatearFecha(this.reservas[index].fechaRese),
+	var outerThis = this;
+	this.mensaje = "";
+
+	this.setMensaje(index, function(){
+		if(outerThis.reservasArray.length > 1){
+			outerThis.mensaje = "Esta cochera tiene una o más reservas además de la actual";
+		}
+
+  if (outerThis.reservas[index].estado == "Ocupado"){ 
+	let prompt = outerThis.alertCtrl.create({
+      title: 'Día: ' + outerThis.reservasService.formatearFecha(outerThis.reservas[index].fechaRese),
 	  cssClass: 'alertcss',
       inputs: [
 		{
 		  name: 'hasta',
 		  placeholder: 'Hasta',
 		  type: 'time',
-		  value: this.reservas[index].horaHasta
+		  value: outerThis.reservas[index].horaHasta
 		},
       ],
-	  message: "Hora Desde: " + this.reservas[index].horaDesde + " " + this.mensaje,
+	  message: "Hora Desde: " + outerThis.reservas[index].horaDesde + ". " + outerThis.mensaje,
       buttons: [
         {
           text: 'Guardar',
           handler: data => {
-            this.reservasService.editReserva(this.reservas[index], this.reservas[index].horaDesde, data.hasta);
+            outerThis.reservasService.editReserva(outerThis.reservas[index], outerThis.reservas[index].horaDesde, data.hasta);
           }
+        },
+		 {
+          text: 'Cerrar',
+          role: 'cancel',
         },
       ]
     });
 	prompt.present();
    
   } else {
-	  let prompt = this.alertCtrl.create({
-      title: 'Día: ' + this.reservasService.formatearFecha(this.reservas[index].fechaRese),
+	  let prompt = outerThis.alertCtrl.create({
+      title: 'Día: ' + outerThis.reservasService.formatearFecha(outerThis.reservas[index].fechaRese),
 	  cssClass: 'alertcss',
       inputs: [
 		{
           name: 'desde',
 		  placeholder: 'Desde',
 		  type: 'time',
-		  value: this.reservas[index].horaDesde,
+		  value: outerThis.reservas[index].horaDesde,
         },
 		{
 		  name: 'hasta',
 		  placeholder: 'Hasta',
 		  type: 'time',
-		  value: this.reservas[index].horaHasta
+		  value: outerThis.reservas[index].horaHasta
 		},
       ],
-	  message: this.mensaje,
+	  message: outerThis.mensaje,
       buttons: [
         {
           text: 'Guardar',
           handler: data => {
-            this.reservasService.editReserva(this.reservas[index], data.desde, data.hasta);
+            outerThis.reservasService.editReserva(outerThis.reservas[index], data.desde, data.hasta);
           }
+        },
+		{
+          text: 'Cerrar',
+          role: 'cancel',
         },
       ]
     });
 	prompt.present();
   }
+  
+  });
 	
   }
 
@@ -182,15 +214,15 @@ export class MisReservasPage {
     subTitle: subtitulo,
     buttons: [
       {
-        text: 'Volver',
-        role: 'cancel',
-      },
-      {
         text: textoBoton,
         handler: () => {
 			this.deleteReserva(this.reservas[index]);
 		}
-      }
+      },
+	   {
+        text: 'Cerrar',
+        role: 'cancel',
+      },
     ]
   });
   alert.present();
@@ -203,15 +235,16 @@ export class MisReservasPage {
     subTitle: '¿Desea ocupar la cochera en el horario de reserva seleccionado?',
     buttons: [
       {
-        text: 'Volver',
-        role: 'cancel',
-      },
-      {
         text: 'Ocupar',
         handler: () => {
+		
 			this.reservasService.ocupar(this.reservas[index]);
 			this.marcarRadioButton(this.indice);
 		}
+      },
+	   {
+        text: 'Cerrar',
+        role: 'cancel',
       }
     ]
   });

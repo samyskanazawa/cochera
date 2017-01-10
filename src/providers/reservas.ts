@@ -173,7 +173,7 @@ export class Reservas {
 				//Si todo sale bien, se muestr mensaje confirmándolo
 				else {
 					titulo ="Horarios";
-					subtitulo = "Los horarios fueron modificacods exitosamente"
+					subtitulo = "Los horarios fueron modificados exitosamente"
 					console.log(res.json());
 				}
 				this.alertGenerico(titulo, subtitulo);
@@ -210,7 +210,7 @@ export class Reservas {
 		//Si todo sale bien, se muestr mensaje confirmándolo
 		else {
 			titulo ="Ocupando cochera";
-			subtitulo = "Usted está ocupando la cochera N° " + reserva.espacioCochera + " en " + reserva.nombreCochera + " para el horario de reserva seleccionado: " 
+			subtitulo = "Ocupación exitosa de la cochera N° " + reserva.espacioCochera + " en " + reserva.nombreCochera + " en el horario: " 
 							+ reserva.horaDesde + ' a ' + reserva.horaHasta;
             console.log(res.json());
 		}
@@ -326,12 +326,35 @@ export class Reservas {
 }
 
 formatearFecha(fecha) {
+	  
 	  var date = new Date(fecha);
 	  var mm = date.getMonth() + 1; // getMonth() is zero-based
 	  var dd = date.getDate();
 	  return [(dd>9 ? '' : '0') + dd, (mm>9 ? '' : '0') + mm, date.getFullYear()].join('/');
 			 
   };
+  
+  
+  formatearFechaADate(fecha) {
+	  
+	  var dia = fecha.substr(0,2);
+	  var mes = fecha.substr(3,2);
+	  var anio = fecha.substr(6,4);
+	  
+	  debugger;
+	  var fechaAFormatear = [mes, dia, anio].join('/');
+	  
+	  var date = new Date(fechaAFormatear);
+	  var mm = date.getMonth() + 1; // getMonth() is zero-based
+	  var dd = date.getDate();
+	  return [(dd>9 ? '' : '0') + dd, (mm>9 ? '' : '0') + mm, date.getFullYear()].join('/');
+			 
+  };
+  
+  
+  
+  
+  	 
 
 
 /*formatearDate(fecha :string){
