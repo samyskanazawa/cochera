@@ -78,7 +78,7 @@ export class Reservas {
  
   }
  
-  editReserva(reserva, horaDesde, horaHasta){
+  editReserva(reserva, horaDesde, horaHasta, callback){
  
 	//let id = (reserva._links.self.href).substr(30);
 	let id = reserva.id;
@@ -88,10 +88,14 @@ export class Reservas {
 	var numeroHoraDesde = Number(horaDesde.replace(":",""));
 	var numeroHoraHasta = Number(horaHasta.replace(":",""));
 	var titulo: string = "Error";
-	var	subtitulo: string = "Los horarios seleccionados deben ser diferentes etre si, y el inicial posterior al final";
+	var	subtitulo: string = "Los horarios seleccionados deben ser diferentes entre si, y el inicial anterior al final";
 	var error: boolean = false;
 	
-	if(numeroHoraDesde != numeroHoraHasta && numeroHoraDesde < numeroHoraHasta){
+	debugger;
+	
+	if((numeroHoraDesde != numeroHoraHasta) && (numeroHoraDesde < numeroHoraHasta)){
+		
+		if ((numeroHoraDesde >= 800) && (numeroHoraHasta <= 2000)){
 	
 		this.findByQuery(reserva.nombreCochera, reserva.espacioCochera, reserva.fechaRese, reserva.estado).then((data2) => {
 		
@@ -120,7 +124,7 @@ export class Reservas {
 					var horaHasta1 = temporal [n+1];
 				
 					var horaDesde1Numero = Number(horaDesde1.replace(":",""));
-					var horaHasta1Numero = Number(horaHasta1.replace(":",""));
+					var horaHasta1Numero = Number(horaHasta1.replace(":","")); 
 				
 					//Si extiendo hora Hasta y se me superpone con otra reserva existente.
 					if ((numeroHoraDesde < horaDesde1Numero) && (numeroHoraHasta > horaDesde1Numero) && (numeroHoraHasta < horaHasta1Numero)){
@@ -183,11 +187,20 @@ export class Reservas {
 		} else {
 			this.alertGenerico(titulo, subtitulo);
 		}
+		callback();
 	  });
  } else {
+	 subtitulo = "Los horarios seleccionados deben estar entre las 08:00 y las 20:00";
 	 this.alertGenerico(titulo, subtitulo);
+	 
  }
+ 
+	} else {
+		this.alertGenerico(titulo, subtitulo);
+	}
+	
 }
+  
   
   ocupar(reserva){
 

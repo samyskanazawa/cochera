@@ -69,7 +69,7 @@ export class MisReservasPage {
   }
   
    marcarRadioButton(i){
-   
+   //debugger;
     this.indiceOcupado = null;
     this.indice = i;
 	var index = this.reservas.indexOf(i);
@@ -79,13 +79,17 @@ export class MisReservasPage {
 	var hora = d.getHours();
 	var minutos = d.getMinutes();
 	
+	//debugger;
+	
 	var horaDesdeReserva = (this.reservas[index].horaDesde).substr(0,2);
 	var minutosDesdeReserva = (this.reservas[index].horaDesde).substr(3,2);
 	var horaHastaReserva = (this.reservas[index].horaHasta).substr(0,2);
+	var horaActual = Number(hora.toString() + minutos.toString());
+	var numeroHoraHastaReserva = (this.reservas[index].horaHasta).replace(":","");
 			
 	//Valido para ocupar una cochera reservada: estado no Ocupado, fecha = hoy, hoario al hacer click en ocupar entre los horarios de reserva
 	if((this.reservas[index].estado != "Ocupado") && (fechaReserva == fecha) && (hora >= horaDesdeReserva) && (hora <= horaHastaReserva) && 
-		(minutos >= minutosDesdeReserva)){
+		(minutos >= minutosDesdeReserva) && (horaActual <= numeroHoraHastaReserva)){
 			
 	   this.indiceOcupado = i;
 	}
@@ -122,6 +126,7 @@ export class MisReservasPage {
   
   showPrompt() {
 	var index = this.reservas.indexOf(this.indice);
+	//debugger;
 	var outerThis = this;
 	this.mensaje = "";
 
@@ -147,7 +152,9 @@ export class MisReservasPage {
         {
           text: 'Guardar',
           handler: data => {
-            outerThis.reservasService.editReserva(outerThis.reservas[index], outerThis.reservas[index].horaDesde, data.hasta);
+            outerThis.reservasService.editReserva(outerThis.reservas[index], outerThis.reservas[index].horaDesde, data.hasta, function(){
+				outerThis.marcarRadioButton(outerThis.indice);
+			});
           }
         },
 		 {
@@ -181,7 +188,10 @@ export class MisReservasPage {
         {
           text: 'Guardar',
           handler: data => {
-            outerThis.reservasService.editReserva(outerThis.reservas[index], data.desde, data.hasta);
+            outerThis.reservasService.editReserva(outerThis.reservas[index], data.desde, data.hasta, function(){
+				outerThis.marcarRadioButton(outerThis.indice);
+			});
+			
           }
         },
 		{
