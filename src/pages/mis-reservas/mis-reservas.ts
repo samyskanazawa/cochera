@@ -54,7 +54,7 @@ export class MisReservasPage {
 	
   }
   
-  deleteReserva(reserva){
+  deleteReserva(reserva, texto: string){
  
     //Remove locally
       let index = this.reservas.indexOf(reserva);
@@ -64,7 +64,7 @@ export class MisReservasPage {
       }   
  
     //Remove from database
-	this.reservasService.deleteReserva(reserva.id);
+	this.reservasService.deleteReserva(reserva.id, texto);
 	this.indice = null;
   }
   
@@ -78,18 +78,32 @@ export class MisReservasPage {
 	var d = new Date();
 	var hora = d.getHours();
 	var minutos = d.getMinutes();
-	
-	//debugger;
+	var horas;
+	var min;
 	
 	var horaDesdeReserva = (this.reservas[index].horaDesde).substr(0,2);
 	var minutosDesdeReserva = (this.reservas[index].horaDesde).substr(3,2);
 	var horaHastaReserva = (this.reservas[index].horaHasta).substr(0,2);
-	var horaActual = Number(hora.toString() + minutos.toString());
-	var numeroHoraHastaReserva = (this.reservas[index].horaHasta).replace(":","");
+	
+	if (minutos < 10){
+			min = "0" + minutos.toString();
+		}else{
+			min = minutos.toString();
+		}
+		
+		if (hora < 10){
+			horas = "0" + hora.toString();
+		}else{
+			horas = hora.toString();
+		}
+	
+	var horaActual = Number(horas.toString() + min.toString());
+	var numeroHoraHastaReserva = Number((this.reservas[index].horaHasta).replace(":",""));
+	var numeroHoraDesdeReserva = Number((this.reservas[index].horaDesde).replace(":",""));
 			
 	//Valido para ocupar una cochera reservada: estado no Ocupado, fecha = hoy, hoario al hacer click en ocupar entre los horarios de reserva
-	if((this.reservas[index].estado != "Ocupado") && (fechaReserva == fecha) && (hora >= horaDesdeReserva) && (hora <= horaHastaReserva) && 
-		(minutos >= minutosDesdeReserva) && (horaActual <= numeroHoraHastaReserva)){
+	if((this.reservas[index].estado != "Ocupado") && (fechaReserva == fecha) && (hora >= Number(horaDesdeReserva)) && (hora <= Number(horaHastaReserva)) && 
+		(horaActual >= numeroHoraDesdeReserva) && (horaActual <= numeroHoraHastaReserva)){
 			
 	   this.indiceOcupado = i;
 	}
@@ -209,15 +223,16 @@ export class MisReservasPage {
 
   
   eliminarReserva() {
+	var textoBoton;
 	var index = this.reservas.indexOf(this.indice);
 		if (this.reservas[index].estado == "Reservado"){
 			var titulo = 'Eliminar Reserva';
 			var subtitulo = '¿Desea eliminar esta reserva?';
-			var textoBoton = 'Eliminar';
+			textoBoton = 'Eliminar';
 		} else {
 			var titulo = 'Liberar Cochera';
 			var subtitulo = '¿Desea liberar la cochera seleccionada?';
-			var textoBoton = 'Liberar';
+			textoBoton = 'Liberar';
 		}
 	let alert = this.alertCtrl.create({
     title: titulo,
@@ -226,7 +241,8 @@ export class MisReservasPage {
       {
         text: textoBoton,
         handler: () => {
-			this.deleteReserva(this.reservas[index]);
+			this.deleteReserva(this.reservas[index], textoBoton);
+			this.indiceOcupado = null;
 		}
       },
 	   {
