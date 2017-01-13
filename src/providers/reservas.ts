@@ -87,8 +87,8 @@ export class Reservas {
 	var temporal = [];
 	var numeroHoraDesde = Number(horaDesde.replace(":",""));
 	var numeroHoraHasta = Number(horaHasta.replace(":",""));
-	var desdeCampoHora = numeroHoraDesde.toString().substr(0,1);
-	var hastaCampoHora = numeroHoraHasta.toString().substr(0,1);
+	var desdeCampoHora = numeroHoraDesde.toString().substr(0,2);
+	var hastaCampoHora = numeroHoraHasta.toString().substr(0,2);
 	var titulo: string = "Error";
 	var	subtitulo: string = "El horario inicial debe ser anterior al horario final";
 	var error: boolean = false;
@@ -98,6 +98,8 @@ export class Reservas {
 	//var horaActual = Number(hora.toString() + minutos.toString());
 	var horaActual = hora.toString() + ":" + minutos.toString();
 	var numeroHoraActual;
+	
+	//debugger;
 	
 	if(Number(desdeCampoHora) < 10) {
 		desdeCampoHora = "0" + desdeCampoHora;
@@ -129,7 +131,7 @@ export class Reservas {
 	
 		if((numeroHoraDesde != numeroHoraHasta) && (numeroHoraDesde < numeroHoraHasta)){
 			
-			if(horaHastaCampoHora - horaDesdeCampoHora >= 1 && numeroHoraHasta - numeroHoraDesde > 100){
+			if(horaHastaCampoHora - horaDesdeCampoHora >= 1 && numeroHoraHasta - numeroHoraDesde >= 100){
 
 				if ((numeroHoraDesde >= numeroHoraActual) && (numeroHoraHasta <= 2000)){ 
 			
@@ -146,6 +148,8 @@ export class Reservas {
 					}
 				
 					temporal.sort();
+					
+					//debugger;
 					
 					if(temporal.length == (allreservasArray.length)*2){
 						
