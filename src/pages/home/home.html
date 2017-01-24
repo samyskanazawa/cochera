@@ -2,55 +2,42 @@
 
 	<div overflow-scroll="false">
 		<h1 class="titulo">Estado Actual de las Cocheras</h1>
-		<ion-row><ion-label>Capital</ion-label></ion-row>
 		<div>
 		<ion-row class="row header">
-		<ion-col class="col" style="text-align: center">Usuario</ion-col>
-		<ion-col class="col" style="text-align: center">Estado</ion-col>
 		  <ion-col class="col" style="text-align: center">Dirección y Espacio</ion-col>
 		  <ion-col class="col" style="text-align: center">Horario</ion-col>
+		  <ion-col class="col" style="text-align: center">Estado</ion-col>
+		  <ion-col class="col" style="text-align: center">Usuario</ion-col>
 		  <ion-col with-10 class="col" style="text-align: center"></ion-col>
 		</ion-row>
-		<ion-row class="row">
-		<ion-col class="col" style="text-align: center">Emiliano Dato</ion-col>
-		<ion-col class="col" style="text-align: center">Ocupada</ion-col>
-		  <ion-col class="col" style="text-align: center">Maipu 942 - 4</ion-col>
-		  <ion-col class="col" style="text-align: center">08:00<br/>16:00</ion-col>
-		  <ion-col with-10 class="col" style="text-align: center"><ion-radio></ion-radio></ion-col>
-		</ion-row>
-		</div>
-		<ion-col class="signup-col">
-          <button ion-button type="button" [disabled]="habilitarBoton==null" style="background: #B5E61D;border-radius: 30px !important;border: 2px solid #000000;width: 100%;color: #222;" name="car"  class="submit-btn"><b>Reservar:<ion-icon name="car"></ion-icon></b></button>
+		
+		<ion-list radio-group>
+			<ion-row class="row" *ngFor="let item of disponibles | orderBy : ['-v_Dispo']; let i of disponibles.length" [ngStyle]="{'background-color': devolverColorFilaDisponible(i)}">
+			<ion-col class="col" style="text-align: center">{{item.v_nombre}} - ({{item.v_espacio}})</ion-col>
+			<ion-col class="col" style="text-align: center">{{item.horaDesde}}<br>{{item.horaHasta}}</ion-col>
+		    <ion-col class="col" style="text-align: center">Disponible</ion-col>
+		    <ion-col class="col" style="text-align: center"></ion-col>
+			<ion-col with-10 class="col" style="text-align: center"><ion-radio style="border: 1px solid #000" (click)="marcarRadioCocheraDisponible(i)"></ion-radio></ion-col>			
+			</ion-row>			
+			<ion-row class="row" *ngFor="let item of noDisponibles | orderBy : ['v_espacio']; let i of noDisponibles.length" [ngStyle]="{'background-color': devolverColorFilaNoDisponible(i)}">
+			<ion-col class="col"  style="text-align: center">{{item.v_nombre}} - ({{item.v_espacio}})</ion-col>
+			<ion-col class="col"  style="text-align: center">{{item.horaDesde}}<br/>{{item.horaHasta}}</ion-col>
+			<ion-col class="col" style="text-align: center">No Disponible</ion-col>
+			<ion-col class="col"  style="text-align: center">{{item.v_nombreCompleto}}</ion-col>
+			<ion-col class="col"  style="text-align: center"><ion-radio style="border: 1px solid #000" (click)="marcarRadioCocheraNoDisponible(i)"></ion-radio></ion-col>
+			</ion-row>
+			
+		</ion-list>
+
+		</div>	
+
+	</div>		
+		<ion-col class="signup-col"> <b> </b>
+          <button ion-button type="button" [disabled]="indiceCocheraDisponible==null" (click)="showPrompt()" style="background: #B5E61D;border-radius: 30px !important;border: 2px solid #000000;color: #222;" name="car"  class="submit-btn"><b>Reservar:<ion-icon name="car"></ion-icon></b></button>
+          <button ion-button type="button" [disabled]="habilitarBoton==null" style="background: #B5E61D;border-radius: 30px !important;border: 2px solid #000000;color: #222;" name="car"  class="submit-btn"><b>Llamar:<ion-icon name="call"></ion-icon></b></button>
         </ion-col>
 		
-		<!--
-		<ion-label style="text-align: center">Acción: <ion-icon name="car"></ion-icon></ion-label>	
-		-->
-		<br/>
-		<div>
-		<ion-row><ion-label>La Plata</ion-label></ion-row>
-		<ion-row class="row header">
-			<ion-col class="col" style="text-align: center">Usuario</ion-col>
-		<ion-col class="col" style="text-align: center">Estado</ion-col>
-		  <ion-col class="col" style="text-align: center">Dirección y Espacio</ion-col>
-		  <ion-col class="col" style="text-align: center">Horario</ion-col>
-		  <ion-col with-10 class="col" style="text-align: center"></ion-col>
-		</ion-row >
-		<ion-row class="row">
-		<ion-col class="col" style="text-align: center">Leandro Fragala</ion-col>
-		<ion-col class="col" style="text-align: center">Ocupada</ion-col>
-		  <ion-col class="col" style="text-align: center">Maipu 942 - 4</ion-col>
-		  <ion-col class="col" style="text-align: center">08:00<br/>16:00</ion-col>
-		  <ion-col with-10 class="col" style="text-align: center"><ion-radio></ion-radio></ion-col>
-		</ion-row>
-		</div>
-		<ion-col class="signup-col">
-          <button ion-button type="button" [disabled]="habilitarBoton==null" style="background: #B5E61D;border-radius: 30px !important;border: 2px solid #000000;width: 100%;color: #222;" name="car"  class="submit-btn"><b>Llamar:<ion-icon name="call"></ion-icon></b></button>
-        </ion-col>
-		<!--
-		<ion-label style="text-align: center">Acción: <ion-icon name="call"></ion-icon></ion-label>	
-		-->
-		
-	</div>
+
+
 </ion-content>
 

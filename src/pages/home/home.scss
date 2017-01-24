@@ -2,20 +2,35 @@ page-home {
 
 .header .col {
 		background-color:lightgrey;
+		align-items: center!important;
+		text-align: center;
+		justify-content: center;
 	}
 
 .col {
     border: solid 1px grey;
     border-bottom-style: none;
     border-right-style: none;
+	align-items: center!important;
+	justify-content: center;
 }
 
 .col:last-child {
     border-right: solid 1px grey;
+	align-items: center!important;
+	justify-content: center;
 }
 
 .row:last-child .col {
     border-bottom: solid 1px grey;
+	align-items: center!important;
+	justify-content: center;
+}
+
+.signup-col {
+	align-items: center!important;
+	justify-content: center;
+	display: flex;
 }
 
 .titulo{

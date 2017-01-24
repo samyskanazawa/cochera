@@ -327,8 +327,17 @@ export class Reservas {
 		} 
 		//Si todo sale bien, se muestr mensaje confirmándolo
 		else {
+		
+		//ROME agrega condicional por ocupado o reservado
+		
+		    if(reserva.estado == "Reservado"){
 			titulo ="Reserva";
-			subtitulo="Reserva generada exitosamente para los horarios seleccionados";
+			subtitulo="Reserva generada exitosamente para los horarios seleccionados";			
+			}
+			if(reserva.estado == "Ocupado"){
+		    titulo ="Cochera";
+			subtitulo="Usted ocupó la cochera exitosamente para los horarios seleccionados";				
+			}
 			booleano = true;
 			console.log(res.json());
 		}
