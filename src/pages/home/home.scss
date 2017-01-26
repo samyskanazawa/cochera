@@ -4,6 +4,7 @@ page-home {
 		background-color:lightgrey;
 		align-items: center!important;
 		text-align: center;
+		display: flex;
 		justify-content: center;
 	}
 
@@ -12,6 +13,7 @@ page-home {
     border-bottom-style: none;
     border-right-style: none;
 	align-items: center!important;
+	display: flex;
 	justify-content: center;
 }
 
@@ -89,3 +91,18 @@ page-home {
    border-radius: 30px !important;
    border: 2px solid #000000;
 }
+
+.submit-btn {
+	background: #B5E61D;
+	border-radius: 30px !important;
+	border: 2px solid #000000;
+}
+
+scroll-content {
+    overflow-y: auto;
+}
+
+::-webkit-scrollbar,
+    *::-webkit-scrollbar {
+      display: none;
+    }

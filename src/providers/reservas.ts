@@ -336,7 +336,7 @@ export class Reservas {
 			}
 			if(reserva.estado == "Ocupado"){
 		    titulo ="Cochera";
-			subtitulo="Usted ocupó la cochera exitosamente para los horarios seleccionados";				
+			subtitulo="Usted ocupó la cochera exitosamente";				
 			}
 			booleano = true;
 			console.log(res.json());

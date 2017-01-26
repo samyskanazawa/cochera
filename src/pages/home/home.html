@@ -25,19 +25,14 @@
 			<ion-col class="col" style="text-align: center">No Disponible</ion-col>
 			<ion-col class="col"  style="text-align: center">{{item.v_nombreCompleto}}</ion-col>
 			<ion-col class="col"  style="text-align: center"><ion-radio style="border: 1px solid #000" (click)="marcarRadioCocheraNoDisponible(i)"></ion-radio></ion-col>
-			</ion-row>
-			
+			</ion-row>			
 		</ion-list>
-
 		</div>	
-
 	</div>		
 		<ion-col class="signup-col"> <b> </b>
-          <button ion-button type="button" [disabled]="indiceCocheraDisponible==null" (click)="showPrompt()" style="background: #B5E61D;border-radius: 30px !important;border: 2px solid #000000;color: #222;" name="car"  class="submit-btn"><b>Reservar:<ion-icon name="car"></ion-icon></b></button>
+          <button ion-button type="button" style="color: #222;" [disabled]="indiceCocheraDisponible==null" (click)="showPrompt()"   class="submit-btn"><b>Reservar:<ion-icon name="car"></ion-icon></b></button>
           <button ion-button type="button" [disabled]="habilitarBoton==null" style="background: #B5E61D;border-radius: 30px !important;border: 2px solid #000000;color: #222;" name="car"  class="submit-btn"><b>Llamar:<ion-icon name="call"></ion-icon></b></button>
         </ion-col>
 		
-
-
 </ion-content>
 
