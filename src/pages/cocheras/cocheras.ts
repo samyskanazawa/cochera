@@ -165,10 +165,6 @@ export class CocherasPage {
 		}
 		
 		var horaActual = horas.toString() + ":" + min;
-
-		
-	
-	
 		allreservasArray = data2;
 		
 		//debugger;

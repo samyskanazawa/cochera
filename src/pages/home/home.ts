@@ -222,14 +222,15 @@ export class HomePage {
 	var horaDesde:string;
 	var horaHasta: string;
 	
-	v_mail = "hernan.ruiz@softtek.com";
+	
 	
 	//Traigo de la base todas las cocheras
 		this.cocherasService.getCocheras().then((data) => {
 			
 			v_items = data;
-			this.tmpDispo = [];
-			this.tmpNoDispo = [];
+			v_mail = "hernan.ruiz@softtek.com";
+//			this.tmpDispo = [];
+//			this.tmpNoDispo = [];
 			this.disponibles =  [];
 			this.noDisponibles = [];
 			this.allUsuariosArray = [];
@@ -276,7 +277,7 @@ export class HomePage {
 		this.disponibles =  [];
 		this.allUsuariosArray = [];
 		
-		//Itero las cocheras encontradas para buscar reservas en el día seleccionado
+		//Itero las cocheras encontradas para buscar reservas actuales
 		for (let item of v_items) {
 			
 			v_item = item;

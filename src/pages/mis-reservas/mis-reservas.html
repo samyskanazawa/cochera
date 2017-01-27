@@ -13,7 +13,7 @@
 				  <ion-col width-15 class="col">{{(reservasService.formatearFecha(reserva.fechaRese)).substr(0,5)}}</ion-col>
 				  <ion-col width-50 class="col">{{reserva.nombreCochera}} - ({{reserva.espacio}})</ion-col>
 				  <ion-col width-15 class="col">{{reserva.horaDesde}}<br/>{{reserva.horaHasta}}</ion-col>
-				  <ion-col width-10 class="col"><ion-radio style="border: 1px solid #000" (click)="marcarRadioButton(i)"></ion-radio></ion-col>
+				  <ion-col width-10 class="col"><ion-radio (click)="marcarRadioButton(i)"></ion-radio></ion-col>
 				</ion-row>
 			</ion-list>
 		</div>

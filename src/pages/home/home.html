@@ -1,37 +1,37 @@
 <ion-content class="padding">
-
+<br/>
+	<ion-content padding>
 	<div overflow-scroll="false">
 		<h1 class="titulo">Estado Actual de las Cocheras</h1>
 		<div>
 		<ion-row class="row header">
-		  <ion-col class="col" style="text-align: center">Dirección y Espacio</ion-col>
-		  <ion-col class="col" style="text-align: center">Horario</ion-col>
-		  <ion-col class="col" style="text-align: center">Estado</ion-col>
-		  <ion-col class="col" style="text-align: center">Usuario</ion-col>
-		  <ion-col with-10 class="col" style="text-align: center"></ion-col>
-		</ion-row>
-		
+		  <ion-col width-50  class="col" style="text-align: center">Dirección y Espacio</ion-col>
+		  <ion-col width-15  class="col" style="text-align: center">Horario</ion-col>
+		  <ion-col width-15  class="col" style="text-align: center">Estado</ion-col>
+		  <ion-col width-10  class="col" style="text-align: center">Usuario</ion-col>
+		  <ion-col width-10 class="col" style="text-align: center"></ion-col>
+		</ion-row>		
 		<ion-list radio-group>
 			<ion-row class="row" *ngFor="let item of disponibles | orderBy : ['-v_Dispo']; let i of disponibles.length" [ngStyle]="{'background-color': devolverColorFilaDisponible(i)}">
-			<ion-col class="col" style="text-align: center">{{item.v_nombre}} - ({{item.v_espacio}})</ion-col>
-			<ion-col class="col" style="text-align: center">{{item.horaDesde}}<br>{{item.horaHasta}}</ion-col>
-		    <ion-col class="col" style="text-align: center">Disponible</ion-col>
-		    <ion-col class="col" style="text-align: center"></ion-col>
-			<ion-col with-10 class="col" style="text-align: center"><ion-radio style="border: 1px solid #000" (click)="marcarRadioCocheraDisponible(i)"></ion-radio></ion-col>			
+			<ion-col width-50 class="col" style="text-align: center">{{item.v_nombre}} - ({{item.v_espacio}})</ion-col>
+			<ion-col width-15  class="col" style="text-align: center">{{item.horaDesde}}<br>{{item.horaHasta}}</ion-col>
+		    <ion-col width-15 class="col" style="text-align: center">Disponible</ion-col>
+		    <ion-col width-10  class="col" style="text-align: center"></ion-col>
+			<ion-col width-10 class="col" style="text-align: center"><ion-radio (click)="marcarRadioCocheraDisponible(i)"></ion-radio></ion-col>			
 			</ion-row>			
-			<ion-row class="row" *ngFor="let item of noDisponibles | orderBy : ['v_espacio']; let i of noDisponibles.length" [ngStyle]="{'background-color': devolverColorFilaNoDisponible(i)}">
-			<ion-col class="col"  style="text-align: center">{{item.v_nombre}} - ({{item.v_espacio}})</ion-col>
-			<ion-col class="col"  style="text-align: center">{{item.horaDesde}}<br/>{{item.horaHasta}}</ion-col>
-			<ion-col class="col" style="text-align: center">No Disponible</ion-col>
-			<ion-col class="col"  style="text-align: center">{{item.v_nombreCompleto}}</ion-col>
-			<ion-col class="col"  style="text-align: center"><ion-radio style="border: 1px solid #000" (click)="marcarRadioCocheraNoDisponible(i)"></ion-radio></ion-col>
+			<ion-row class="row" *ngFor="let item of noDisponibles | orderBy : ['v_Dispo']; let i of noDisponibles.length" [ngStyle]="{'background-color': devolverColorFilaNoDisponible(i)}">
+			<ion-col width-50 class="col"  style="text-align: center">{{item.v_nombre}} - ({{item.v_espacio}})</ion-col>
+			<ion-col width-15 class="col"  style="text-align: center">{{item.horaDesde}}<br/>{{item.horaHasta}}</ion-col>
+			<ion-col width-15 class="col" style="text-align: center">No Disponible</ion-col>
+			<ion-col width-10 class="col"  style="text-align: center">{{item.v_nombreCompleto}}</ion-col>
+			<ion-col width-10 class="col"  style="text-align: center"><ion-radio  (click)="marcarRadioCocheraNoDisponible(i)"></ion-radio></ion-col>
 			</ion-row>			
 		</ion-list>
 		</div>	
 	</div>		
 		<ion-col class="signup-col"> <b> </b>
-          <button ion-button type="button" style="color: #222;" [disabled]="indiceCocheraDisponible==null" (click)="showPrompt()"   class="submit-btn"><b>Reservar:<ion-icon name="car"></ion-icon></b></button>
-          <button ion-button type="button" [disabled]="habilitarBoton==null" style="background: #B5E61D;border-radius: 30px !important;border: 2px solid #000000;color: #222;" name="car"  class="submit-btn"><b>Llamar:<ion-icon name="call"></ion-icon></b></button>
+          <button ion-button type="button" style="color: #222;" [disabled]="indiceCocheraDisponible==null" (click)="showPrompt()"   class="submit-btn"><ion-label style="text-align: center">Reservar:<ion-icon name="car"></ion-icon></ion-label></button>
+          <button ion-button type="button" [disabled]="habilitarBoton==null" style="background: #B5E61D;border-radius: 30px !important;border: 2px solid #000000;color: #222;" name="car"  class="submit-btn"><ion-label style="text-align: center">Llamar:<ion-icon name="call"></ion-icon></ion-label></button>
         </ion-col>
 		
 </ion-content>
