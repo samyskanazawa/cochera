@@ -117,12 +117,22 @@ export class CocherasPage {
 	  var dd2 = date2.getDate();
 	  var yy2 = date2.getFullYear();
 	  
-	  if(yy1 >= yy2 && mm1 >= mm2 && dd1 >= dd2){
-		  iguales =true;
+	  if(yy1 > yy2){	  
+		iguales = true;
+	  } else {	  
+		if(yy1 == yy2){  
+			if (mm1 == mm2 ){			
+					if (dd1 >= dd2 ){
+				       iguales = true;				
+					} 					
+			}else if ( mm1 > mm2 ){
+				iguales = true;
+			}
+		}
 	  } 
 	  
-	  return iguales;		 
-  };
+	  return iguales;
+    };
   
   buscar(){
 	  this.changeDate(this.fechaElegida);

@@ -79,14 +79,37 @@ export class HomePage {
     }
   
 	marcarRadioCocheraDisponible(i){
-		this.indiceCocheraDisponible = i;
+		this.indiceCocheraDisponible = i;		
 	}
 	  
 	marcarRadioCocheraNoDisponible(i){
 		this.indiceCocheraNoDisponible = i;
 	}
 	  
-
+	getHoraActual(){	
+		var diaActual = new Date();
+		var hora = diaActual.getHours();
+		var minutos = diaActual.getMinutes();			
+		var horaActual;
+		var horas;
+		var min;
+				
+		if (minutos < 10){
+			min = "0" + minutos.toString();
+		}else{
+			min = minutos.toString();
+		}
+		
+		if (hora < 10){
+			horas = "0" + hora.toString();
+		}else{
+			horas = hora.toString();
+		}	
+			horaActual = horas.toString() + ":" + min;
+				
+		return(horaActual);			
+	}
+	
     showPrompt() {
   
 	  var index = this.disponibles.indexOf(this.indiceCocheraDisponible);
@@ -222,15 +245,13 @@ export class HomePage {
 	var horaDesde:string;
 	var horaHasta: string;
 	
-	
-	
 	//Traigo de la base todas las cocheras
 		this.cocherasService.getCocheras().then((data) => {
 			
 			v_items = data;
 			v_mail = "hernan.ruiz@softtek.com";
-//			this.tmpDispo = [];
-//			this.tmpNoDispo = [];
+			this.tmpDispo = [];
+			this.tmpNoDispo = [];
 			this.disponibles =  [];
 			this.noDisponibles = [];
 			this.allUsuariosArray = [];
@@ -292,10 +313,11 @@ export class HomePage {
 		//this.disponibles = v_items;	
 		this.disponibles = this.tmpDispo;
 		this.noDisponibles = this.tmpNoDispo;
+		
     });
   
    }
-  
+   
     queryReservas(v_nombre,v_espacio, v_fecha, estado, v_mail, horaDesde, horaHasta, allreservasArray ){
 		this.reservasService.findByQuery(v_nombre, v_espacio, v_fecha, estado).then((data2) => {				
 			var z;

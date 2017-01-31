@@ -264,7 +264,7 @@ export class MisReservasPage {
         text: 'Ocupar',
         handler: () => {
 		
-			this.reservasService.ocupar(this.reservas[index]);
+			this.reservasService.ocupar(this.reservas[index],'Ocupar');
 			this.marcarRadioButton(this.indice);
 		}
       },

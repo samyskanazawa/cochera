@@ -10,6 +10,7 @@ import 'rxjs/add/operator/map';
   for more info on providers and Angular 2 DI.
 */
 @Injectable()
+
 export class Reservas {
 
   data: any;
@@ -247,7 +248,7 @@ export class Reservas {
 }
   
   
-  ocupar(reserva){
+  ocupar(reserva, texto: string){
 
 	let id = reserva.id;
 	var titulo;
@@ -295,9 +296,16 @@ export class Reservas {
 		} 
 		//Si todo sale bien, se muestr mensaje confirmándolo
 		else {
-			titulo ="Ocupando cochera";
-			subtitulo = "Ocupación exitosa de la cochera N° " + reserva.espacioCochera + " en " + reserva.nombreCochera + " en el horario: " 
-							+ reserva.horaDesde + ' a ' + reserva.horaHasta;
+		
+			if (texto == 'Inicio'){				
+				titulo = "Ocupar";
+				subtitulo = "Cochera liberada exitosamente"				
+			}else {				
+				titulo ="Ocupando cochera";
+			    subtitulo = "Ocupación exitosa de la cochera N° " + reserva.espacioCochera + " en " + reserva.nombreCochera + " en el horario: " 
+				+ reserva.horaDesde + ' a ' + reserva.horaHasta;
+			}					
+
             console.log(res.json());
 		}
 		this.alertGenerico(titulo, subtitulo);
@@ -328,11 +336,11 @@ export class Reservas {
 		//Si todo sale bien, se muestr mensaje confirmándolo
 		else {
 		
-		//ROME agrega condicional por ocupado o reservado
+		//ROME2 agrega condicional por ocupado o reservado
 		
 		    if(reserva.estado == "Reservado"){
 			titulo ="Reserva";
-			subtitulo="Reserva generada exitosamente para los horarios seleccionados";			
+			subtitulo= "Cochera reservada exitosamente de: " + reserva.horaDesde + " a " + reserva.horaHasta;			
 			}
 			if(reserva.estado == "Ocupado"){
 		    titulo ="Cochera";
@@ -472,12 +480,6 @@ formatearFecha(fecha) {
 			 
   };
   
-  
-  
-  
-  	 
-
-
 /*formatearDate(fecha :string){
 		
 		this.indice++;
