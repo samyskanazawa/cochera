@@ -110,7 +110,8 @@ export class HomePage {
 		return(horaActual);			
 	}
 	
-    showPrompt() {
+
+    showPrompt(){
   
 	  var index = this.disponibles.indexOf(this.indiceCocheraDisponible);
 	  let alert = this.alertCtrl.create({
@@ -119,100 +120,21 @@ export class HomePage {
 		  {
 			text: 'Ocupar',
 			handler: () => {
-			console.log('Cancel clicked');			  
-			var reserva = [];
-			var mail = this.disponibles[index].v_mail;
-			var nombreCochera = this.disponibles[index].v_nombre;
-			var espacioCochera: String;
-			espacioCochera = (this.disponibles[index].v_espacio).toString();
-			var fechaRese = this.disponibles[index].v_fecha;
+			console.log('Cancel clicked');
 			var horaDesde = this.disponibles[index].horaDesde;
-			var horaHasta = this.disponibles[index].horaHasta;
-			var horaDesdeSort = Number(horaDesde.replace(":",""));
-			var estado = "Ocupado";
-			var fechaAlta = "";
-			var fechaOcupa = "";
-			var fechaLibre = "";
-			var contadorReservas = 0;
-			var item;
-			var resultado: boolean;
-			var error: boolean;
-			var outerThis = this;
-					
-				this.obtenerCocheras(horaDesde, horaHasta, fechaRese, mail, nombreCochera, this.disponibles[index].v_espacio, function(){			
-						if(!outerThis.errorMismaCochera){
-							if(!outerThis.extenderReserva){
-								if(!outerThis.error){
-									//debugger;
-										reserva.push({mail, nombreCochera, espacioCochera, fechaRese, horaDesde, horaHasta, fechaAlta, estado, fechaOcupa, fechaLibre, horaDesdeSort});
-										outerThis.reservasService.createReserva(reserva[0], function(resultado: boolean){
-												outerThis.buscar();
-										});
-								}else {
-									var titulo = 'Horario Inv\u00e1lido';
-									var subtitulo = 'El horario seleccionado se superpone con el de otra de sus reservas';
-									outerThis.errorHorarios = false;
-									outerThis.alertGenerico(titulo, subtitulo);
-								}
-							} else {
-								var titulo = 'Extender Reserva';
-								var subtitulo = 'Ya cuenta con una reserva para esta cochera en el día seleccionado, puede extenderla desde la pestaña Mis Reservas';
-								outerThis.extenderReserva = false;
-								outerThis.alertGenerico(titulo, subtitulo);
-							}
-						}						
-				});						  	  
+				if(horaDesde > this.getHoraActual()){
+					return false;			
+				} else {
+					this.ocupar(index);	
+				}				  	  
 			}
 		  },
 		  
 		  {
 			text: 'Reservar',
 			handler: () => {
-			  console.log('Buy clicked');			  
-			var reserva = [];
-			var mail = this.disponibles[index].v_mail;
-			var nombreCochera = this.disponibles[index].v_nombre;
-			var espacioCochera: String;
-			espacioCochera = (this.disponibles[index].v_espacio).toString();
-			var fechaRese = this.disponibles[index].v_fecha;
-			var horaDesde = this.disponibles[index].horaDesde;
-			var horaHasta = this.disponibles[index].horaHasta;
-			var horaDesdeSort = Number(horaDesde.replace(":",""));
-			var estado = "Reservado";
-			var fechaAlta = "";
-			var fechaOcupa = "";
-			var fechaLibre = "";
-			var contadorReservas = 0;
-			var item;
-			var resultado: boolean;
-			var error: boolean;
-			var outerThis = this;
-						
-				this.obtenerCocheras(horaDesde, horaHasta, fechaRese, mail, nombreCochera, this.disponibles[index].v_espacio, function(){			
-						if(!outerThis.errorMismaCochera){
-							if(!outerThis.extenderReserva){
-								if(!outerThis.error){
-									//debugger;
-										reserva.push({mail, nombreCochera, espacioCochera, fechaRese, horaDesde, horaHasta, fechaAlta, estado, fechaOcupa, fechaLibre, horaDesdeSort});
-										outerThis.reservasService.createReserva(reserva[0], function(resultado: boolean){
-												outerThis.buscar();
-										});
-								}else {
-									var titulo = 'Horario Inv\u00e1lido';
-									var subtitulo = 'El horario seleccionado se superpone con el de otra de sus reservas';
-									outerThis.errorHorarios = false;
-									outerThis.alertGenerico(titulo, subtitulo);
-								}
-							} else {
-								var titulo = 'Extender Reserva';
-								var subtitulo = 'Ya cuenta con una reserva para esta cochera en el día seleccionado, puede extenderla desde la pestaña Mis Reservas';
-								outerThis.extenderReserva = false;
-								outerThis.alertGenerico(titulo, subtitulo);
-							}
-						}
-						
-				});
-			
+			console.log('Buy clicked');
+			this.reservar(index);			
 			}
 		  },
 		  {
@@ -227,7 +149,100 @@ export class HomePage {
 	  alert.present();
     }
   
- 
+	ocupar(index){
+	
+		var reserva = [];
+		var mail = this.disponibles[index].v_mail;
+		var nombreCochera = this.disponibles[index].v_nombre;
+		var espacioCochera: String;
+		espacioCochera = (this.disponibles[index].v_espacio).toString();
+		var fechaRese = this.disponibles[index].v_fecha;
+		var horaDesde = this.disponibles[index].horaDesde;
+		var horaHasta = this.disponibles[index].horaHasta;
+		var horaDesdeSort = Number(horaDesde.replace(":",""));
+		var estado = "Ocupado";
+		var fechaAlta = "";
+		var fechaOcupa = "";
+		var fechaLibre = "";
+		var contadorReservas = 0;
+		var item;
+		var resultado: boolean;
+		var error: boolean;
+		var outerThis = this;
+					
+			this.obtenerCocheras(horaDesde, horaHasta, fechaRese, mail, nombreCochera, this.disponibles[index].v_espacio, function(){			
+				if(!outerThis.errorMismaCochera){
+					if(!outerThis.extenderReserva){
+						if(!outerThis.error){
+							//debugger;
+							reserva.push({mail, nombreCochera, espacioCochera, fechaRese, horaDesde, horaHasta, fechaAlta, estado, fechaOcupa, fechaLibre, horaDesdeSort});
+							outerThis.reservasService.createReserva(reserva[0], function(resultado: boolean){
+							outerThis.buscar();
+							});
+						}else {
+									var titulo = 'Horario Inv\u00e1lido';
+									var subtitulo = 'El horario seleccionado se superpone con el de otra de sus reservas';
+									outerThis.errorHorarios = false;
+									outerThis.alertGenerico(titulo, subtitulo);
+						}
+					} else {
+								var titulo = 'Extender Reserva';
+								var subtitulo = 'Ya cuenta con una reserva para esta cochera en el día seleccionado, puede extenderla desde la pestaña Mis Reservas';
+								outerThis.extenderReserva = false;
+								outerThis.alertGenerico(titulo, subtitulo);
+					}
+				}						
+			});		
+	}
+	
+	
+	reservar(index){	
+	var reserva = [];
+	var mail = this.disponibles[index].v_mail;
+	var nombreCochera = this.disponibles[index].v_nombre;
+	var espacioCochera: String;
+	espacioCochera = (this.disponibles[index].v_espacio).toString();
+	var fechaRese = this.disponibles[index].v_fecha;
+	var horaDesde = this.disponibles[index].horaDesde;
+	var horaHasta = this.disponibles[index].horaHasta;
+	var horaDesdeSort = Number(horaDesde.replace(":",""));
+	var estado = "Reservado";
+	var fechaAlta = "";
+	var fechaOcupa = "";
+	var fechaLibre = "";
+	var contadorReservas = 0;
+	var item;
+	var resultado: boolean;
+	var error: boolean;
+	var outerThis = this;
+						
+		this.obtenerCocheras(horaDesde, horaHasta, fechaRese, mail, nombreCochera, this.disponibles[index].v_espacio, function(){			
+			if(!outerThis.errorMismaCochera){
+				if(!outerThis.extenderReserva){
+					if(!outerThis.error){
+									//debugger;
+										reserva.push({mail, nombreCochera, espacioCochera, fechaRese, horaDesde, horaHasta, fechaAlta, estado, fechaOcupa, fechaLibre, horaDesdeSort});
+										outerThis.reservasService.createReserva(reserva[0], function(resultado: boolean){
+												outerThis.buscar();
+										});
+					}else {
+									var titulo = 'Horario Inv\u00e1lido';
+									var subtitulo = 'El horario seleccionado se superpone con el de otra de sus reservas';
+									outerThis.errorHorarios = false;
+									outerThis.alertGenerico(titulo, subtitulo);
+					}
+				} else {
+					var titulo = 'Extender Reserva';
+					var subtitulo = 'Ya cuenta con una reserva para esta cochera en el día seleccionado, puede extenderla desde la pestaña Mis Reservas';
+					outerThis.extenderReserva = false;
+					outerThis.alertGenerico(titulo, subtitulo);
+				}
+			}
+						
+		});			
+	
+			
+	}
     buscar(){
 	  this.obtenerCocherasSinRango(this.fechaActual);
 	  this.indiceCocheraDisponible = null;

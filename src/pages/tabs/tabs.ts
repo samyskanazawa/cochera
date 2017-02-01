@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { NavController , LoadingController, Loading } from 'ionic-angular';
 import { HomePage } from '../home/home';
 import { MisReservasPage } from '../mis-reservas/mis-reservas';
 import { CocherasPage } from '../cocheras/cocheras';
@@ -15,36 +16,46 @@ export class TabsPage {
   tab2Root: any = MisReservasPage;
   tab3Root: any = CocherasPage;
 
-  private tieneReserva = false;
+  private tieneReserva:boolean;
   private estaOcupandoCochera:boolean;
   private mail: string = "hernan.ruiz@softtek.com";
   private fechaRese = new Date().toISOString();
+  private actualiza = false;
   reservas: any;
+  loading: Loading;
 
 
-  constructor(public alertCtrl: AlertController, public reservasService: Reservas ) {
+  constructor(private nav: NavController, public alertCtrl: AlertController, public reservasService: Reservas, private loadingCtrl: LoadingController ) {
 				this.estaOcupandoCochera = false;
+				this.tieneReserva = false;
   }
   
   alertaReserva(reserva) {
+  
 	  let alert = this.alertCtrl.create({
 		title: 'Reserva',
 		message: 'Usted tiene reservada la cochera N° ' + reserva.espacioCochera + ' en ' + reserva.nombreCochera + ' ¿ Desea realizar alguna acción ? ' ,
 		buttons: [
 		  {
 			text: 'Ocupar',
-			role: 'cancel',
 			handler: () => {
 			  console.log('Cancel clicked');
 			  this.reservasService.ocupar(reserva, 'Inicio');
+			  this.nav.setRoot(TabsPage)
+			  alert.dismiss();
+			  
 			}
 		  },
 		  {
 			text: 'Liberar',
 			handler: () => {
-			  console.log('Buy clicked');
-			  this.deleteReserva(reserva , 'Liberar');			 
+			  console.log('Cancel clicked');
+			  this.deleteReserva(reserva , 'Liberar');
+              this.nav.setRoot(TabsPage)
+			  alert.dismiss();
+
 			}
+			
 		  },
 		  {
 			text: 'Cerrar',
@@ -56,7 +67,7 @@ export class TabsPage {
 		]
 	  });
 	  alert.present();
-	 
+
   }
  
 
@@ -70,7 +81,8 @@ export class TabsPage {
 		}   
 			 
 		//Remove from database
-		this.reservasService.deleteReserva(reserva.id, texto);		
+		this.reservasService.deleteReserva(reserva.id, texto);
+
 	} 
 	
     alertaCocheraOcupada(reserva) {
@@ -80,10 +92,12 @@ export class TabsPage {
 		buttons: [
 		  {
 			text: 'Liberar',
-			role: 'cancel',
 			handler: () => {
 			  console.log('Cancel clicked');
-			  this.deleteReserva(reserva, 'Liberar');	
+			  this.deleteReserva(reserva, 'Liberar');
+			  this.nav.setRoot(TabsPage)
+			  alert.dismiss();
+			  
 			}
 		  },
 		  {
@@ -153,12 +167,14 @@ export class TabsPage {
 		}
 	  	  
 		if(this.tieneReserva  === true && this.estaOcupandoCochera === false){
-			   this.alertaReserva(reserva);
+			  this.alertaReserva(reserva);			  
+			   
 		} else if (this.estaOcupandoCochera === true){
 			   this.alertaCocheraOcupada(reserva);
 		}
-
+				
 	  });	
 
     }
+
 }

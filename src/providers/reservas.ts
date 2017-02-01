@@ -3,6 +3,7 @@ import { Http, Headers, RequestOptions } from '@angular/http';
 import { AlertController } from 'ionic-angular';
 import 'rxjs/add/operator/map';
 
+
 /*
   Generated class for the Reservas provider.
 
@@ -299,7 +300,7 @@ export class Reservas {
 		
 			if (texto == 'Inicio'){				
 				titulo = "Ocupar";
-				subtitulo = "Cochera liberada exitosamente"				
+				subtitulo = "Cochera ocupada exitosamente"				
 			}else {				
 				titulo ="Ocupando cochera";
 			    subtitulo = "Ocupación exitosa de la cochera N° " + reserva.espacioCochera + " en " + reserva.nombreCochera + " en el horario: " 
@@ -387,6 +388,8 @@ export class Reservas {
 		}
     });    
  
+
+	  
   }
   
   obtenerDiferenciaDeTiempo(horaDesde: string, horaHasta: string){
