@@ -19,11 +19,11 @@ data: any;
  
   getUsuariosByMail(mail: string){
  
-    if (this.data) {
+    /*if (this.data) {
       return Promise.resolve(this.data);
-    }
+    }*/
  
-    return new Promise(resolve => {
+    return new Promise<any>(resolve => {
  
       this.http.get('http://localhost:8080/usuario/search/findByMail?mail=' + mail)
         .map(res => res.json())

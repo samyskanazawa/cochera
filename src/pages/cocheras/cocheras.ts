@@ -38,6 +38,8 @@ export class CocherasPage {
 	private errorLimiteHoras: boolean;
 	private errorHorarios: boolean;
 	private extenderReserva: boolean;
+	private flagColores: boolean;
+	private ultimoColor;
 	
 	reservas: any;
 	
@@ -50,15 +52,63 @@ export class CocherasPage {
   }
 
   devolverColorFilaDisponible(i){
-	//[ngStyle]="{'background-color': devolverColorFila(i)}"
-	var indexDisponibles = this.disponibles.indexOf(i);
+	 //[ngStyle]="{'background-color': devolverColorFila(i)}"
+	 var indexDisponibles = this.disponibles.indexOf(i);
 	
-	switch (this.disponibles[indexDisponibles].v_Dispo) {
-		case 1200:
-			return "#DAF291";
-		default:
-			return "#FFFA93";
-    }
+	 var hoy = new Date(this.fechaElegida).toISOString();
+	 var fechaSeteada = hoy.substr(0,10);
+	 var fechaHoy = new Date().toISOString();
+	 var fechaHoyParse = fechaHoy.substr(0,10);
+	 var colorDevuelto;
+
+	 var diaActual = new Date();
+	 var hora = diaActual.getHours();
+	 var minutos = diaActual.getMinutes();	
+	 var v_DispoFila = this.disponibles[indexDisponibles].v_Dispo;
+	 var v_DispoActual;
+	 var dispo;
+	 var horaHasta = "20:00";
+	 var horaActual;
+	 var horaDesde;
+	 var horas;
+	 var min;
+		
+	 if (minutos < 10){
+	 	min = "0" + minutos.toString();
+	 }else{
+		min = minutos.toString();
+	 }
+		
+	 if (hora < 10){
+	 	horas = "0" + hora.toString();
+	 }else{
+	 	horas = hora.toString();
+	 }	
+	 
+	 if (this.flagColores == true){
+		 if (fechaHoyParse == fechaSeteada){
+			
+			horaActual = horas.toString() + ":" + min;			
+			horaDesde = horaActual;
+			v_DispoActual = this.reservasService.obtenerDiferenciaDeTiempo(horaDesde, horaHasta);
+			dispo  =   v_DispoActual - v_DispoFila;
+				
+			if (dispo > 0 ) {
+					this.ultimoColor = "#FFFA93"; //amarillo 
+			} else {
+					this.ultimoColor = "#DAF291"; //verde 
+			}
+			
+		 } else {
+		
+			if(this.disponibles[indexDisponibles].v_Dispo == 1200) {
+					this.ultimoColor = "#DAF291";
+			}else{
+					this.ultimoColor = "#FFFA93";
+			}
+		 }
+	 }
+	 return this.ultimoColor;
   }
   
   marcarRadioCocheraDisponible(i){
@@ -83,6 +133,7 @@ export class CocherasPage {
   
   changeDate(fechaElegida) {
 	  var iguales = this.validarFecha(new Date(fechaElegida).toISOString(), new Date(this.minDate).toISOString());
+	  this.flagColores = false;
 	  
 	  if(iguales){
 		  this.hoy = new Date(fechaElegida).toISOString();
@@ -141,6 +192,7 @@ export class CocherasPage {
 	  this.ocultarResultados = false;
 	  this.indiceCocheraDisponible = null;
 	  this.indiceCocheraNoDisponible = null;
+	  this.flagColores = true;
   }
   
   queryReservas(v_nombre,v_espacio, v_fecha, estado, v_mail, horaDesde, horaHasta, allreservasArray ){
@@ -237,7 +289,7 @@ export class CocherasPage {
 								this.tmpDispo.push({v_mail , v_nombre, v_espacio, v_fecha, horaDesde, horaHasta, v_Dispo});
 							}
 							var desdeTemporal = horaHasta1;
-							debugger;
+							//debugger;
 							if(diaActual.toISOString().substr(0, 10) == v_fecha.substr(0,10) && (Number(horaActual.replace(":","")) > Number(desdeTemporal.replace(":","")))){
 								horadesde = horaActual;
 							} else {
@@ -269,9 +321,9 @@ export class CocherasPage {
 			for (item in mailTemporal){
 				this.buscarsUsuarios(mailTemporal[item], function (){
 						if (outerThis.allUsuariosArray.length >= 0 && i <= (mailTemporal.length)-1) {
-							var usuario = outerThis.allUsuariosArray[0];
-							v_nombreCompleto = usuario.nombre + " " + usuario.apellido;
-							v_telefono = usuario.telefono;
+							var usuario = outerThis.allUsuariosArray[outerThis.allUsuariosArray.length-1];
+							v_nombreCompleto = usuario[0].nombre + " " + usuario[0].apellido;
+							v_telefono = usuario[0].telefono;
 							var horaDesde = temporal[vectorHoras];
 							var horaHasta = temporal [vectorHoras+1];
 							var v_mail = mailTemporal[iteradorMails];
@@ -287,7 +339,7 @@ export class CocherasPage {
 					});
 				}
 
-			debugger;	
+			//debugger;	
 			//Tramo final: si la última reserva termina antes de las 20:00, inserto como horario
 			//disponible el tramo desde el final de la reserva hasta las 20:00			
 			if (horadesde != "20:00"){
@@ -305,7 +357,7 @@ export class CocherasPage {
   
   buscarsUsuarios (mail: string, callback) {
 	  this.usuariosService.getUsuariosByMail(mail).then((data) => {
-		this.allUsuariosArray = data;
+		this.allUsuariosArray.push(data);
 		callback();
 	});
   }
@@ -424,7 +476,7 @@ export class CocherasPage {
 										});
 									} else {
 										var titulo = 'Horario Inválido';
-										var subtitulo = 'El horario permitido es entre las '+ outerThis.disponibles[index].horaDesde + ' hs y las ' + outerThis.disponibles[index].horaHasta + ' hs';
+										var subtitulo = 'No es posible guardar el horario deseado, esta cochera ya posee una reserva';
 										outerThis.errorHorarios = false;
 										outerThis.alertGenerico(titulo, subtitulo);
 									}
@@ -494,9 +546,7 @@ export class CocherasPage {
 			var p;
 			var contadorIncorrectos = 0;
 			
-			//debugger;
-			
-			if(horaDesdeCampoHora < horaHastaCampoHora){
+			if(horaDesdeCampoHora <= horaHastaCampoHora){
 				
 				if((horaHastaCampoHora - horaDesdeCampoHora) >= 1 && (Number(horaHasta.replace(":","")) - Number(horaDesde.replace(":",""))) >= 100){
 			
@@ -518,6 +568,8 @@ export class CocherasPage {
 					z = z + 1;
 					}
 
+					
+					
 					//if (!mismaCochera){
 						
 						var numeroHoraDesde = Number(horaDesde.replace(":",""));
@@ -624,13 +676,12 @@ export class CocherasPage {
 										
 										var horaDesdeDisponible = horariosDisponibles[l];
 										var horaHastaDisponible = horariosDisponibles[l+1];
-										
-										debugger;
 											
 										//Si los horarios que quiero reservar coinciden con algún horario disponible.
 										if ((numeroHoraDesde >= horaDesdeDisponible) && (numeroHoraHasta <= horaHastaDisponible)){
 											
-											if((numeroHoraDesde - horaDesdeDisponible) < 100){
+											if(((numeroHoraDesde > 800 && horaHastaDisponible > 800) && ((numeroHoraDesde - horaDesdeDisponible) < 100)) 
+												|| (((horaHastaDisponible - numeroHoraHasta) < 100) && (numeroHoraDesde < 2000 && horaHastaDisponible < 2000))){
 												outerThis.extenderReserva = true;
 											} else {
 												outerThis.error = false;
