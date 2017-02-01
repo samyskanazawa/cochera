@@ -467,12 +467,13 @@ export class HomePage {
     };
   
   
-    buscarUsuarios (mail: string, callback) {
-		this.usuariosService.getUsuariosByMail(mail).then((data) => {
-			this.allUsuariosArray = data;
-			callback();
-		});
-	}	 
+  buscarUsuarios (mail: string, callback) {
+	  this.usuariosService.getUsuariosByMail(mail).then((data) => {
+		this.allUsuariosArray = data;
+		callback();
+	});
+  }
+   
   
     
 	obtenerCocheras(horaDesde: string, horaHasta: string, v_fecha: string, v_mail: string, nombre: string, espacio: number, callback){
