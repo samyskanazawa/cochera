@@ -21,9 +21,20 @@ export class AuthService {
   currentUser: User;
  
   public login(credentials) {
+	  //debugger;
+	  
     if (credentials.email === null || credentials.password === null) {
       return Observable.throw("Por favor complete los campos para ingresar");
     } else {
+		
+		/*
+			if(res.status == 401) {
+					this.nav.setRoot(TabsPage)
+			} 
+		*/
+		
+		
+		
       return Observable.create(observer => {
         // At this point make a request to your backend to make a real check!
         let access = (credentials.password !== "pass" && credentials.email !== "email");

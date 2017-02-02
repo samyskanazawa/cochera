@@ -25,7 +25,7 @@ export class CocherasPage {
 	private ocultarResultados: boolean;
 	private disponibles: any;
 	private noDisponibles: any;
-	private habilitarBoton: string;
+	private habilitarBoton: string = "habilitado";
 	private tmpDispo;
 	private tmpNoDispo;
 	private allUsuariosArray = [];
@@ -148,7 +148,10 @@ export class CocherasPage {
 		  var subtitulo = 'La fecha ingresada debe ser mayor o igual a la fecha actual';
 		  fechaElegida = this.minDate;
 		  this.changeDate(fechaElegida);
-		  this.alertGenerico(titulo, subtitulo); 
+		  this.habilitarBoton = null;
+		  this.disponibles = [];
+		  this.noDisponibles = [];
+		  this.alertGenerico(titulo, subtitulo);
 	  }
   }
   
