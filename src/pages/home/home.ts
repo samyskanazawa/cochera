@@ -21,7 +21,7 @@ export class HomePage {
 	private allUsuariosArray = [];
 	private indiceCocheraDisponible: any;
 	private indiceCocheraNoDisponible: any;
-	private indiceOcupado;
+	private indiceOcupado: any;
 	private error: boolean;
 	private errorMismaCochera: boolean;
 	private errorLimiteHoras: boolean;
@@ -79,11 +79,20 @@ export class HomePage {
     }
   
 	marcarRadioCocheraDisponible(i){
-		this.indiceCocheraDisponible = i;		
+		this.indiceCocheraDisponible = i;
+		this.indiceCocheraNoDisponible = null;
+		this.indiceOcupado = null;
+		var index = this.disponibles.indexOf(this.indiceCocheraDisponible);
+		var horaDesde = this.disponibles[index].horaDesde;
+				if(!(horaDesde > this.getHoraActual())){
+					this.indiceOcupado = index;	
+				}			
 	}
 	  
 	marcarRadioCocheraNoDisponible(i){
 		this.indiceCocheraNoDisponible = i;
+		this.indiceCocheraDisponible = null;
+		this.indiceOcupado = null;
 	}
 	  
 	getHoraActual(){	
@@ -110,47 +119,9 @@ export class HomePage {
 		return(horaActual);			
 	}
 	
-
-    showPrompt(){
   
-	  var index = this.disponibles.indexOf(this.indiceCocheraDisponible);
-	  let alert = this.alertCtrl.create({
-		title: 'Cochera: ' + this.disponibles[index].v_nombre,
-		buttons: [
-		  {
-			text: 'Ocupar',
-			handler: () => {
-			console.log('Cancel clicked');
-			var horaDesde = this.disponibles[index].horaDesde;
-				if(horaDesde > this.getHoraActual()){
-					return false;			
-				} else {
-					this.ocupar(index);	
-				}				  	  
-			}
-		  },
-		  
-		  {
-			text: 'Reservar',
-			handler: () => {
-			console.log('Buy clicked');
-			this.reservar(index);			
-			}
-		  },
-		  {
-			text: 'Cerrar',
-			role: 'cancel',
-			handler: () => {
-			  console.log('Cancel clicked');
-			}
-		  }
-		]
-	  });
-	  alert.present();
-    }
-  
-	ocupar(index){
-	
+	ocuparCochera(){
+	    var index = this.disponibles.indexOf(this.indiceCocheraDisponible);
 		var reserva = [];
 		var mail = this.disponibles[index].v_mail;
 		var nombreCochera = this.disponibles[index].v_nombre;
@@ -196,71 +167,80 @@ export class HomePage {
 	}
 	
 	
-	reservar(index){	
-	var reserva = [];
-	var mail = this.disponibles[index].v_mail;
-	var nombreCochera = this.disponibles[index].v_nombre;
-	var espacioCochera: String;
-	espacioCochera = (this.disponibles[index].v_espacio).toString();
-	var fechaRese = this.disponibles[index].v_fecha;
-	var horaDesde = this.disponibles[index].horaDesde;
-	var horaHasta = this.disponibles[index].horaHasta;
-	var horaDesdeSort = Number(horaDesde.replace(":",""));
-	var estado = "Reservado";
-	var fechaAlta = "";
-	var fechaOcupa = "";
-	var fechaLibre = "";
-	var contadorReservas = 0;
-	var item;
-	var resultado: boolean;
-	var error: boolean;
-	var outerThis = this;
+	reservarCochera(){
+		var index = this.disponibles.indexOf(this.indiceCocheraDisponible);	
+		var reserva = [];
+		var mail = this.disponibles[index].v_mail;
+		var nombreCochera = this.disponibles[index].v_nombre;
+		var espacioCochera: String;
+		espacioCochera = (this.disponibles[index].v_espacio).toString();
+		var fechaRese = this.disponibles[index].v_fecha;
+		var horaDesde = this.disponibles[index].horaDesde;
+		var horaHasta = this.disponibles[index].horaHasta;
+		var horaDesdeSort = Number(horaDesde.replace(":",""));
+		var estado = "Reservado";
+		var fechaAlta = "";
+		var fechaOcupa = "";
+		var fechaLibre = "";
+		var contadorReservas = 0;
+		var item;
+		var resultado: boolean;
+		var error: boolean;
+		var outerThis = this;
 						
-		this.obtenerCocheras(horaDesde, horaHasta, fechaRese, mail, nombreCochera, this.disponibles[index].v_espacio, function(){			
-			if(!outerThis.errorMismaCochera){
-				if(!outerThis.extenderReserva){
-					if(!outerThis.error){
-									//debugger;
-										reserva.push({mail, nombreCochera, espacioCochera, fechaRese, horaDesde, horaHasta, fechaAlta, estado, fechaOcupa, fechaLibre, horaDesdeSort});
-										outerThis.reservasService.createReserva(reserva[0], function(resultado: boolean){
-												outerThis.buscar();
-										});
-					}else {
-									var titulo = 'Horario Inv\u00e1lido';
-									var subtitulo = 'El horario seleccionado se superpone con el de otra de sus reservas';
-									outerThis.errorHorarios = false;
-									outerThis.alertGenerico(titulo, subtitulo);
+		this.obtenerCocheras(horaDesde, horaHasta, fechaRese, mail, nombreCochera, this.disponibles[index].v_espacio, function(){
+
+			if(!outerThis.errorLimiteHoras){
+				if(!outerThis.errorMismaCochera){
+					if(!outerThis.extenderReserva){
+						if(!outerThis.error){
+										//debugger;
+											reserva.push({mail, nombreCochera, espacioCochera, fechaRese, horaDesde, horaHasta, fechaAlta, estado, fechaOcupa, fechaLibre, horaDesdeSort});
+											outerThis.reservasService.createReserva(reserva[0], function(resultado: boolean){
+													outerThis.buscar();
+											});
+						}else {
+										var titulo = 'Horario Inv\u00e1lido';
+										var subtitulo = 'El horario seleccionado se superpone con el de otra de sus reservas';
+										outerThis.errorHorarios = false;
+										outerThis.alertGenerico(titulo, subtitulo);
+						}
+					} else {
+						var titulo = 'Extender Reserva';
+						var subtitulo = 'Ya cuenta con una reserva para esta cochera en el día seleccionado, puede extenderla desde la pestaña Mis Reservas';
+						outerThis.extenderReserva = false;
+						outerThis.alertGenerico(titulo, subtitulo);
 					}
-				} else {
-					var titulo = 'Extender Reserva';
-					var subtitulo = 'Ya cuenta con una reserva para esta cochera en el día seleccionado, puede extenderla desde la pestaña Mis Reservas';
-					outerThis.extenderReserva = false;
-					outerThis.alertGenerico(titulo, subtitulo);
 				}
-			}
-						
-		});			
-	
-			
+			} else {
+				var titulo = 'Horario Inv\u00e1lido';
+				var subtitulo = 'El lapso de tiempo m\u00EDnimo para una reserva es de una hora';
+				outerThis.errorLimiteHoras = false;
+				outerThis.alertGenerico(titulo, subtitulo);
+			}				
+		
+		});						
 	}
+	
     buscar(){
 	  this.obtenerCocherasSinRango(this.fechaActual);
 	  this.indiceCocheraDisponible = null;
 	  this.indiceCocheraNoDisponible = null;
+	  this.indiceOcupado = null;
     }
    
   	obtenerCocherasSinRango(v_fecha: string){	  
-	var v_mail;
-	var v_items;
-	var v_item;
-	var v_nombre;
-	var v_espacio: string;
-	var allreservasArray;
-	var estado: String;
-	var horaDesde:string;
-	var horaHasta: string;
+		var v_mail;
+		var v_items;
+		var v_item;
+		var v_nombre;
+		var v_espacio: string;
+		var allreservasArray;
+		var estado: String;
+		var horaDesde:string;
+		var horaHasta: string;
 	
-	//Traigo de la base todas las cocheras
+		//Traigo de la base todas las cocheras
 		this.cocherasService.getCocheras().then((data) => {
 			
 			v_items = data;
@@ -303,8 +283,8 @@ export class HomePage {
 		this.indiceOcupado = null;
 		this.indiceCocheraDisponible = null;
 		
-  	//Traigo de la base todas las cocheras
-	this.cocherasService.getCocheras().then((data) => {
+		//Traigo de la base todas las cocheras
+		this.cocherasService.getCocheras().then((data) => {
 		
 		v_items = data;		
 		v_mail = "hernan.ruiz@softtek.com";
@@ -482,8 +462,8 @@ export class HomePage {
     };
   
   
-  buscarUsuarios (mail: string, callback) {
-	  this.usuariosService.getUsuariosByMail(mail).then((data) => {
+    buscarUsuarios (mail: string, callback) {
+	this.usuariosService.getUsuariosByMail(mail).then((data) => {
 		this.allUsuariosArray = data;
 		callback();
 	});
@@ -491,12 +471,11 @@ export class HomePage {
    
   
     
-	obtenerCocheras(horaDesde: string, horaHasta: string, v_fecha: string, v_mail: string, nombre: string, espacio: number, callback){
-		
-	var allreservasArray;
-	var outerThis = this;
-	var mismaCochera: boolean = false;
-	//debugger;
+	obtenerCocheras(horaDesde: string, horaHasta: string, v_fecha: string, v_mail: string, nombre: string, espacio: number, callback){		
+		var allreservasArray;
+		var outerThis = this;
+		var mismaCochera: boolean = false;
+		//debugger;
 			
 		this.reservasService.getReservasByMailAndFechaRese(v_mail, v_fecha).then((data) => {
 		allreservasArray = data;
