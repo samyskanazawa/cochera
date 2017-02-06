@@ -267,7 +267,6 @@ export class HomePage {
 		});
 	}
  
- 
     ionViewDidEnter() {	
 		var v_items;
 		var v_item;
@@ -401,7 +400,7 @@ export class HomePage {
 									this.tmpDispo.push({v_mail , v_nombre, v_espacio, v_fecha, horaDesde, horaHasta, v_Dispo});
 								}
 								var desdeTemporal = horaHasta1;
-								debugger;
+								//debugger;
 								if(diaActual.toISOString().substr(0, 10) == v_fecha.substr(0,10) && (Number(horaActual.replace(":","")) > Number(desdeTemporal.replace(":","")))){
 									horadesde = horaActual;
 								} else {
@@ -447,7 +446,7 @@ export class HomePage {
 							}
 						});
 					}
-				debugger;	
+				//debugger;	
 				//Tramo final: si la última reserva termina antes de las 20:00, inserto como horario
 				//disponible el tramo desde el final de la reserva hasta las 20:00			
 				if (horadesde != "20:00"){			
