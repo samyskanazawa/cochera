@@ -30,45 +30,75 @@ export class TabsPage {
 				this.tieneReserva = false;
   }
   
-  alertaReserva(reserva) {
-  
-	  let alert = this.alertCtrl.create({
-		title: 'Reserva',
-		message: 'Usted tiene reservada la cochera N° ' + reserva.espacioCochera + ' en ' + reserva.nombreCochera + ' ¿ Desea realizar alguna acción ? ' ,
-		buttons: [
-		  {
-			text: 'Ocupar',
-			handler: () => {
-			  console.log('Cancel clicked');
-			  this.reservasService.ocupar(reserva, 'Inicio');
-			  this.nav.setRoot(TabsPage)
-			  alert.dismiss();
-			  
-			}
-		  },
-		  {
-			text: 'Liberar',
-			handler: () => {
-			  console.log('Cancel clicked');
-			  this.deleteReserva(reserva , 'Liberar');
-              this.nav.setRoot(TabsPage)
-			  alert.dismiss();
+    alertaReserva(reserva) {  
+	
+		if(reserva.horaDesde <= this.getHoraActual()) {
 
-			}
-			
-		  },
-		  {
-			text: 'Cerrar',
-			role: 'cancel',
-			handler: () => {
-			  console.log('Cancel clicked');
-			}
-		  }
-		]
-	  });
-	  alert.present();
+		  let alert = this.alertCtrl.create({	  
+			title: 'Reserva',
+			message: 'Usted tiene reservada la cochera N° ' + reserva.espacioCochera + ' en ' + reserva.nombreCochera + ' ¿ Desea realizar alguna acción ? ' ,
+			buttons: [
+			  {
+				text: 'Ocupar',
+				handler: () => {
+				  console.log('Cancel clicked');
+				  this.reservasService.ocupar(reserva, 'Inicio');
+				  this.nav.setRoot(TabsPage)
+				  alert.dismiss();
+				  
+				}
+			  },
+			  {
+				text: 'Liberar',
+				handler: () => {
+				  console.log('Cancel clicked');
+				  this.deleteReserva(reserva , 'Liberar');
+				  this.nav.setRoot(TabsPage)
+				  alert.dismiss();
 
-  }
+				}
+				
+			  },
+			  {
+				text: 'Cerrar',
+				role: 'cancel',
+				handler: () => {
+				  console.log('Cancel clicked');
+				}
+			  }
+			]
+		  });
+
+		  alert.present();		
+		}  else {
+		
+		 let alert = this.alertCtrl.create({	  
+			title: 'Reserva',
+			message: 'Usted tiene reservada la cochera N° ' + reserva.espacioCochera + ' en el horario de: ' + reserva.horaDesde +  ' en: ' + reserva.nombreCochera + ' ¿ Desea liberarla ? ' ,
+			buttons: [
+			  {
+				text: 'Liberar',
+				handler: () => {
+				  console.log('Cancel clicked');
+				  this.deleteReserva(reserva , 'Liberar');
+				  this.nav.setRoot(TabsPage)
+				  alert.dismiss();
+
+				}
+				
+			  },
+			  {
+				text: 'Cerrar',
+				role: 'cancel',
+				handler: () => {
+				  console.log('Cancel clicked');
+				}
+			  }
+			]
+		  });
+		  alert.present();			
+		}
+    }
  
 
 	deleteReserva(reserva, texto: string){
@@ -112,8 +142,7 @@ export class TabsPage {
     }
   
   
-    getHoraActual(){
-	
+    getHoraActual(){	
 		var diaActual = new Date();
 		var hora = diaActual.getHours();
 		var minutos = diaActual.getMinutes();			
@@ -134,19 +163,19 @@ export class TabsPage {
 		}	
 		
 		horaActual = horas.toString() + ":" + min;		
-		return(horaActual);
-			
+		return(horaActual);			
 	}
 	
 	
-    ionViewDidLoad() {
-      
+    ionViewDidLoad() {      
 	  this.reservasService.getReservasByMailAndFechaRese(this.mail, this.fechaRese).then((data) => {
 	  console.log(data);
 	  this.reservas = data;
 	  var iterador;
 	  var reserva;
 	  var enHorario: boolean;
+	  var horaHasta = "20:00";
+	  var diaActual = new Date();
 	  
 		if(this.reservas.length > 0 ){
 			this.tieneReserva = true;
@@ -158,7 +187,7 @@ export class TabsPage {
 				this.estaOcupandoCochera = true;
 				break;		
 			} else {			   
-			    enHorario = this.reservas[iterador].horaDesde <= this.getHoraActual() && this.reservas[iterador].horaHasta >= this.getHoraActual();
+			    enHorario = this.fechaRese.substr(0,10) == this.reservas[iterador].fechaRese.substr(0,10);	
 			    if (enHorario){
 					reserva = this.reservas[iterador];
 					break;	
