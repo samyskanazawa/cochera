@@ -89,8 +89,8 @@ export class Reservas {
 	var temporal = [];
 	var numeroHoraDesde = Number(horaDesde.replace(":",""));
 	var numeroHoraHasta = Number(horaHasta.replace(":",""));
-	var desdeCampoHora = numeroHoraDesde.toString().substr(0,2);
-	var hastaCampoHora = numeroHoraHasta.toString().substr(0,2);
+	var desdeCampoHora;
+	var hastaCampoHora;	
 	var titulo: string = "Error";
 	var	subtitulo: string = "El horario inicial debe ser anterior al horario final";
 	var error: boolean = false;
@@ -102,6 +102,19 @@ export class Reservas {
 	var numeroHoraActual;
 	
 	//debugger;
+	
+	if (numeroHoraDesde<1000){	
+	    desdeCampoHora = numeroHoraDesde.toString().substr(0,1);
+	}else{
+		desdeCampoHora = numeroHoraDesde.toString().substr(0,2);
+	}
+	
+	if (numeroHoraHasta<1000){	
+		hastaCampoHora = numeroHoraHasta.toString().substr(0,1);
+	}else{
+		hastaCampoHora = numeroHoraHasta.toString().substr(0,2);
+	}
+	
 	
 	if(Number(desdeCampoHora) < 10) {
 		desdeCampoHora = "0" + desdeCampoHora;
@@ -121,12 +134,9 @@ export class Reservas {
 		horaActual = "08:00";
 	}
 	
-	//debugger;
-	
+	//debugger;	
 	if(reserva.estado == "Ocupado"){
-		
-		numeroHoraActual = numeroHoraDesde;
-		
+		numeroHoraActual = numeroHoraDesde;		
 	}
 		
 	if ((horaDesde != reserva.horaDesde) || (horaHasta != reserva.horaHasta)){
@@ -170,9 +180,15 @@ export class Reservas {
 						
 							//Si extiendo hora Hasta y se me superpone con otra reserva existente.
 							if ((numeroHoraDesde < horaDesde1Numero) && (numeroHoraHasta > horaDesde1Numero) && (numeroHoraHasta < horaHasta1Numero)){
-								titulo = "Error";
-								subtitulo= "El horario de finalización seleccionado se superpone con otra reserva";
-								error = true;
+								if(reserva.estado == "Ocupado"){
+									titulo = "Error";
+									subtitulo= "El horario de finalización de la cochera ya posee una reserva";
+									error = true;									
+								}else{								
+									titulo = "Error";
+									subtitulo= "El horario de finalización seleccionado se superpone con otra reserva";
+									error = true;
+								}
 							}
 							
 							//Si atraso hora Desde y se me superpone con otra reserva existente.
@@ -183,10 +199,10 @@ export class Reservas {
 							}
 							
 							//Si hora Desde y hora Hasta me quedan dentro de otra reserva existente.
-							if ((numeroHoraDesde > horaDesde1Numero) && (numeroHoraDesde < horaHasta1Numero) && (numeroHoraHasta > horaDesde1Numero) && (numeroHoraHasta < horaHasta1Numero)){
-								titulo = "Error";
-								subtitulo= "Los horarios seleccionados se superponen con otra reserva";
-								error = true;
+							if ((numeroHoraDesde > horaDesde1Numero) && (numeroHoraDesde < horaHasta1Numero) && (numeroHoraHasta > horaDesde1Numero) && (numeroHoraHasta < horaHasta1Numero)){								
+									titulo = "Error";
+									subtitulo= "Los horarios seleccionados se superponen con otra reserva";
+									error = true;								
 							}
 							
 							//Si hora Desde y hora Hasta engloban otra reserva existente.

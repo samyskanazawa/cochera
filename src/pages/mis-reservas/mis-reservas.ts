@@ -149,74 +149,74 @@ export class MisReservasPage {
 			outerThis.mensaje = "Esta cochera tiene una o más reservas además de la actual";
 		}
 
-  if (outerThis.reservas[index].estado == "Ocupado"){ 
-	let prompt = outerThis.alertCtrl.create({
-      title: 'Día: ' + outerThis.reservasService.formatearFecha(outerThis.reservas[index].fechaRese),
-	  cssClass: 'alertcss',
-      inputs: [
-		{
-		  name: 'hasta',
-		  placeholder: 'Hasta',
-		  type: 'time',
-		  value: outerThis.reservas[index].horaHasta
-		},
-      ],
-	  message: "Hora Desde: " + outerThis.reservas[index].horaDesde + ". " + outerThis.mensaje,
-      buttons: [
-        {
-          text: 'Guardar',
-          handler: data => {
-            outerThis.reservasService.editReserva(outerThis.reservas[index], outerThis.reservas[index].horaDesde, data.hasta, function(){
-				outerThis.marcarRadioButton(outerThis.indice);
-			});
-          }
-        },
-		 {
-          text: 'Cerrar',
-          role: 'cancel',
-        },
-      ]
-    });
-	prompt.present();
-   
-  } else {
-	  let prompt = outerThis.alertCtrl.create({
-      title: 'Día: ' + outerThis.reservasService.formatearFecha(outerThis.reservas[index].fechaRese),
-	  cssClass: 'alertcss',
-      inputs: [
-		{
-          name: 'desde',
-		  placeholder: 'Desde',
-		  type: 'time',
-		  value: outerThis.reservas[index].horaDesde,
-        },
-		{
-		  name: 'hasta',
-		  placeholder: 'Hasta',
-		  type: 'time',
-		  value: outerThis.reservas[index].horaHasta
-		},
-      ],
-	  message: outerThis.mensaje,
-      buttons: [
-        {
-          text: 'Guardar',
-          handler: data => {
-            outerThis.reservasService.editReserva(outerThis.reservas[index], data.desde, data.hasta, function(){
-				outerThis.marcarRadioButton(outerThis.indice);
-			});
-			
-          }
-        },
-		{
-          text: 'Cerrar',
-          role: 'cancel',
-        },
-      ]
-    });
-	prompt.present();
-  }
-  
+	  if (outerThis.reservas[index].estado == "Ocupado"){ 
+		let prompt = outerThis.alertCtrl.create({
+		  title: 'Día: ' + outerThis.reservasService.formatearFecha(outerThis.reservas[index].fechaRese),
+		  cssClass: 'alertcss',
+		  inputs: [
+			{
+			  name: 'hasta',
+			  placeholder: 'Hasta',
+			  type: 'time',
+			  value: outerThis.reservas[index].horaHasta,			  
+			},
+		  ],
+		  message: outerThis.mensaje + ". " + "<br>" + "<br>" + "<br>" + "<b/>Horario Desde: " +outerThis.reservas[index].horaDesde.fontcolor("negro") ,
+		  buttons: [
+			{
+			  text: 'Guardar',
+			  handler: data => {
+				outerThis.reservasService.editReserva(outerThis.reservas[index], outerThis.reservas[index].horaDesde, data.hasta, function(){
+					outerThis.marcarRadioButton(outerThis.indice);
+				});
+			  }
+			},
+			 {
+			  text: 'Cerrar',
+			  role: 'cancel',
+			},
+		  ]
+		});
+		prompt.present();
+	   
+	  } else {
+		  let prompt = outerThis.alertCtrl.create({
+		  title: 'Día: ' + outerThis.reservasService.formatearFecha(outerThis.reservas[index].fechaRese),
+		  cssClass: 'alertcss',
+		  inputs: [
+			{
+			  name: 'desde',
+			  placeholder: 'Desde',
+			  type: 'time',
+			  value: outerThis.reservas[index].horaDesde,
+			},
+			{
+			  name: 'hasta',
+			  placeholder: 'Hasta',
+			  type: 'time',
+			  value: outerThis.reservas[index].horaHasta
+			},
+		  ],
+		  message: outerThis.mensaje,
+		  buttons: [
+			{
+			  text: 'Guardar',
+			  handler: data => {
+				outerThis.reservasService.editReserva(outerThis.reservas[index], data.desde, data.hasta, function(){
+					outerThis.marcarRadioButton(outerThis.indice);
+				});
+				
+			  }
+			},
+			{
+			  text: 'Cerrar',
+			  role: 'cancel',
+			},
+		  ]
+		});
+		prompt.present();
+	  }
+	  
   });
 	
   }

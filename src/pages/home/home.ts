@@ -266,7 +266,7 @@ export class HomePage {
 			this.noDisponibles = this.tmpNoDispo;
 		});
 	}
- 
+
     ionViewDidEnter() {	
 		var v_items;
 		var v_item;
