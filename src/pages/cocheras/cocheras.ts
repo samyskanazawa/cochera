@@ -605,6 +605,7 @@ export class CocherasPage {
 			var temporal = [];
 			var temporalReservasOtrosUsuarios = [];
 			var cocherasResevadasOtrosUsuarios: Array<string> = [];
+			var temporalMailOtrosUsuarios: Array<string> = [];
 			var horariosDisponibles = [];
 			var horaDesdeCampoHora: number = Number((horaDesde).substr(0,2));
 			var horaHastaCampoHora: number = Number((horaHasta).substr(0,2));
@@ -631,6 +632,7 @@ export class CocherasPage {
 									temporalReservasOtrosUsuarios.push(allreservasArray[z].horaHasta);
 									temporalReservasOtrosUsuarios.sort();
 									cocherasResevadasOtrosUsuarios.push(allreservasArray[z].espacioCochera);
+									temporalMailOtrosUsuarios.push(allreservasArray[z].mail);
 								}
 								
 							}
@@ -776,11 +778,15 @@ export class CocherasPage {
 												//Si los horarios que quiero reservar coinciden con algún horario disponible.
 												if ((numeroHoraDesde >= horaDesdeDisponible) && (numeroHoraHasta <= horaHastaDisponible)){
 													
-													if(((numeroHoraDesde > 800 && horaHastaDisponible > 800) && ((numeroHoraDesde - horaDesdeDisponible) < 100)) 
-														|| (((horaHastaDisponible - numeroHoraHasta) < 100) && (numeroHoraDesde < 2000 && horaHastaDisponible < 2000))){
-														outerThis.extenderReserva = true;
+													if(temporalMailOtrosUsuarios[iteradorDisponibles] == v_mail){
+														if(((numeroHoraDesde > 800 && horaHastaDisponible > 800) && ((numeroHoraDesde - horaDesdeDisponible) < 100)) 
+															|| (((horaHastaDisponible - numeroHoraHasta) < 100) && (numeroHoraDesde < 2000 && horaHastaDisponible < 2000))){
+															outerThis.extenderReserva = true;
+														} else {
+															outerThis.error = false;
+														}
 													} else {
-														outerThis.error = false;
+															outerThis.error = false;
 													}
 												}
 
