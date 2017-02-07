@@ -45,6 +45,25 @@ export class Reservas {
  
   }
   
+  getReservasByFechaReseAndEstado(fechaRese: string, estado: string){
+ 
+    /*if (this.data) {
+      return Promise.resolve(this.data);
+    }*/
+	
+    return new Promise(resolve => {
+ 
+      this.http.get('http://localhost:8080/reserva/search/findByFechaReseAndEstado?fechaRese=' + fechaRese + '&estado=' + estado)
+        .map(res => res.json())
+        .subscribe(data => {
+          this.data = data;
+          resolve(this.data);
+		  
+        });
+    });
+ 
+  }
+  
   getReservasByFechaRese(fecha: string){
  
     /*if (this.data) {
@@ -120,6 +139,7 @@ export class Reservas {
 	var horaActual = hora.toString() + ":" + minutos.toString();
 	var numeroHoraActual;
 	var esMiReserva: boolean = false;
+	var estado = "libre"
 	
 	debugger;
 	
@@ -167,7 +187,7 @@ export class Reservas {
 
 				if ((numeroHoraDesde >= numeroHoraActual) && (numeroHoraHasta <= 2000)){ 
 			
-				this.findByQuery(reserva.nombreCochera, reserva.espacioCochera, reserva.fechaRese, reserva.estado).then((data2) => {
+				this.getReservasByFechaReseAndEstado(reserva.fechaRese, estado).then((data2) => {
 				
 				allreservasArray = data2;
 				z = 0;
@@ -179,7 +199,7 @@ export class Reservas {
 						z = z + 1;	
 					}
 				
-					temporal.sort();
+					//temporal.sort();
 					
 					/*if(temporal.length == 2){
 						esMiReserva = true;
