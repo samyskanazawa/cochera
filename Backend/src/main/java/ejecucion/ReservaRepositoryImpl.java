@@ -41,4 +41,17 @@ public class ReservaRepositoryImpl implements ReservaRepositoryCustom{
 			return mongoTemplate.find(query, clazz);
 	}
 
+	@Override
+	public List<Reserva> findByFechaRese(String fechaRese) {
+		
+		Date[] vectorFechas = DateUtils.getDates(fechaRese);
+		
+		Query query = new Query();
+		query.addCriteria(Criteria
+			.where("fechaRese").gte(vectorFechas[0]).lte(vectorFechas[1])
+			);
+		
+		return mongoTemplate.find(query, clazz);
+	}
+
 }

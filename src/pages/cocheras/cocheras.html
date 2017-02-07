@@ -1,9 +1,18 @@
 <ion-content padding>
 
 		<h1><ion-label text-center>Disponibilidad de Cocheras</ion-label></h1><br/>
-			<ion-item><ion-label style="Sposition: absolute;">Día: </ion-label><ion-datetime displayFormat="DD/MM/YYYY" 
-			pickerFormat="DD MMMM YYYY" min="{{minDate}}" monthNames="Enero, Febrero, Marzo, Abril, Mayo, Jnio, Julio, Agosto, Septiembre, Octubre, Noviembre, Diciembre"
-			cancelText="Cancelar" style="width: 700px;" doneText="Aceptar" [(ngModel)]="fechaElegida" (ionChange)="changeDate(fechaElegida)"></ion-datetime></ion-item>
+			<ion-item><ion-label style="Sposition: absolute;">Día: </ion-label><ion-datetime 
+			displayFormat="DD/MM/YYYY" 
+			pickerFormat="DD MMMM YYYY"
+			[min]="minDate"
+			dayValues = "01, 02, 03, 04, 05, 06, 07, 08, 09, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31"
+			monthValues = {{setMeses()}}
+			monthNames = {{getNombreMeses()}}
+			cancelText="Cancelar"
+			style="width: 700px;"
+			doneText="Aceptar"
+			[(ngModel)]="fechaElegida"
+			(ionChange)="changeDate(fechaElegida)"></ion-datetime></ion-item>
 			<br/>
 			<ion-row>
 				<!--<ion-col><ion-item><ion-label>Desde: </ion-label><ion-datetime displayFormat="HH:00" hourValues="08, 09, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20" cancelText="Cancelar" doneText="Acpetar" [(ngModel)]="horaDesde" (click)="setHoraDesde()"></ion-datetime></ion-item></ion-col>
@@ -25,7 +34,7 @@
 						</ion-row >
 						<ion-list radio-group>
 							<ion-row class="row" *ngFor="let item of disponibles | orderBy : ['-v_Dispo']; let i of disponibles.length" [ngStyle]="{'background-color': devolverColorFilaDisponible(i)}">
-							  <ion-col class="col">{{item.v_nombre}} - ({{item.v_espacio}})</ion-col>
+							  <ion-col class="col">{{item.v_nombre}} - ({{item.v_espacio}}) - {{nombresMesesAMostrar.length}}</ion-col>
 							  <ion-col width-25 class="col">{{item.horaDesde}}<br>{{item.horaHasta}}</ion-col>
 							  <ion-col width-10 class="col"><ion-radio (click)="marcarRadioCocheraDisponible(i)"></ion-radio></ion-col>
 							</ion-row>

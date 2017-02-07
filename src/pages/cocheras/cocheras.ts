@@ -32,14 +32,19 @@ export class CocherasPage {
 	private hoy: string;
 	private indiceCocheraDisponible: any
 	private indiceCocheraNoDisponible: any
-	private minDate;
+	private minDate = new Date().toISOString();
 	private error: boolean;
 	private errorMismaCochera: boolean;
 	private errorLimiteHoras: boolean;
 	private errorHorarios: boolean;
+	private errorRangoHorarios: boolean;
 	private extenderReserva: boolean;
 	private flagColores: boolean;
 	private ultimoColor;
+	private nombresMesesAMostrar = this.getNombreMeses();//['Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+	private numerosDiasAMostrar = this.setDias();
+	private numerosMesesAMostrar = this.setMeses();
+	
 	
 	reservas: any;
 	
@@ -48,9 +53,29 @@ export class CocherasPage {
 						public alertCtrl: AlertController) {
 	
 	this.ocultarResultados = true;
-	this.setDia();
+	//this.setDia();
+	//this.nombresMesesAMostrar = this.getDayNames();
+	//console.log(this.nombresMesesAMostrar);
   }
 
+  
+    getNombreMeses(): Array<string> {
+	  return [
+	          "Enero",
+			  " Febrero",
+	          " Marzo",
+	          " Abril",
+			  " Mayo",
+	          " Junio",
+			  " Julio",
+	          " Agosto",
+			  " Septiembre",
+	          " Octubre",
+	          " Noviembre",
+			  " Diciembre"
+	  ];
+  }
+  
   devolverColorFilaDisponible(i){
 	 //[ngStyle]="{'background-color': devolverColorFila(i)}"
 	 var indexDisponibles = this.disponibles.indexOf(i);
@@ -127,11 +152,39 @@ export class CocherasPage {
 	  this.horaHasta = new Date().toISOString();
   }
   
-  setDia(){
-	   this.minDate = new Date().toISOString();
+  setDias() : Array<number>{
+	   var fecha = new Date();
+	   var diaActual = fecha.getDate();
+	   var numerosADevolver = [];
+	   var i;
+	   
+	   for(i = diaActual; i <= 31; i++){
+		   numerosADevolver.push(i);
+	   }
+	   
+	   return numerosADevolver;
+  }
+
+  setMeses() : Array<number>{
+	   //this.minDate = new Date().toISOString();
+	   
+	   var fechaParametro = new Date(this.fechaElegida);
+	   var cantidadMeses = 12 - (fechaParametro.getMonth()+1);
+	   var numerosMeses = [];
+	   var i = 0;
+	   var m = 0;
+	   
+	   for (i = fechaParametro.getMonth(); i <= cantidadMeses+1; i++){
+		   numerosMeses.push(i+1);
+	   }
+	   
+	   console.log(numerosMeses);
+	   
+	   return numerosMeses;
   }
   
   changeDate(fechaElegida) {
+	  debugger;
 	  var iguales = this.validarFecha(new Date(fechaElegida).toISOString(), new Date(this.minDate).toISOString());
 	  this.flagColores = false;
 	  
@@ -463,48 +516,55 @@ export class CocherasPage {
 			var resultado: boolean;
 			var error: boolean;
 			var outerThis = this;
+			var w;
 		
 			this.obtenerCocheras(horaDesde, horaHasta, fechaRese, mail, nombreCochera, this.disponibles[index].v_espacio, function(){
-				
+				debugger;
 				if(!outerThis.errorHorarios){
-					if(!outerThis.errorLimiteHoras){
-						if(!outerThis.errorMismaCochera){
-							if(!outerThis.extenderReserva){
-								if(!outerThis.error){
-									//debugger;
-									if(data.desde >= outerThis.disponibles[index].horaDesde && data.hasta <= outerThis.disponibles[index].horaHasta && data.desde < data.hasta){
-										reserva.push({mail, nombreCochera, espacioCochera, fechaRese, horaDesde, horaHasta, fechaAlta, estado, fechaOcupa, fechaLibre, horaDesdeSort});
-										outerThis.reservasService.createReserva(reserva[0], function(resultado: boolean){
-												outerThis.buscar();
-										});
-									} else {
+					if(!outerThis.errorRangoHorarios){
+						if(!outerThis.errorLimiteHoras){
+							if(!outerThis.errorMismaCochera){
+								if(!outerThis.extenderReserva){
+									if(!outerThis.error){
+										if(data.desde >= outerThis.disponibles[index].horaDesde && data.hasta <= outerThis.disponibles[index].horaHasta){
+											reserva.push({mail, nombreCochera, espacioCochera, fechaRese, horaDesde, horaHasta, fechaAlta, estado, fechaOcupa, fechaLibre, horaDesdeSort});
+											outerThis.reservasService.createReserva(reserva[0], function(resultado: boolean){
+													outerThis.buscar();
+											});
+										} else {
+											var titulo = 'Horario Inválido';
+											var subtitulo = 'No es posible guardar el horario deseado, esta cochera ya posee una reserva';
+											outerThis.errorHorarios = false;
+											outerThis.alertGenerico(titulo, subtitulo);
+										}
+									}else {
 										var titulo = 'Horario Inválido';
-										var subtitulo = 'No es posible guardar el horario deseado, esta cochera ya posee una reserva';
+										var subtitulo = 'El horario seleccionado se superpone con el de otra reserva';
 										outerThis.errorHorarios = false;
 										outerThis.alertGenerico(titulo, subtitulo);
 									}
-								}else {
-									var titulo = 'Horario Inválido';
-									var subtitulo = 'El horario seleccionado se superpone con el de otra de sus reservas';
-									outerThis.errorHorarios = false;
+								} else {
+									var titulo = 'Extender Reserva';
+									var subtitulo = 'Ya cuenta con una reserva para esta cochera en el día seleccionado, puede extenderla desde la pestaña Mis Reservas';
+									outerThis.extenderReserva = false;
 									outerThis.alertGenerico(titulo, subtitulo);
 								}
 							} else {
-								var titulo = 'Extender Reserva';
-								var subtitulo = 'Ya cuenta con una reserva para esta cochera en el día seleccionado, puede extenderla desde la pestaña Mis Reservas';
-								outerThis.extenderReserva = false;
+								var titulo = 'Cochera Inválida';
+								var subtitulo = 'Ya tiene reservada esta cochera en el día seleccionado';
+								outerThis.errorMismaCochera = false;
 								outerThis.alertGenerico(titulo, subtitulo);
 							}
 						} else {
-							var titulo = 'Cochera Inválida';
-							var subtitulo = 'Ya tiene reservada esta cochera en el día seleccionado';
-							outerThis.errorMismaCochera = false;
+							var titulo = 'Horario Inválido';
+							var subtitulo = 'El lapso de tiempo mínimo para una reserva es de una hora';
+							outerThis.errorLimiteHoras = false;
 							outerThis.alertGenerico(titulo, subtitulo);
 						}
 					} else {
 						var titulo = 'Horario Inválido';
-						var subtitulo = 'El lapso de tiempo mínimo para una reserva es de una hora';
-						outerThis.errorLimiteHoras = false;
+						var subtitulo = 'El horario permitido es entre las 08:00 hs y las 20:00 hs';
+						outerThis.errorRangoHorarios = false;
 						outerThis.alertGenerico(titulo, subtitulo);
 					}
 				} else {
@@ -539,172 +599,213 @@ export class CocherasPage {
 		var mismaCochera: boolean = false;
 		//debugger;
 		
-		this.reservasService.getReservasByMailAndFechaRese(v_mail, v_fecha).then((data) => {
+		this.reservasService.getReservasByFechaRese(v_fecha).then((data) => {
 			allreservasArray = data;
 			var z = 0;
 			var temporal = [];
+			var temporalReservasOtrosUsuarios = [];
+			var cocherasResevadasOtrosUsuarios: Array<string> = [];
 			var horariosDisponibles = [];
 			var horaDesdeCampoHora: number = Number((horaDesde).substr(0,2));
 			var horaHastaCampoHora: number = Number((horaHasta).substr(0,2));
 			var p;
-			var contadorIncorrectos = 0;
+			
+			debugger;
 			
 			if(horaDesdeCampoHora <= horaHastaCampoHora){
 				
-				if((horaHastaCampoHora - horaDesdeCampoHora) >= 1 && (Number(horaHasta.replace(":","")) - Number(horaDesde.replace(":",""))) >= 100){
-			
-					for (p = 0; p < allreservasArray.length; p++) {
-						if (allreservasArray[p].fechaRese.substr(0, 10) != v_fecha.substr(0, 10)) {
-							contadorIncorrectos = contadorIncorrectos + 1;
-						}
-					}
-					
-					while(z < allreservasArray.length) {
-						
-						//Busco reservas del mismo usuario sobre otras cocheras, para el día en el que quiere reservar una.
-						if (allreservasArray[z].mail == v_mail && allreservasArray[z].fechaRese.substr(0, 10) == v_fecha.substr(0, 10)){
-							temporal.push(allreservasArray[z].horaDesde);
-							temporal.push(allreservasArray[z].horaHasta);
-							temporal.sort();
-						}
-						
-					z = z + 1;
-					}
-
-					
-					
-					//if (!mismaCochera){
-						
-						var numeroHoraDesde = Number(horaDesde.replace(":",""));
-						var numeroHoraHasta = Number(horaHasta.replace(":",""));
-					
-						//Itero los los resultados de la búsqueda y comparo horarios.
-						//if(temporal.length == (allreservasArray.length)*2){
-						
-							var m: number = temporal.length;
-							var gruposN = m/2;
-							var n : number = 0;
-							var j : number = 0;
-							var iterador;
-							var c;
-							var horaDesde1Numero = 2000;
-							var horaHasta1Numero = 0;
-							var horaInicial = 800;
-							var horaFinal = 2000;
+				if(Number(horaDesde.replace(":","")) >= 800 && Number(horaHasta.replace(":","")) <= 2000){
+					//debugger;
+					if((horaHastaCampoHora - horaDesdeCampoHora) >= 1 && (Number(horaHasta.replace(":","")) - Number(horaDesde.replace(":",""))) >= 100){
+				
+						while(z < allreservasArray.length) {
 							
-							if(temporal.length > 0){
-								var horaDesdeInicial = Number(temporal[j].replace(":",""));
-								var horaHastaInicial = Number(temporal[j+1].replace(":",""));
-								
-								if (horaInicial < horaDesdeInicial){
-										horariosDisponibles.push(horaInicial);
-										horariosDisponibles.push(horaDesdeInicial);
-								}
-								
-								for(iterador = 1; iterador < gruposN; iterador++){
-									
-									j = j + 2;
-									
-									var horaDesdeActual = Number(temporal[j].replace(":",""));
-									var horaHastaActual = Number(temporal[j+1].replace(":",""));
-
-									if (horaHastaInicial < horaDesdeActual){
-										horariosDisponibles.push(horaHastaInicial);
-										horariosDisponibles.push(horaDesdeActual);
-									}
-									
-									horaDesdeInicial = horaDesdeActual;
-									horaHastaInicial = horaHastaActual;
-								}
-								
-								if (horaHastaInicial < horaFinal){
-										horariosDisponibles.push(horaHastaInicial);
-										horariosDisponibles.push(horaFinal);
-								}
-							
-							//Si no tengo horarios disponibles entre las reservas existentes
-							if (horariosDisponibles.length == 0){
-								
-								for(iterador = 0;  iterador < m; iterador++){
-									
-									var minimo = Number(temporal[n].replace(":",""));
-									
-									if(horaDesde1Numero > minimo){
-										horaDesde1Numero = minimo;
-									}
-									
-									var maximo = Number(temporal[n].replace(":",""));
-									
-									if(horaHasta1Numero < maximo){
-										horaHasta1Numero = maximo;
-									}
-									
-									n = n + 1;
-								}
-							
-								outerThis.error = false;
-								//var horaDesde1Numero = Number(horaDesde1.replace(":",""));
-								//var horaHasta1Numero = Number(horaHasta1.replace(":",""));
-								
-									//Si extiendo hora Hasta y se me superpone con otra reserva existente.
-									if ((numeroHoraDesde < horaDesde1Numero) && (numeroHoraHasta >= horaDesde1Numero) && (numeroHoraHasta < horaHasta1Numero)){
-										outerThis.error = true;
-									}
-									
-									//Si atraso hora Desde y se me superpone con otra reserva existente.
-									if ((numeroHoraDesde >= horaDesde1Numero) && (numeroHoraDesde < horaHasta1Numero) && (numeroHoraHasta > horaHasta1Numero)){
-										outerThis.error = true;
-									}
-									
-									//Si hora Desde y hora Hasta me quedan dentro de otra reserva existente.
-									if ((numeroHoraDesde >= horaDesde1Numero) && (numeroHoraDesde < horaHasta1Numero) && (numeroHoraHasta > horaDesde1Numero) && (numeroHoraHasta <= horaHasta1Numero)){
-										outerThis.error = true;
-									}
-									
-									//Si hora Desde y hora Hasta engloban otra reserva existente.
-									if ((numeroHoraDesde <= horaDesde1Numero) && (numeroHoraHasta >= horaHasta1Numero)){
-										outerThis.error = true;
-									}
-									
+							//Busco reservas del mismo usuario sobre otras cocheras, para el día en el que quiere reservar una.
+							if (allreservasArray[z].fechaRese.substr(0, 10) == v_fecha.substr(0, 10)){
+								if(allreservasArray[z].mail == v_mail){
+									temporal.push(allreservasArray[z].horaDesde);
+									temporal.push(allreservasArray[z].horaHasta);
+									temporal.sort();
 								} else {
-									
-									var h: number = horariosDisponibles.length;
-									var gruposH = h/2;
-									var iteradorDisponibles;
-									var l = 0;
-									
-									outerThis.error = true;
-									
-									for(iteradorDisponibles = 0; iteradorDisponibles < gruposH; iteradorDisponibles++){
-										
-										var horaDesdeDisponible = horariosDisponibles[l];
-										var horaHastaDisponible = horariosDisponibles[l+1];
-											
-										//Si los horarios que quiero reservar coinciden con algún horario disponible.
-										if ((numeroHoraDesde >= horaDesdeDisponible) && (numeroHoraHasta <= horaHastaDisponible)){
-											
-											if(((numeroHoraDesde > 800 && horaHastaDisponible > 800) && ((numeroHoraDesde - horaDesdeDisponible) < 100)) 
-												|| (((horaHastaDisponible - numeroHoraHasta) < 100) && (numeroHoraDesde < 2000 && horaHastaDisponible < 2000))){
-												outerThis.extenderReserva = true;
-											} else {
-												outerThis.error = false;
-											}
-										}
-
-										l = l + 2;
-									}
-						
+									temporalReservasOtrosUsuarios.push(allreservasArray[z].horaDesde);
+									temporalReservasOtrosUsuarios.push(allreservasArray[z].horaHasta);
+									temporalReservasOtrosUsuarios.sort();
+									cocherasResevadasOtrosUsuarios.push(allreservasArray[z].espacioCochera);
 								}
-							} else {
-								outerThis.error = false;
+								
 							}
 							
-						/*} else {
-								outerThis.errorMismaCochera = true;
-						}*/
-					} else {
-						outerThis.errorLimiteHoras = true;
-					}
+						z = z + 1;
+						}
+
+						debugger;
+						
+						//if (!mismaCochera){
+							
+							var numeroHoraDesde = Number(horaDesde.replace(":",""));
+							var numeroHoraHasta = Number(horaHasta.replace(":",""));
+						
+							//Itero los los resultados de la búsqueda y comparo horarios.
+							//if(temporal.length == (allreservasArray.length)*2){
+							
+								var n : number = 0;
+								var j : number = 0;
+								var iterador;
+								var c;
+								var r;
+								var mismaCochera = false;
+								var horaDesde1Numero = 2000;
+								var horaHasta1Numero = 0;
+								var horaInicial = 800;
+								var horaFinal = 2000;
+								var temporalJoin = [];
+								
+								for(r = 0; r < cocherasResevadasOtrosUsuarios.length; r++){
+									if (Number(cocherasResevadasOtrosUsuarios[r]) == espacio && mismaCochera == false){
+										mismaCochera = true;
+									}
+								}
+								
+								if (temporal.length > 0){
+									if(mismaCochera == true){
+										temporalJoin = temporal.concat(temporalReservasOtrosUsuarios);
+									} else {
+										temporalJoin = temporal;
+									}
+								} else {
+									if(mismaCochera == true){
+										temporalJoin = temporalReservasOtrosUsuarios;
+									}
+								}
+								
+								temporalJoin.sort();
+								
+								if(temporalJoin.length > 0){
+										
+									var m: number = temporalJoin.length;
+									var gruposN = m/2;
+									
+									//if(temporalJoin.length > 0){
+										var horaDesdeInicial = Number(temporalJoin[j].replace(":",""));
+										var horaHastaInicial = Number(temporalJoin[j+1].replace(":",""));
+										
+										if (horaInicial < horaDesdeInicial){
+												horariosDisponibles.push(horaInicial);
+												horariosDisponibles.push(horaDesdeInicial);
+										}
+										
+										for(iterador = 1; iterador < gruposN; iterador++){
+											
+											j = j + 2;
+											
+											var horaDesdeActual = Number(temporalJoin[j].replace(":",""));
+											var horaHastaActual = Number(temporalJoin[j+1].replace(":",""));
+
+											if (horaHastaInicial < horaDesdeActual){
+												horariosDisponibles.push(horaHastaInicial);
+												horariosDisponibles.push(horaDesdeActual);
+											}
+											
+											horaDesdeInicial = horaDesdeActual;
+											horaHastaInicial = horaHastaActual;
+										}
+										
+										if (horaHastaInicial < horaFinal){
+												horariosDisponibles.push(horaHastaInicial);
+												horariosDisponibles.push(horaFinal);
+										}
+									debugger;
+									//Si no tengo horarios disponibles entre las reservas existentes
+									if (horariosDisponibles.length == 0){
+										
+										for(iterador = 0;  iterador < m; iterador++){
+											
+											var minimo = Number(temporalJoin[n].replace(":",""));
+											
+											if(horaDesde1Numero > minimo){
+												horaDesde1Numero = minimo;
+											}
+											
+											var maximo = Number(temporalJoin[n].replace(":",""));
+											
+											if(horaHasta1Numero < maximo){
+												horaHasta1Numero = maximo;
+											}
+											
+											n = n + 1;
+										}
+									
+										outerThis.error = false;
+										//var horaDesde1Numero = Number(horaDesde1.replace(":",""));
+										//var horaHasta1Numero = Number(horaHasta1.replace(":",""));
+										
+											//Si extiendo hora Hasta y se me superpone con otra reserva existente.
+											if ((numeroHoraDesde < horaDesde1Numero) && (numeroHoraHasta >= horaDesde1Numero) && (numeroHoraHasta < horaHasta1Numero)){
+												outerThis.error = true;
+											}
+											
+											//Si atraso hora Desde y se me superpone con otra reserva existente.
+											if ((numeroHoraDesde >= horaDesde1Numero) && (numeroHoraDesde < horaHasta1Numero) && (numeroHoraHasta > horaHasta1Numero)){
+												outerThis.error = true;
+											}
+											
+											//Si hora Desde y hora Hasta me quedan dentro de otra reserva existente.
+											if ((numeroHoraDesde >= horaDesde1Numero) && (numeroHoraDesde < horaHasta1Numero) && (numeroHoraHasta > horaDesde1Numero) && (numeroHoraHasta <= horaHasta1Numero)){
+												outerThis.error = true;
+											}
+											
+											//Si hora Desde y hora Hasta engloban otra reserva existente.
+											if ((numeroHoraDesde <= horaDesde1Numero) && (numeroHoraHasta >= horaHasta1Numero)){
+												outerThis.error = true;
+											}
+											
+										} else {
+											
+											var h: number = horariosDisponibles.length;
+											var gruposH = h/2;
+											var iteradorDisponibles;
+											var l = 0;
+											
+											outerThis.error = true;
+											
+											for(iteradorDisponibles = 0; iteradorDisponibles < gruposH; iteradorDisponibles++){
+												
+												var horaDesdeDisponible = horariosDisponibles[l];
+												var horaHastaDisponible = horariosDisponibles[l+1];
+													
+												//Si los horarios que quiero reservar coinciden con algún horario disponible.
+												if ((numeroHoraDesde >= horaDesdeDisponible) && (numeroHoraHasta <= horaHastaDisponible)){
+													
+													if(((numeroHoraDesde > 800 && horaHastaDisponible > 800) && ((numeroHoraDesde - horaDesdeDisponible) < 100)) 
+														|| (((horaHastaDisponible - numeroHoraHasta) < 100) && (numeroHoraDesde < 2000 && horaHastaDisponible < 2000))){
+														outerThis.extenderReserva = true;
+													} else {
+														outerThis.error = false;
+													}
+												}
+
+												l = l + 2;
+											}
+								
+										}
+										/*} else {
+											outerThis.error = false;
+										}*/
+								} else {
+									outerThis.error = false;
+								}
+									/*} else {
+											outerThis.errorMismaCochera = true;
+									}*/
+								} else {
+									outerThis.errorLimiteHoras = true;
+								}
+					
+				} else {
+					outerThis.errorRangoHorarios = true;
+				}
+					
+					
 			} else {
 				outerThis.errorHorarios = true;
 			}
@@ -834,9 +935,6 @@ export class CocherasPage {
   });
   alert.present();
 }
-  
-  
-  
   
   
   ionViewDidLoad() {

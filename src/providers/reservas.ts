@@ -45,6 +45,25 @@ export class Reservas {
  
   }
   
+  getReservasByFechaRese(fecha: string){
+ 
+    /*if (this.data) {
+      return Promise.resolve(this.data);
+    }*/
+	
+    return new Promise(resolve => {
+ 
+      this.http.get('http://localhost:8080/reserva/search/findByFechaRese?fechaRese=' + fecha)
+        .map(res => res.json())
+        .subscribe(data => {
+          this.data = data;
+          resolve(this.data);
+		  
+        });
+    });
+ 
+  }
+  
   getReservasByMail(mail: string){
  
     /*if (this.data) {

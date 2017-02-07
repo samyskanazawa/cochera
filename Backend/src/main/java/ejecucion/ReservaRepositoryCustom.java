@@ -10,5 +10,6 @@ public interface ReservaRepositoryCustom {
 	  
 	  
 	  List<Reserva> findByMailAndFechaRese(String mail, String fechaRese);
+	  List<Reserva> findByFechaRese(String fechaRese);
 	}
 

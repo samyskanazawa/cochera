@@ -30,4 +30,11 @@ public class ReservaSearchController {
 		  	List<Reserva> reserva = reservaRepository.findByMailAndFechaRese(mail, fechaRese);
 	        return new ResponseEntity<List<Reserva>>(reserva, HttpStatus.OK);
 	    }
+	  
+	  @RequestMapping(value = "/reserva/search/findByFechaRese", method = RequestMethod.GET)
+	    public HttpEntity<List<Reserva>> findByFechaRese(String fechaRese) {
+
+		  	List<Reserva> reserva = reservaRepository.findByFechaRese(fechaRese);
+	        return new ResponseEntity<List<Reserva>>(reserva, HttpStatus.OK);
+	    }
 }
