@@ -178,13 +178,13 @@ export class CocherasPage {
 		   numerosMeses.push(i+1);
 	   }
 	   
-	   console.log(numerosMeses);
+	   //console.log(numerosMeses);
 	   
 	   return numerosMeses;
   }
   
   changeDate(fechaElegida) {
-	  debugger;
+	  //debugger;
 	  var iguales = this.validarFecha(new Date(fechaElegida).toISOString(), new Date(this.minDate).toISOString());
 	  this.flagColores = false;
 	  
@@ -207,6 +207,10 @@ export class CocherasPage {
 		  this.alertGenerico(titulo, subtitulo);
 	  }
   }
+  
+  firstToUpperCase( str: string ) {
+    return str.substr(0, 1).toUpperCase() + str.substr(1);
+}
   
     validarFecha(fecha1, fecha2) {
 	
@@ -372,14 +376,28 @@ export class CocherasPage {
 			var outerThis = this;
 			var vectorHoras = i;
 			var iteradorMails = 0;
+			var q;
 			
 			//Itero las reservas para agregar los tramos que las conforman como no disponibles 
 			for (item in mailTemporal){
-				this.buscarsUsuarios(mailTemporal[item], function (){
-						if (outerThis.allUsuariosArray.length >= 0 && i <= (mailTemporal.length)-1) {
-							var usuario = outerThis.allUsuariosArray[outerThis.allUsuariosArray.length-1];
-							v_nombreCompleto = usuario[0].nombre + " " + usuario[0].apellido;
-							v_telefono = usuario[0].telefono;
+				this.buscarsUsuarios(function (){
+						//if (outerThis.allUsuariosArray.length >= 0 && i <= (mailTemporal.length)-1) {
+							
+							var searchTerm = mailTemporal[iteradorMails];
+							//debugger;
+							var index = -1;
+							for(q = 0; q <= 1; q++) {
+								if (outerThis.allUsuariosArray[0][q].mail === searchTerm && index == -1) {
+									index = q;
+								}
+							}
+								
+							//debugger;
+							
+							var usuario = outerThis.allUsuariosArray[0][index];//[outerThis.allUsuariosArray.length-1];
+							v_nombreCompleto = usuario.nombre + " " + usuario.apellido;
+							//outerThis.firstToUpperCase((mailTemporal[iteradorMails].substring(0, mailTemporal[iteradorMails].indexOf(".")))) + " " + outerThis.firstToUpperCase((mailTemporal[iteradorMails].substring(mailTemporal[iteradorMails].indexOf(".") + 1, mailTemporal[iteradorMails].indexOf("@")))); // usuario[0].nombre + " " + usuario[0].apellido;
+							v_telefono = usuario.telefono;
 							var horaDesde = temporal[vectorHoras];
 							var horaHasta = temporal [vectorHoras+1];
 							var v_mail = mailTemporal[iteradorMails];
@@ -391,7 +409,7 @@ export class CocherasPage {
 							vectorHoras = vectorHoras + 2;
 							iteradorMails = iteradorMails + 1;
 							i++;
-						}
+						//}
 					});
 				}
 
@@ -411,8 +429,8 @@ export class CocherasPage {
   };
   
   
-  buscarsUsuarios (mail: string, callback) {
-	  this.usuariosService.getUsuariosByMail(mail).then((data) => {
+  buscarsUsuarios (callback) {
+	  this.usuariosService.getUsuarios().then((data) => {
 		this.allUsuariosArray.push(data);
 		callback();
 	});
