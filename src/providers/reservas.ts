@@ -135,11 +135,19 @@ export class Reservas {
 	var diaActual = new Date();
 	var hora = diaActual.getHours();
 	var minutos = diaActual.getMinutes();
+	var min;
 	//var horaActual = Number(hora.toString() + minutos.toString());
-	var horaActual = hora.toString() + ":" + minutos.toString();
 	var numeroHoraActual;
 	var esMiReserva: boolean = false;
-	var estado = "libre"
+	var estado = "libre";
+	
+	if (minutos < 10){
+		min = "0" + minutos.toString();
+	} else {
+		min = minutos.toString();
+	}
+	
+	var horaActual = hora.toString() + ":" + min;
 	
 	debugger;
 	
@@ -180,145 +188,146 @@ export class Reservas {
 	}
 		
 	if ((horaDesde != reserva.horaDesde) || (horaHasta != reserva.horaHasta)){
-	
-		if((numeroHoraDesde != numeroHoraHasta) && (numeroHoraDesde < numeroHoraHasta)){
-			
-			if(horaHastaCampoHora - horaDesdeCampoHora >= 1 && numeroHoraHasta - numeroHoraDesde >= 100){
-
-				if ((numeroHoraDesde >= numeroHoraActual) && (numeroHoraHasta <= 2000)){ 
-			
-				this.getReservasByFechaReseAndEstado(reserva.fechaRese, estado).then((data2) => {
+				
+			this.getReservasByFechaReseAndEstado(reserva.fechaRese, estado).then((data2) => {
 				
 				allreservasArray = data2;
 				z = 0;
 				debugger;
 					while(z < allreservasArray.length) {
-						
-						temporal.push(allreservasArray[z].horaDesde);
-						temporal.push(allreservasArray[z].horaHasta);
+						//Tomo los horarios de todas las reservas del usuario y de todas las reservas sobre la cochera sobre la que 
+						//el usuario está editando su reserva
+						if(reserva.espacioCochera == allreservasArray[z].espacioCochera || allreservasArray[z].mail == reserva.mail){
+							temporal.push(allreservasArray[z].horaDesde);
+							temporal.push(allreservasArray[z].horaHasta);
+						}
 						z = z + 1;	
 					}
-				
-					//temporal.sort();
 					
-					/*if(temporal.length == 2){
-						esMiReserva = true;
-					}*/
-					
-					console.log(temporal);
-					
+					//Saco del array temporal los horarios de la reserva que estoy editando
 					var posicionHoraDesde = temporal.indexOf(reserva.horaDesde);
 					temporal.splice(posicionHoraDesde, 1);
 					
 					var posicionHoraHasta = temporal.indexOf(reserva.horaHasta);
 					temporal.splice(posicionHoraHasta, 1);
 					
-					console.log(temporal);
+					if((numeroHoraDesde != numeroHoraHasta) && (numeroHoraDesde < numeroHoraHasta)){
+			
+						if(horaHastaCampoHora - horaDesdeCampoHora >= 1 && numeroHoraHasta - numeroHoraDesde >= 100){
+
+							//if (numeroHoraDesde >= numeroHoraActual){
+
+								debugger;
 					
-					//debugger;
-					
-					if(temporal.length == (allreservasArray.length)*2){
-						
-						var m: number = temporal.length;
-						var gruposN = m/2;
-						var n : number = 0;
-						var iterador;
-						
-						//if(!esMiReserva){
-						
-							for(iterador = 0; iterador<gruposN; iterador++){
+								//if(temporal.length == (allreservasArray.length)*2){
+									
+									var m: number = temporal.length;
+									var gruposN = m/2;
+									var n : number = 0;
+									var iterador;
+									
+									//if(!esMiReserva){
+									
+										for(iterador = 0; iterador<gruposN; iterador++){
+										debugger;	
+											var horaDesde1 = temporal[n];
+											var horaHasta1 = temporal [n+1];
 										
-								var horaDesde1 = temporal[n];
-								var horaHasta1 = temporal [n+1];
-							
-								var horaDesde1Numero = Number(horaDesde1.replace(":",""));
-								var horaHasta1Numero = Number(horaHasta1.replace(":","")); 
-							
+											var horaDesde1Numero = Number(horaDesde1.replace(":",""));
+											var horaHasta1Numero = Number(horaHasta1.replace(":","")); 
+											if(!error) {
+												//Si extiendo hora Hasta y se me superpone con otra reserva existente.
+												if ((numeroHoraDesde < horaDesde1Numero) && (numeroHoraHasta > horaDesde1Numero) && (numeroHoraHasta < horaHasta1Numero)){							
+														titulo = "Error";
+														subtitulo= "El horario de finalización seleccionado se superpone con los de otra reserva,<br> que abarca desde las " + horaDesde1 + " hs hasta las " + horaHasta1 + " hs";
+														error = true;
+												} else 
+												
+												//Si atraso hora Desde y se me superpone con otra reserva existente.
+												if ((numeroHoraDesde > horaDesde1Numero) && (numeroHoraDesde < horaHasta1Numero) && (numeroHoraHasta > horaHasta1Numero)){
+													titulo = "Error";
+													subtitulo = "El horario de inicio seleccionado se superpone con los de otra reserva,<br> que abarca desde las " + horaDesde1 + " hs hasta las " + horaHasta1 + " hs";
+													error = true;
+												} else 
+												
+												//Si hora Desde y hora Hasta me quedan dentro de otra reserva existente.
+												if ((numeroHoraDesde > horaDesde1Numero) && (numeroHoraDesde < horaHasta1Numero) && (numeroHoraHasta > horaDesde1Numero) && (numeroHoraHasta < horaHasta1Numero)){								
+														titulo = "Error";
+														subtitulo= "Los horarios seleccionados se superponen con los de otra reserva,<br> que abarca desde las " + horaDesde1 + " hs hasta las " + horaHasta1 + " hs";
+														error = true;								
+												} else 
+												
+												//Si hora Desde y hora Hasta engloban otra reserva existente.
+												if ((numeroHoraDesde < horaDesde1Numero) && (numeroHoraHasta > horaHasta1Numero)){
+													titulo = "Error";
+													subtitulo = "Los horarios seleccionados se superponen con los de otra reserva,<br> que abarca desde las " + horaDesde1 + " hs hasta las " + horaHasta1 + " hs";
+													error = true;
+												} else 
+													
+												//Si la reserva empieza en el mismo horario que otra pero termina antes
+												if ((numeroHoraDesde == horaDesde1Numero) && (numeroHoraHasta < horaHasta1Numero)){
+													titulo = "Error";
+													subtitulo = "El horario de finalización seleccionado se superpone con los de otra reserva,<br> que abarca desde las " + horaDesde1 + " hs hasta las " + horaHasta1 + " hs";
+													error = true;
+												} else 
+												
+												//Si la reserva termina en el mismo horario que otra pero empieza antes
+												if ((numeroHoraDesde < horaDesde1Numero) && (numeroHoraHasta == horaHasta1Numero)){
+													titulo = "Error";
+													subtitulo = "El horario de inicio seleccionado se superpone con los de otra reserva que abarca desde las " + horaDesde1 + " hs hasta las " + horaHasta1 + " hs";
+													error = true;
+												}
+											}
+											n = n + 2;
+										}
+									//}
+								//} 
 								
-							
-								//Si extiendo hora Hasta y se me superpone con otra reserva existente.
-								if ((numeroHoraDesde < horaDesde1Numero) && (numeroHoraHasta > horaDesde1Numero) && (numeroHoraHasta < horaHasta1Numero)){
-									if(reserva.estado == "Ocupado"){
-										titulo = "Error";
-										subtitulo= "El horario de finalización de la cochera ya posee una reserva";
-										error = true;									
-									}else{								
-										titulo = "Error";
-										subtitulo= "El horario de finalización seleccionado se superpone con otra reserva";
-										error = true;
-									}
-								}
-								
-								//Si atraso hora Desde y se me superpone con otra reserva existente.
-								if ((numeroHoraDesde > horaDesde1Numero) && (numeroHoraDesde < horaHasta1Numero) && (numeroHoraHasta > horaHasta1Numero)){
-									titulo = "Error";
-									subtitulo= "El horario de inicio seleccionado se superpone con otra reserva";
-									error = true;
-								}
-								
-								//Si hora Desde y hora Hasta me quedan dentro de otra reserva existente.
-								if ((numeroHoraDesde > horaDesde1Numero) && (numeroHoraDesde < horaHasta1Numero) && (numeroHoraHasta > horaDesde1Numero) && (numeroHoraHasta < horaHasta1Numero)){								
-										titulo = "Error";
-										subtitulo= "Los horarios seleccionados se superponen con otra reserva";
-										error = true;								
-								}
-								
-								//Si hora Desde y hora Hasta engloban otra reserva existente.
-								if ((numeroHoraDesde < horaDesde1Numero) && (numeroHoraHasta > horaHasta1Numero)){
-									titulo = "Error";
-									subtitulo= "Los horarios seleccionados se superponen con otra reserva";
-									error = true;
-								}
-							
-								n = n + 2;
-							}
-						//}
-				} 
-				
-				//debugger;
-				if (!error){
-					reserva.horaDesde = horaDesde;
-					reserva.horaHasta = horaHasta;
-			 
-					let headers = new Headers();
+								//debugger;
+								if (!error){
+									reserva.horaDesde = horaDesde;
+									reserva.horaHasta = horaHasta;
+							 
+									let headers = new Headers();
 
-					headers.append('Content-Type', 'application/json');
-				 
-					this.http.put('http://localhost:8080/reserva/' + id, JSON.stringify(reserva), {headers: headers})
-					  .subscribe(res => {
-					 //Si falla, se mostrará un mensaje de error
-						if(res.status < 200 || res.status >= 300) {
-							titulo = "Error";
-							subtitulo = "No se pudo ocupar la cochera";
-						} 
-						//Si todo sale bien, se muestr mensaje confirmándolo
-						else {
-							titulo ="Horarios";
-							subtitulo = "Los horarios fueron modificados exitosamente"
-							console.log(res.json());
+									headers.append('Content-Type', 'application/json');
+								 
+									this.http.put('http://localhost:8080/reserva/' + id, JSON.stringify(reserva), {headers: headers})
+									  .subscribe(res => {
+									 //Si falla, se mostrará un mensaje de error
+										if(res.status < 200 || res.status >= 300) {
+											titulo = "Error";
+											subtitulo = "No se pudo ocupar la cochera";
+										} 
+										//Si todo sale bien, se muestr mensaje confirmándolo
+										else {
+											titulo ="Horarios";
+											subtitulo = "Los horarios fueron modificados exitosamente"
+											console.log(res.json());
+										}
+										this.alertGenerico(titulo, subtitulo);
+									});
+
+									this.getReservasByMailAndFechaRese(reserva.mail, reserva.fechaRese);
+								} else {
+									this.alertGenerico(titulo, subtitulo);
+								}
+								
+								callback();
+
+							/*} else {
+								subtitulo = "Los horarios seleccionados deben estar entre las " + horaActual + " y las " + horaHastaMaximaString;
+								this.alertGenerico(titulo, subtitulo);
+			 
+							}*/
+						}else{
+							subtitulo = "El lapso mínimo de horarios debe ser de al menos una hora";
+							this.alertGenerico(titulo, subtitulo);
 						}
+					} else {
 						this.alertGenerico(titulo, subtitulo);
-					});
-
-					this.getReservasByMailAndFechaRese(reserva.mail, reserva.fechaRese);
-				} else {
-					this.alertGenerico(titulo, subtitulo);
-				}
-				callback();
-			  });
-		 } else {
-			 subtitulo = "Los horarios seleccionados deben estar entre las " + horaActual + " y las 20:00";
-			 this.alertGenerico(titulo, subtitulo);
-			 
-		 }
-	}else{
-		subtitulo = "El lapso mínimo de horarios debe ser de al menos una hora";
-		this.alertGenerico(titulo, subtitulo);
-	 }
-	 
-		} else {
-			this.alertGenerico(titulo, subtitulo);
-		}
+					}	
+			});
 	}
   
 }
