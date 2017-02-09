@@ -377,6 +377,7 @@ export class CocherasPage {
 			var vectorHoras = i;
 			var iteradorMails = 0;
 			var q;
+			var index = -1;
 			
 			//Itero las reservas para agregar los tramos que las conforman como no disponibles 
 			for (item in mailTemporal){
@@ -385,9 +386,9 @@ export class CocherasPage {
 							
 							var searchTerm = mailTemporal[iteradorMails];
 							//debugger;
-							var index = -1;
-							for(q = 0; q <= 1; q++) {
-								if (outerThis.allUsuariosArray[0][q].mail === searchTerm && index == -1) {
+							
+							for(q = 0; q < outerThis.allUsuariosArray[0].length; q++) {
+								if (outerThis.allUsuariosArray[0][q].mail == searchTerm && index == -1) {
 									index = q;
 								}
 							}

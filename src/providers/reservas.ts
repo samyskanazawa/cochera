@@ -274,7 +274,7 @@ export class Reservas {
 												//Si la reserva termina en el mismo horario que otra pero empieza antes
 												if ((numeroHoraDesde < horaDesde1Numero) && (numeroHoraHasta == horaHasta1Numero)){
 													titulo = "Error";
-													subtitulo = "El horario de inicio seleccionado se superpone con los de otra reserva que abarca desde las " + horaDesde1 + " hs hasta las " + horaHasta1 + " hs";
+													subtitulo = "El horario de inicio seleccionado se superpone con los de otra reserva,<br> que abarca desde las " + horaDesde1 + " hs hasta las " + horaHasta1 + " hs";
 													error = true;
 												}
 											}
