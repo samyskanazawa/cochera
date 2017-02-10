@@ -4,6 +4,7 @@ import { HomePage } from '../home/home';
 import { MisReservasPage } from '../mis-reservas/mis-reservas';
 import { CocherasPage } from '../cocheras/cocheras';
 import { Reservas } from '../../providers/reservas';
+import { Usuarios } from '../../providers/usuarios';
 import { AlertController } from 'ionic-angular';
 
 @Component({
@@ -19,16 +20,46 @@ export class TabsPage {
   private tieneReserva:boolean;
   private estaOcupandoCochera:boolean;
   private mail: string = "hernan.ruiz@softtek.com";
+  private usuarioLogeado;
+  private allUsuariosArray = [];
   private fechaRese = new Date().toISOString();
   private actualiza = false;
   reservas: any;
   loading: Loading;
 
 
-  constructor(private nav: NavController, public alertCtrl: AlertController, public reservasService: Reservas, private loadingCtrl: LoadingController ) {
+  constructor(private nav: NavController, public alertCtrl: AlertController, public reservasService: Reservas, private loadingCtrl: LoadingController, private usuariosService: Usuarios) {
 				this.estaOcupandoCochera = false;
 				this.tieneReserva = false;
+				this.getUsuarioLogeado();
   }
+  
+  getUsuarioLogeado(){
+	  
+	  var outerThis = this;
+	  var q;
+	  var index = -1;
+	  this.buscarsUsuarios(function(){
+			
+		var searchTerm = outerThis.mail;
+		
+		for(q = 0; q < outerThis.allUsuariosArray[0].length; q++) {
+			if (outerThis.allUsuariosArray[0][q].mail == searchTerm && index == -1) {
+				index = q;
+			}
+		}
+		
+		outerThis.usuarioLogeado = outerThis.allUsuariosArray[0][index];
+	});
+  }
+  
+    buscarsUsuarios (callback) {
+	  this.usuariosService.getUsuarios().then((data) => {
+		this.allUsuariosArray.push(data);
+		callback();
+	});
+  }
+  
   
     alertaReserva(reserva) {  
 	
@@ -140,6 +171,86 @@ export class TabsPage {
 	  });
 	  alert.present();
     }
+	
+	
+	modificarCelularAlert(titulo: string, subtitulo: string) {
+	let prompt = this.alertCtrl.create({
+		  title: titulo,
+		  inputs: [
+			{
+			  name: 'telefono',
+			  placeholder: 'Ingrese su número de teléfono',
+			  type: 'number',
+			  value: this.usuarioLogeado.telefono
+			},
+		  ],
+		  message: subtitulo,
+		  buttons: [
+			{
+			  text: 'Guardar',
+			  handler: data => {
+				  debugger;
+				  if((data.telefono).length >= 10){
+					var mensaje;
+					var outerThis = this;
+					this.usuariosService.habilitarUsuario(this.usuarioLogeado, mensaje, data.telefono, function(mensajeADevolver: string){
+						if (mensajeADevolver == "Datos actualizados"){
+							var tituloCorrecto = "Datos Actualizados";
+							var subtituloCorrecto = "Los datos fueron actualizados correctamente";
+							outerThis.getUsuarioLogeado();
+							outerThis.alertGenerico(tituloCorrecto, subtituloCorrecto);
+						} else {
+							subtitulo = "<center><b>Error. No se pudo actualizar la informacion.</b></center><br><br>" + subtitulo;
+							outerThis.modificarCelularAlert(titulo, subtitulo);
+						}
+					});
+				  } else {
+					  subtitulo = "<center><b>Formato de número telefónico inválido.</b></center><br><br>" + subtitulo; 
+					  this.modificarCelularAlert(titulo, subtitulo);
+				  }
+			  }
+			},
+			 {
+			  text: 'Cerrar',
+			  role: 'cancel',
+			},
+		  ]
+		});
+		prompt.present();
+	}
+	
+  
+   salirAlert() {
+	let alert = this.alertCtrl.create({
+    title: "Salir",
+    subTitle: "Desea salir de la aplicación",
+    buttons: [
+      {
+        text: 'Si',
+        role: 'cancel',
+      },
+	  {
+        text: 'No',
+        role: 'cancel',
+      },
+    ]
+  });
+  alert.present();
+}
+
+   alertGenerico(titulo: string, subtitulo: string) {
+	let alert = this.alertCtrl.create({
+    title: titulo,
+    subTitle: subtitulo,
+    buttons: [
+      {
+        text: 'OK',
+        role: 'cancel',
+      },
+    ]
+  });
+  alert.present();
+}
   
   
     getHoraActual(){	

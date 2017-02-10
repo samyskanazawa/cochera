@@ -8,7 +8,7 @@ export class User {
   isLogged: boolean;
   rememberMe: boolean;
  
-  constructor(name: string, email: string, isLogged: boolean, rememberMe: boolean ,password2: string) {
+  constructor(name: string, email: string, isLogged: boolean, rememberMe: boolean, password2: string) {
     this.name = name;
     this.email = email;
 	this.isLogged = isLogged;
@@ -20,30 +20,31 @@ export class User {
 export class AuthService {
   currentUser: User;
  
-  public login(credentials) {
-	  //debugger;
-	  
-    if (credentials.email === null || credentials.password === null) {
-      return Observable.throw("Por favor complete los campos para ingresar");
-    } else {
+  public login(email: string, password: string, usuario) {
+	  debugger;
 		
-		/*
-			if(res.status == 401) {
-					this.nav.setRoot(TabsPage)
-			} 
-		*/
+		if(usuario.habilitado == false){
+			var error = "Usuario no habilitado";
+			return error; 
+		} else {
 		
 		
-		
-      return Observable.create(observer => {
-        // At this point make a request to your backend to make a real check!
-        let access = (credentials.password !== "pass" && credentials.email !== "email");
-        //this.currentUser = new User('Simon', 'saimon@devdactic.com');
-        observer.next(access);
-		//this.setLogged(true);
-        observer.complete();
-      });
-    }
+			/*
+				if(res.status == 401) {
+						this.nav.setRoot(TabsPage)
+				} 
+			*/
+			
+			  return Observable.create(observer => {
+				// At this point make a request to your backend to make a real check!
+				let access = (password !== "pass" && email !== "email");
+				//this.currentUser = new User('Simon', 'saimon@devdactic.com');
+				observer.next(access);
+				//this.setLogged(true);
+				observer.complete();
+			  });
+		}
+    
   }
   
   /*public setLogged (isLogged: boolean) {
@@ -56,7 +57,7 @@ export class AuthService {
   
   public boolean isChecked(isChecked: boolean) {
     this.isChecked = isChecked;
-  }*/
+  }
   
   public register(credentials) {
     if (credentials.email === null || credentials.password === null|| credentials.password === credentials.password2) {
@@ -80,5 +81,5 @@ export class AuthService {
       observer.next(true);
       observer.complete();
     });
-  }
+  }*/
 }

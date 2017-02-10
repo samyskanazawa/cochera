@@ -3,9 +3,9 @@ import { NavController, AlertController, LoadingController, Loading } from 'ioni
 import { AuthService } from '../../providers/auth-service';
 import { TabsPage } from '../tabs/tabs';
 import { RegisterPage } from '../register/register';
+import { Usuarios } from '../../providers/usuarios';
 
 
- 
 @Component({
   selector: 'page-login',
   templateUrl: 'login-page.html'
@@ -13,8 +13,9 @@ import { RegisterPage } from '../register/register';
 export class LoginPage {
   loading: Loading;
   registerCredentials = {email: '', password: ''};
+  private allUsuariosArray = [];
  
-  constructor(private nav: NavController, private auth: AuthService, private alertCtrl: AlertController, private loadingCtrl: LoadingController) {}
+  constructor(private nav: NavController, private auth: AuthService, private alertCtrl: AlertController, private loadingCtrl: LoadingController, private usuariosService: Usuarios) {}
  
  /*validate(password) {
 	  if (password.length < 8) {
@@ -36,20 +37,75 @@ export class LoginPage {
 
  
   public login() {
-    this.showLoading()
-    this.auth.login(this.registerCredentials).subscribe(allowed => {
-      if (allowed) {
-        setTimeout(() => {
-        this.loading.dismiss();
-        this.nav.setRoot(TabsPage)
-        });
-      } else {
-        this.showError("Acceso Denegado");
-      }
-    },
-    error => {
-      this.showError("Por favor complete los campos");
-    });
+	  
+	var outerThis = this;
+	var q;
+	var index = -1;
+    this.showLoading();
+	
+	if (this.registerCredentials.email === null || this.registerCredentials.password === null) {
+      var titulo = "Error";
+	  var subtitulo = "Por favor complete los campos para ingresar";
+	  this.alertGenerico(titulo, subtitulo);
+    } else {
+		
+		this.buscarsUsuarios(function(){
+			
+			var searchTerm = outerThis.registerCredentials.email;
+			
+			for(q = 0; q < outerThis.allUsuariosArray[0].length; q++) {
+				if (outerThis.allUsuariosArray[0][q].mail == searchTerm && index == -1) {
+					index = q;
+				}
+			}
+			var usuario = outerThis.allUsuariosArray[0][index];
+			
+			if (usuario == null){
+				var titulo = "Acceso denegado";
+				var subtitulo = "Mail no autorizado";
+				outerThis.alertGenerico(titulo, subtitulo);
+			} else {
+				
+				var mensaje = outerThis.auth.login(outerThis.registerCredentials.email, outerThis.registerCredentials.password, usuario);
+				
+				if (mensaje == "Usuario no habilitado"){
+					var titulo = "Acceso denegado";
+					var subtitulo = "No se encuentra habilitado para utilizar la aplicación. Por favor ingrese su teléfono para continuar";
+					outerThis.promptGenerico(titulo, subtitulo, usuario);
+				} else {
+					setTimeout(() => {
+						
+						outerThis.nav.setRoot(TabsPage);
+					});
+				}
+			}
+		});
+	
+		this.loading.dismiss();
+	
+	
+	
+		/*this.auth.login(usuario).subscribe(allowed => {
+		  if (allowed) {
+			setTimeout(() => {
+			this.loading.dismiss();
+			this.nav.setRoot(TabsPage);
+			});
+		  } else {
+			this.showError("Acceso Denegado");
+		  }
+		},
+		error => {
+		  this.showError("Por favor complete los campos");
+		});*/
+	}
+  }
+  
+  buscarsUsuarios (callback) {
+	  this.usuariosService.getUsuarios().then((data) => {
+		this.allUsuariosArray.push(data);
+		callback();
+	});
   }
  
   showLoading() {
@@ -97,6 +153,69 @@ export class LoginPage {
     });
     alert.present(prompt);
   }
+  
+   alertGenerico(titulo: string, subtitulo: string) {
+    setTimeout(() => {
+      this.loading.dismiss();
+    });
+ 
+    let alert = this.alertCtrl.create({
+      title: titulo,
+      subTitle: subtitulo,
+      buttons:  [
+			{
+			  text: 'OK',
+			  handler: data => {
+				  if(titulo == "Datos Actualizados"){
+						this.nav.setRoot(TabsPage);
+					}
+			  }
+			},
+		  ]
+    });
+    alert.present(prompt);
+  }
+  
+   promptGenerico(titulo: string, subtitulo: string, usuario) {
+	let prompt = this.alertCtrl.create({
+		  title: titulo,
+		  inputs: [
+			{
+			  name: 'telefono',
+			  placeholder: 'Ingrese su número de teléfono',
+			  type: 'number',		  
+			},
+		  ],
+		  message: subtitulo,
+		  buttons: [
+			{
+			  text: 'Guardar',
+			  handler: data => {
+				  if((data.telefono).length >= 10){
+					var mensaje;
+					var outerThis = this;
+					this.usuariosService.habilitarUsuario(usuario, mensaje, data.telefono, function(mensajeADevolver: string){
+						if (mensajeADevolver == "Datos actualizados"){
+							var tituloCorrecto = "Datos Actualizados";
+							var subtituloCorrecto = "Los datos fueron actualizados correctamente";
+							outerThis.alertGenerico(tituloCorrecto, subtituloCorrecto);
+						} else {
+							subtitulo = "<center><b>Error. No se pudo actualizar la informacion.</b></center><br><br>" + subtitulo;
+							outerThis.promptGenerico(titulo, subtitulo, usuario);
+						}
+					});
+				  } else {
+					  subtitulo = "<center><b>Formato de número telefónico inválido.</b></center><br><br>" + subtitulo; 
+					  this.promptGenerico(titulo, subtitulo, usuario);
+				  }
+			  }
+			},
+			 {
+			  text: 'Cerrar',
+			  role: 'cancel',
+			},
+		  ]
+		});
+		prompt.present();
+	}
 }
-	
-

@@ -13,7 +13,7 @@ export class RegisterPage {
  
   constructor(private nav: NavController, private auth: AuthService, private alertCtrl: AlertController) {}
  
-  public register() {
+  /*public register() {
     this.auth.register(this.registerCredentials).subscribe(success => {
       if (success) {
         this.createSuccess = true;
@@ -26,7 +26,7 @@ export class RegisterPage {
     error => {
       this.showPopup("Error", error);
     });
-  }
+  }*/
  
   showPopup(title, text) {
     let alert = this.alertCtrl.create({

@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { AlertController, LoadingController, Loading } from 'ionic-angular';
+import { Http, Headers } from '@angular/http';
+import { TabsPage } from '../pages/tabs/tabs';
+import { LoginPage } from '../../pages/login-page/login-page';
 import 'rxjs/add/operator/map';
 
 /*
@@ -12,8 +15,9 @@ import 'rxjs/add/operator/map';
 export class Usuarios {
 
 data: any;
+private mensaje: string;
  
-  constructor(public http: Http) {
+  constructor(public http: Http, private alertCtrl: AlertController) {
     this.data = null;
   }
  
@@ -53,5 +57,62 @@ data: any;
     });
  
   }
+  
+  habilitarUsuario(usuario, mensaje, telefono, callback){
+ 
+	var mensajeADevolver;
+	//var booleano: boolean;
+	usuario.telefono = telefono;
+	usuario.habilitado = true;
+	var outerThis = this;
+
+    this.actualizarDatosUsuario(usuario, mensaje, function(){
+		mensaje = outerThis.mensaje;
+		callback(mensaje);
+	});
+  }
+  
+  actualizarDatosUsuario(usuario: any, mensaje: string, callback){
+	  
+	  let id = (usuario._links.self.href).substr(30);
+	  let headers = new Headers();
+	  headers.append('Content-Type', 'application/json');
+	  var outerThis = this;
+   	  var titulo;
+	  var subtitulo;
+	  
+	  this.http.put('http://localhost:8080/usuario/' + id, JSON.stringify(usuario), {headers: headers})
+      .subscribe(res => {
+		 //Si falla, se mostrará un mensaje de error
+		if(res.status < 200 || res.status >= 300) {
+			titulo = "Error";
+			subtitulo = "No se pudo actualizar la informacion";
+			this.alertGenerico(titulo, subtitulo);
+			this.mensaje = "No se pudo actualizar la informacion";
+		} 
+		//Si todo sale bien, se muestr mensaje confirmándolo
+		else {
+            console.log(res.json());
+			this.mensaje = "Datos actualizados";
+		}
+		 callback();
+      });
+	 
+	  
+  }
+  
+  alertGenerico(titulo: string, subtitulo: string) {
+	let alert = this.alertCtrl.create({
+    title: titulo,
+    subTitle: subtitulo,
+    buttons: [
+      {
+        text: 'OK',
+        role: "cancel",
+      },
+    ]
+  });
+  alert.present();
+}
 
 }
