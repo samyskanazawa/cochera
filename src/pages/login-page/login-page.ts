@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { NavController, AlertController, LoadingController, Loading } from 'ionic-angular';
 import { AuthService } from '../../providers/auth-service';
 import { TabsPage } from '../tabs/tabs';
-import { RegisterPage } from '../register/register';
 import { Usuarios } from '../../providers/usuarios';
 
 
@@ -17,13 +16,6 @@ export class LoginPage {
   private isChecked: boolean = false;
  
   constructor(private nav: NavController, private auth: AuthService, private alertCtrl: AlertController, private loadingCtrl: LoadingController, private usuariosService: Usuarios) {}
- 
- /*validate(password) {
-	  if (password.length < 8) {
-		this.showAdv("La contraseña debe ser mayor de 8 digitos")
-		this.registerCredentials.password="";
-	 }
- }*/
 
  validateEmail(email) {
 	 if (email != "" && ! /^\w+[a-zA-Z0-9_]+\.[a-zA-Z0-9_]+@softtek.com/.test(email)){
@@ -33,10 +25,6 @@ export class LoginPage {
 	 } 
  }
 
-  public createAccount() {
-    this.nav.push(RegisterPage);
-  }
-  
   recordarDatos(isChecked){
 	  if(isChecked){
 		  this.isChecked = false;

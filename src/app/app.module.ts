@@ -7,7 +7,6 @@ import { AuthService } from '../providers/auth-service';
 import { Reservas } from '../providers/reservas';
 import { Usuarios } from '../providers/usuarios';
 import { Cocheras } from '../providers/cocheras';
-import { RegisterPage } from '../pages/register/register';
 import { MisReservasPage } from '../pages/mis-reservas/mis-reservas';
 import { CocherasPage } from '../pages/cocheras/cocheras';
 import { TabsPage } from '../pages/tabs/tabs';
@@ -18,7 +17,6 @@ import { OrderBy } from '../pipes/sort';
     MyApp,
     HomePage,
     LoginPage,
-    RegisterPage,
 	TabsPage,
 	MisReservasPage,
 	CocherasPage,
@@ -34,7 +32,6 @@ import { OrderBy } from '../pipes/sort';
     MyApp,
     HomePage,
     LoginPage,
-    RegisterPage,
 	TabsPage,
 	MisReservasPage,
 	CocherasPage
