@@ -138,11 +138,13 @@ export class MisReservasPage {
 	
   }
   
-  showPrompt() {
+  showPrompt(subtitulo: string) {
 	var index = this.reservas.indexOf(this.indice);
 	//debugger;
 	var outerThis = this;
 	this.mensaje = "";
+	var titulo;
+	if (subtitulo == null || subtitulo == "undefined"){subtitulo == ""};
 
 	this.setMensaje(index, function(){
 		if(outerThis.reservasArray.length > 1){
@@ -161,13 +163,17 @@ export class MisReservasPage {
 			  value: outerThis.reservas[index].horaHasta,			  
 			},
 		  ],
-		  message: outerThis.mensaje + ". " + "<br>" + "<br>" + "<br>" + "<b/>Horario Desde: " +outerThis.reservas[index].horaDesde.fontcolor("negro") ,
+		  message: "<center><b>" + subtitulo + "</b></center>" + "<br>"+ "<br>" + outerThis.mensaje + ". " + "<br>" + "<br>" + "<b/>Horario Desde: " +outerThis.reservas[index].horaDesde.fontcolor("negro") + "<br>",
 		  buttons: [
 			{
 			  text: 'Guardar',
 			  handler: data => {
-				outerThis.reservasService.editReserva(outerThis.reservas[index], outerThis.reservas[index].horaDesde, data.hasta, function(){
-					outerThis.marcarRadioButton(outerThis.indice);
+				outerThis.reservasService.editReserva(outerThis.reservas[index], outerThis.reservas[index].horaDesde, data.hasta, function(subtitulo){
+					if (subtitulo == ""){
+						outerThis.marcarRadioButton(outerThis.indice);
+					} else if (subtitulo != "No se pudo ocupar la cochera" || subtitulo != "Los horarios fueron modificados exitosamente"){
+						outerThis.showPrompt(subtitulo);
+					}
 				});
 			  }
 			},
@@ -197,13 +203,17 @@ export class MisReservasPage {
 			  value: outerThis.reservas[index].horaHasta
 			},
 		  ],
-		  message: outerThis.mensaje,
+		  message: "<center><b>" + subtitulo + "</b></center>" + "<br>"+ "<br>" + outerThis.mensaje,
 		  buttons: [
 			{
 			  text: 'Guardar',
 			  handler: data => {
-				outerThis.reservasService.editReserva(outerThis.reservas[index], data.desde, data.hasta, function(){
-					outerThis.marcarRadioButton(outerThis.indice);
+				outerThis.reservasService.editReserva(outerThis.reservas[index], data.desde, data.hasta, function(subtitulo){
+					if (subtitulo == ""){
+						outerThis.marcarRadioButton(outerThis.indice);
+					} else if (subtitulo != "No se pudo ocupar la cochera" || subtitulo != "Los horarios fueron modificados exitosamente"){
+						outerThis.showPrompt(subtitulo);
+					}
 				});
 				
 			  }
@@ -277,5 +287,18 @@ export class MisReservasPage {
   alert.present();
 }
 
+  alertGenerico(titulo: string, subtitulo: string) {
+	let alert = this.alertCtrl.create({
+    title: titulo,
+    subTitle: subtitulo,
+    buttons: [
+      {
+        text: 'OK',
+        role: 'cancel',
+      },
+    ]
+  });
+  alert.present();
+}
   
 }
