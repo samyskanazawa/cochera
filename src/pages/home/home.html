@@ -5,25 +5,22 @@
 		<h1 class="titulo">Estado Actual de las Cocheras</h1>
 		<div>
 		<ion-row class="row header">
-		  <ion-col width-50  class="col" style="text-align: center">Dirección y Espacio</ion-col>
+		  <ion-col width-40  class="col" style="text-align: center">Dirección y Espacio</ion-col>
 		  <ion-col width-15  class="col" style="text-align: center">Horario</ion-col>
-		  <ion-col width-15  class="col" style="text-align: center">Estado</ion-col>
-		  <ion-col width-10  class="col" style="text-align: center">Usuario</ion-col>
+		  <ion-col width-15  class="col" style="text-align: center">Usuario</ion-col>
 		  <ion-col width-10 class="col" style="text-align: center"></ion-col>
 		</ion-row>		
 		<ion-list radio-group>
 			<ion-row class="row" *ngFor="let item of disponibles | orderBy : ['-v_Dispo']; let i of disponibles.length" [ngStyle]="{'background-color': devolverColorFilaDisponible(i)}">
-			<ion-col width-50 class="col" style="text-align: center">{{item.v_nombre}} - ({{item.v_espacio}})</ion-col>
+			<ion-col width-40 class="col" style="text-align: center">{{item.v_nombre}} - ({{item.v_espacio}})</ion-col>
 			<ion-col width-15  class="col" style="text-align: center">{{item.horaDesde}}<br>{{item.horaHasta}}</ion-col>
-		    <ion-col width-15 class="col" style="text-align: center">Disponible</ion-col>
-		    <ion-col width-10  class="col" style="text-align: center"></ion-col>
+		    <ion-col width-15  class="col" style="text-align: center"></ion-col>
 			<ion-col width-10 class="col" style="text-align: center"><ion-radio (click)="marcarRadioCocheraDisponible(i)"></ion-radio></ion-col>			
 			</ion-row>			
 			<ion-row class="row" *ngFor="let item of noDisponibles | orderBy : ['v_Dispo']; let i of noDisponibles.length" [ngStyle]="{'background-color': devolverColorFilaNoDisponible(i)}">
-			<ion-col width-50 class="col"  style="text-align: center">{{item.v_nombre}} - ({{item.v_espacio}})</ion-col>
+			<ion-col width-40 class="col"  style="text-align: center">{{item.v_nombre}} - ({{item.v_espacio}})</ion-col>
 			<ion-col width-15 class="col"  style="text-align: center">{{item.horaDesde}}<br/>{{item.horaHasta}}</ion-col>
-			<ion-col width-15 class="col" style="text-align: center">No Disponible</ion-col>
-			<ion-col width-10 class="col"  style="text-align: center">{{item.v_nombreCompleto}}</ion-col>
+			<ion-col width-15 class="col"  style="text-align: center">{{item.v_nombreCompleto}}</ion-col>
 			<ion-col width-10 class="col"  style="text-align: center"><ion-radio  (click)="marcarRadioCocheraNoDisponible(i)"></ion-radio></ion-col>
 			</ion-row>			
 		</ion-list>
@@ -34,6 +31,14 @@
 		  <button ion-button type="button" style="color: #222;"   [disabled]="indiceOcupado==null" (click)="ocuparCochera()" class="boton"><ion-label style="text-align: center">Ocupar: <ion-icon name="create"></ion-icon></ion-label></button>
           <button ion-button type="button" style="color: #222;" [disabled]="indiceCocheraNoDisponible==null"  class="submit-btn"><ion-label style="text-align: center">Llamar:<ion-icon name="call"></ion-icon></ion-label></button>
         </ion-col>
+		<ion-col>
+			<ion-label><b>Referencias:</b></ion-label>
+			<ion-row>
+				<ion-label style="background-color: #DAF291;" class="referencias">Disponible</ion-label>
+				<ion-label style="background-color: #FFFA93;" class="referencias">Disponible<br/>Parcialmente</ion-label>
+				<ion-label style="background-color: #FD7D7D;" class="referencias">No Disponible</ion-label>
+			</ion-row>
+		</ion-col>
 		
 </ion-content>
 

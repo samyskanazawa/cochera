@@ -24,6 +24,7 @@ export class TabsPage {
   private allUsuariosArray = [];
   private fechaRese = new Date().toISOString();
   private actualiza = false;
+  private alertAnterior: boolean = false;
   reservas: any;
   loading: Loading;
 
@@ -73,9 +74,10 @@ export class TabsPage {
 				text: 'Ocupar',
 				handler: () => {
 				  console.log('Cancel clicked');
+				  window.localStorage.setItem("alertAnterior", "true");
 				  this.reservasService.ocupar(reserva, 'Inicio');
 				  this.nav.setRoot(TabsPage)
-				  alert.dismiss();
+				  //alert.dismiss();
 				  
 				}
 			  },
@@ -83,9 +85,10 @@ export class TabsPage {
 				text: 'Liberar',
 				handler: () => {
 				  console.log('Cancel clicked');
+				  window.localStorage.setItem("alertAnterior", "true");
 				  this.deleteReserva(reserva , 'Liberar');
 				  this.nav.setRoot(TabsPage)
-				  alert.dismiss();
+				  //alert.dismiss();
 
 				}
 				
@@ -111,9 +114,10 @@ export class TabsPage {
 				text: 'Liberar',
 				handler: () => {
 				  console.log('Cancel clicked');
+				  window.localStorage.setItem("alertAnterior", "true");
 				  this.deleteReserva(reserva , 'Liberar');
 				  this.nav.setRoot(TabsPage)
-				  alert.dismiss();
+				  //alert.dismiss();
 
 				}
 				
@@ -155,9 +159,10 @@ export class TabsPage {
 			text: 'Liberar',
 			handler: () => {
 			  console.log('Cancel clicked');
+			  window.localStorage.setItem("alertAnterior", "true");
 			  this.deleteReserva(reserva, 'Liberar');
-			  this.nav.setRoot(TabsPage)
-			  alert.dismiss();
+			  this.nav.setRoot(TabsPage);
+			  //alert.dismiss();
 			  
 			}
 		  },
@@ -287,32 +292,36 @@ export class TabsPage {
 	  var enHorario: boolean;
 	  var horaHasta = "20:00";
 	  var diaActual = new Date();
-	  
-		if(this.reservas.length > 0 ){
-			this.tieneReserva = true;
-		}	 
+	  var alertAnterior = window.localStorage.getItem("alertAnterior");
 
-		for(iterador = 0; iterador < this.reservas.length ; iterador++){	  
-			if(this.reservas[iterador].estado == "Ocupado"){			
-				reserva = this.reservas[iterador];
-				this.estaOcupandoCochera = true;
-				break;		
-			} else {			   
-			    enHorario = this.fechaRese.substr(0,10) == this.reservas[iterador].fechaRese.substr(0,10);	
-			    if (enHorario){
+		  if(alertAnterior != "true"){
+			if(this.reservas.length > 0 ){
+				this.tieneReserva = true;
+			}	 
+
+			for(iterador = 0; iterador < this.reservas.length ; iterador++){	  
+				if(this.reservas[iterador].estado == "Ocupado"){			
 					reserva = this.reservas[iterador];
-					break;	
-			   } 			
-			}	  	  
-		}
-	  	  
-		if(this.tieneReserva  === true && this.estaOcupandoCochera === false){
-			  this.alertaReserva(reserva);			  
-			   
-		} else if (this.estaOcupandoCochera === true){
-			   this.alertaCocheraOcupada(reserva);
-		}
-				
+					this.estaOcupandoCochera = true;
+					break;		
+				} else {			   
+					enHorario = this.fechaRese.substr(0,10) == this.reservas[iterador].fechaRese.substr(0,10);	
+					if (enHorario){
+						reserva = this.reservas[iterador];
+						break;	
+				   } 			
+				}	  	  
+			}
+			  
+			if(this.tieneReserva  === true && this.estaOcupandoCochera === false){
+				  this.alertaReserva(reserva);			  
+				   
+			} else if (this.estaOcupandoCochera === true){
+				   this.alertaCocheraOcupada(reserva);
+			}
+		  } else {
+			  window.localStorage.removeItem("alertAnterior");
+		  }		
 	  });	
 
     }
