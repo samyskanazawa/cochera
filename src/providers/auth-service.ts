@@ -21,8 +21,7 @@ export class AuthService {
   currentUser: User;
  
   public login(email: string, password: string, usuario) {
-	  debugger;
-		
+	  
 		if(usuario.habilitado == false){
 			var error = "Usuario no habilitado";
 			return error; 

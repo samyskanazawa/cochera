@@ -84,7 +84,7 @@ export class LoginPage {
 			}
 			var usuario = outerThis.allUsuariosArray[0][index];
 			
-			if (usuario == null){
+			if (usuario == null || (usuario.habilitado == false && (usuario.telefono.toString()).length >= 10)){
 				var titulo = "Acceso denegado";
 				var subtitulo = "Mail no autorizado";
 				outerThis.alertGenerico(titulo, subtitulo);
