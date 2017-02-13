@@ -396,6 +396,7 @@ export class CocherasPage {
 							//debugger;
 							
 							var usuario = outerThis.allUsuariosArray[0][index];//[outerThis.allUsuariosArray.length-1];
+							index = -1;
 							v_nombreCompleto = usuario.nombre + " " + usuario.apellido;
 							//outerThis.firstToUpperCase((mailTemporal[iteradorMails].substring(0, mailTemporal[iteradorMails].indexOf(".")))) + " " + outerThis.firstToUpperCase((mailTemporal[iteradorMails].substring(mailTemporal[iteradorMails].indexOf(".") + 1, mailTemporal[iteradorMails].indexOf("@")))); // usuario[0].nombre + " " + usuario[0].apellido;
 							v_telefono = usuario.telefono;

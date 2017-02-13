@@ -293,7 +293,7 @@ export class TabsPage {
 	  var horaHasta = "20:00";
 	  var diaActual = new Date();
 	  var alertAnterior = window.localStorage.getItem("alertAnterior");
-
+	  
 		  if(alertAnterior != "true"){
 			if(this.reservas.length > 0 ){
 				this.tieneReserva = true;

@@ -319,158 +319,185 @@ export class HomePage {
   
    }
    
-    queryReservas(v_nombre,v_espacio, v_fecha, estado, v_mail, horaDesde, horaHasta, allreservasArray ){
-		this.reservasService.findByQuery(v_nombre, v_espacio, v_fecha, estado).then((data2) => {				
-			var z;
-			var v_Dispo;
-			var horadesde;
-			var	v_telefono;
-			var v_nombreCompleto;
-			var temporal = [];
-			var mailTemporal = [];
-			var i = 0;
-			var item;
-			var diaActual = new Date();
-			var hora = diaActual.getHours();
-			var minutos = diaActual.getMinutes();
-			var min;
-			var horas;
-			//var horaActual = Number(hora.toString() + minutos.toString());
-			
-			if (minutos < 10){
-				min = "0" + minutos.toString();
-			}else{
-				min = minutos.toString();
-			}			
-			if (hora < 10){
-				horas = "0" + hora.toString();
-			}else{
-				horas = hora.toString();
-			}
-			
-			var horaActual = horas.toString() + ":" + min;			
-			allreservasArray = data2;			
-			//debugger;
-			
-			if(allreservasArray.length > 1){
-				allreservasArray.sort(function(a, b){return a.horaDesdeSort - b.horaDesdeSort});
-			}
-			if (allreservasArray.length <= 0) {
+      queryReservas(v_nombre,v_espacio, v_fecha, estado, v_mail, horaDesde, horaHasta, allreservasArray ){
+	  this.reservasService.findByQuery(v_nombre, v_espacio, v_fecha, estado).then((data2) => {
 				
-				if(diaActual.toISOString().substr(0, 10) == v_fecha.substr(0,10)){
-					horaDesde = horaActual;
-				} else {
-					horaDesde = "08:00";
-				}
-				horaHasta = "20:00";
-				v_Dispo = this.reservasService.obtenerDiferenciaDeTiempo(horaDesde, horaHasta);
-				this.tmpDispo.push({v_mail , v_nombre, v_espacio, v_fecha, horaDesde , horaHasta, v_Dispo});
-			}
-			else {
-				
-				//Busca rango disponible
-				z = 0;
-				if(diaActual.toISOString().substr(0, 10) == v_fecha.substr(0,10)){
-					horadesde = horaActual;
-				} else {
-					horadesde = "08:00";
-				}				
-				while(z < allreservasArray.length) {
-					
-					temporal.push(allreservasArray[z].horaDesde);
-					temporal.push(allreservasArray[z].horaHasta);
-					temporal.sort();
-						
-					//Cochera con horario/s dsponible/s
-					if(temporal.length == (allreservasArray.length)*2){
-						
-						var m: number = temporal.length;
-						var gruposN = m/2;
-						var n : number = 0;
-						var iterador;						
-						for(iterador = 0; iterador<gruposN; iterador++){
-							var horaDesde1 = temporal[n];
-							var horaHasta1 = temporal [n+1];
-							
-							var minutosDesdeReserva = (horaDesde1).substr(3,2);
-							var numeroHoraHastaReserva = (horaHasta1).replace(":","");
-						
-							//debugger;
-						
-							//Iteramos los horarios desde las 08:00 y entre reservas para colocarlos como disponibles
-							if (Number(horadesde.replace(":","")) < horaDesde1.replace(":","")) {
-								horaDesde = horadesde;
-								horaHasta = horaDesde1;
-								v_Dispo = this.reservasService.obtenerDiferenciaDeTiempo(horaDesde, horaHasta);
-								//Number(horaHasta.replace(":","")) - Number(horaDesde.replace(":",""));
-								if(horaDesde != horaHasta){
-									this.tmpDispo.push({v_mail , v_nombre, v_espacio, v_fecha, horaDesde, horaHasta, v_Dispo});
-								}
-								var desdeTemporal = horaHasta1;
-								//debugger;
-								if(diaActual.toISOString().substr(0, 10) == v_fecha.substr(0,10) && (Number(horaActual.replace(":","")) > Number(desdeTemporal.replace(":","")))){
-									horadesde = horaActual;
-								} else {
-									horadesde = desdeTemporal;
-								}
-							} else {
-								var desdeTemporal = horaHasta1;
-								if(diaActual.toISOString().substr(0, 10) == v_fecha.substr(0,10) && (Number(horaActual.replace(":","")) > Number(desdeTemporal.replace(":","")))){
-									horadesde = horaActual;
-								} else {
-									horadesde = desdeTemporal;
-								}
-							}							
-							n = n + 2;
-						}
-					}					
-					mailTemporal.push(allreservasArray[z].mail);
-					z = z + 1;		
-				}
-					
-				//Horario/s no disponible/s de la cochera - Busco los datos de quien ocupa la cochera
-				var outerThis = this;
-				var vectorHoras = i;
-				var iteradorMails = 0;
-				
-				//Itero las reservas para agregar los tramos que las conforman como no disponibles 
-				for (item in mailTemporal){
-					this.buscarUsuarios(mailTemporal[item], function (){
-							if (outerThis.allUsuariosArray.length >= 0 && i <= (mailTemporal.length)-1) {
-								var usuario = outerThis.allUsuariosArray[0];
-								v_nombreCompleto = usuario.nombre + " " + usuario.apellido;
-								v_telefono = usuario.telefono;
-								var horaDesde = temporal[vectorHoras];
-								var horaHasta = temporal [vectorHoras+1];
-								var v_mail = mailTemporal[iteradorMails];
-								v_Dispo = outerThis.reservasService.obtenerDiferenciaDeTiempo(horaDesde, horaHasta);
+		var z;
+		var v_Dispo;
+		var horadesde;
+		var	v_telefono;
+		var v_nombreCompleto;
+		var temporal = [];
+		var mailTemporal = [];
+		var i = 0;
+		var item;
+		var diaActual = new Date();
+		var hora = diaActual.getHours();
+		var minutos = diaActual.getMinutes();
+		var min;
+		var horas;
+		//var horaActual = Number(hora.toString() + minutos.toString());
+		
+		if (minutos < 10){
+			min = "0" + minutos.toString();
+		}else{
+			min = minutos.toString();
+		}
+		
+		if (hora < 10){
+			horas = "0" + hora.toString();
+		}else{
+			horas = hora.toString();
+		}
+		
+		var horaActual = horas.toString() + ":" + min;
+		allreservasArray = data2;
+		
+		//debugger;
+		
+		if(allreservasArray.length > 1){
+			allreservasArray.sort(function(a, b){return a.horaDesdeSort - b.horaDesdeSort});
+		}
 
-								//Colocamos como no disponible a la cochera para el rango de horarios hallado
-								outerThis.tmpNoDispo.push({v_mail, v_nombre, v_espacio, v_fecha, horaDesde, horaHasta, v_Dispo, v_telefono, v_nombreCompleto});
-								vectorHoras = vectorHoras + 2;
-								iteradorMails = iteradorMails + 1;
-								i++;
-							}
-						});
-					}
-				//debugger;	
-				//Tramo final: si la última reserva termina antes de las 20:00, inserto como horario
-				//disponible el tramo desde el final de la reserva hasta las 20:00			
-				if (horadesde != "20:00"){			
-					//Coloca como disponible a la cochera para el rango hallado
-					horaHasta = "20:00"
-					horaDesde = horadesde;
-					v_Dispo = this.reservasService.obtenerDiferenciaDeTiempo(horaDesde, horaHasta);
-					this.tmpDispo.push({v_mail, v_nombre, v_espacio, v_fecha, horaDesde, horaHasta, v_Dispo});
-				}
+		if (allreservasArray.length <= 0) {
+			
+			if(diaActual.toISOString().substr(0, 10) == v_fecha.substr(0,10)){
+				horaDesde = horaActual;
+			} else {
+				horaDesde = "08:00";
 			}
-		});
-    };
+			horaHasta = "20:00";
+			v_Dispo = this.reservasService.obtenerDiferenciaDeTiempo(horaDesde, horaHasta);
+			this.tmpDispo.push({v_mail , v_nombre, v_espacio, v_fecha, horaDesde , horaHasta, v_Dispo});
+		}
+		else {
+			
+			//Busca rango disponible
+			z = 0;
+			if(diaActual.toISOString().substr(0, 10) == v_fecha.substr(0,10)){
+				horadesde = horaActual;
+			} else {
+				horadesde = "08:00";
+			}
+			
+			while(z < allreservasArray.length) {
+				
+				temporal.push(allreservasArray[z].horaDesde);
+				temporal.push(allreservasArray[z].horaHasta);
+				temporal.sort();
+					
+				//Cochera con horario/s dsponible/s
+				if(temporal.length == (allreservasArray.length)*2){
+					
+					var m: number = temporal.length;
+					var gruposN = m/2;
+					var n : number = 0;
+					var iterador;
+					
+					for(iterador = 0; iterador<gruposN; iterador++){
+						var horaDesde1 = temporal[n];
+						var horaHasta1 = temporal [n+1];
+						
+						var minutosDesdeReserva = (horaDesde1).substr(3,2);
+						var numeroHoraHastaReserva = (horaHasta1).replace(":","");
+					
+						//debugger;
+					
+						//Iteramos los horarios desde las 08:00 y entre reservas para colocarlos como disponibles
+						if (Number(horadesde.replace(":","")) < horaDesde1.replace(":","")) {
+							horaDesde = horadesde;
+							horaHasta = horaDesde1;
+							v_Dispo = this.reservasService.obtenerDiferenciaDeTiempo(horaDesde, horaHasta);
+							//Number(horaHasta.replace(":","")) - Number(horaDesde.replace(":",""));
+							if(horaDesde != horaHasta){
+								this.tmpDispo.push({v_mail , v_nombre, v_espacio, v_fecha, horaDesde, horaHasta, v_Dispo});
+							}
+							var desdeTemporal = horaHasta1;
+							//debugger;
+							if(diaActual.toISOString().substr(0, 10) == v_fecha.substr(0,10) && (Number(horaActual.replace(":","")) > Number(desdeTemporal.replace(":","")))){
+								horadesde = horaActual;
+							} else {
+								horadesde = desdeTemporal;
+							}
+						} else {
+							var desdeTemporal = horaHasta1;
+							if(diaActual.toISOString().substr(0, 10) == v_fecha.substr(0,10) && (Number(horaActual.replace(":","")) > Number(desdeTemporal.replace(":","")))){
+								horadesde = horaActual;
+							} else {
+								horadesde = desdeTemporal;
+							}
+						}
+						
+						n = n + 2;
+					}
+				}
+				
+				mailTemporal.push(allreservasArray[z].mail);
+				z = z + 1;		
+			}
+				
+			//Horario/s no disponible/s de la cochera - Busco los datos de quien ocupa la cochera
+			var outerThis = this;
+			var vectorHoras = i;
+			var iteradorMails = 0;
+			var q;
+			var index = -1;
+			
+			//Itero las reservas para agregar los tramos que las conforman como no disponibles 
+			for (item in mailTemporal){
+				this.buscarsUsuarios(function (){
+						//if (outerThis.allUsuariosArray.length >= 0 && i <= (mailTemporal.length)-1) {
+							
+							var searchTerm = mailTemporal[iteradorMails];
+							debugger;
+							
+							for(q = 0; q < outerThis.allUsuariosArray[0].length; q++) {
+								if (outerThis.allUsuariosArray[0][q].mail == searchTerm && index == -1) {
+									index = q;
+								}
+							}
+								
+							//debugger;
+							
+							var usuario = outerThis.allUsuariosArray[0][index];//[outerThis.allUsuariosArray.length-1];
+							index = -1;
+							v_nombreCompleto = usuario.nombre + " " + usuario.apellido;
+							//outerThis.firstToUpperCase((mailTemporal[iteradorMails].substring(0, mailTemporal[iteradorMails].indexOf(".")))) + " " + outerThis.firstToUpperCase((mailTemporal[iteradorMails].substring(mailTemporal[iteradorMails].indexOf(".") + 1, mailTemporal[iteradorMails].indexOf("@")))); // usuario[0].nombre + " " + usuario[0].apellido;
+							v_telefono = usuario.telefono;
+							var horaDesde = temporal[vectorHoras];
+							var horaHasta = temporal [vectorHoras+1];
+							var v_mail = mailTemporal[iteradorMails];
+							v_Dispo = outerThis.reservasService.obtenerDiferenciaDeTiempo(horaDesde, horaHasta);
+
+							//Colocamos como no disponible a la cochera para el rango de horarios hallado
+							outerThis.tmpNoDispo.push({v_mail, v_nombre, v_espacio, v_fecha, horaDesde, horaHasta, v_Dispo, v_telefono, v_nombreCompleto});
+							
+							vectorHoras = vectorHoras + 2;
+							iteradorMails = iteradorMails + 1;
+							i++;
+						//}
+					});
+				}
+
+			//debugger;	
+			//Tramo final: si la última reserva termina antes de las 20:00, inserto como horario
+			//disponible el tramo desde el final de la reserva hasta las 20:00			
+			if (horadesde != "20:00"){
+			
+				//Coloca como disponible a la cochera para el rango hallado
+				horaHasta = "20:00"
+				horaDesde = horadesde;
+				v_Dispo = this.reservasService.obtenerDiferenciaDeTiempo(horaDesde, horaHasta);
+				this.tmpDispo.push({v_mail, v_nombre, v_espacio, v_fecha, horaDesde, horaHasta, v_Dispo});
+			}
+		}
+	});
+  };
   
   
-    buscarUsuarios (mail: string, callback) {
-	this.usuariosService.getUsuariosByMail(mail).then((data) => {
-		this.allUsuariosArray = data;
+  buscarsUsuarios (callback) {
+	  this.usuariosService.getUsuarios().then((data) => {
+		this.allUsuariosArray.push(data);
 		callback();
 	});
   }

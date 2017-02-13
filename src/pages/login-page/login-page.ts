@@ -14,6 +14,7 @@ export class LoginPage {
   loading: Loading;
   registerCredentials = {email: '', password: ''};
   private allUsuariosArray = [];
+  private isChecked: boolean = false;
  
   constructor(private nav: NavController, private auth: AuthService, private alertCtrl: AlertController, private loadingCtrl: LoadingController, private usuariosService: Usuarios) {}
  
@@ -25,7 +26,8 @@ export class LoginPage {
  }*/
 
  validateEmail(email) {
-	 if (! /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/.test(email)) {
+	 if (email != "" && ! /^\w+[a-zA-Z0-9_]+\.[a-zA-Z0-9_]+@softtek.com/.test(email)){
+	 //^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/.test(email)) {
 		 this.showAdv("Dominio Incorrecto");
 		 this.registerCredentials.email="";
 	 } 
@@ -34,7 +36,29 @@ export class LoginPage {
   public createAccount() {
     this.nav.push(RegisterPage);
   }
+  
+  recordarDatos(isChecked){
+	  if(isChecked){
+		  this.isChecked = false;
+		  window.localStorage.removeItem("isChecked");
+		  window.localStorage.removeItem("mail");
+		  window.localStorage.removeItem("password");
+	  } else {
+		  this.isChecked = true;
+		  window.localStorage.setItem("isChecked", "true");
+		  window.localStorage.setItem("mail", this.registerCredentials.email);
+		  window.localStorage.setItem("password", this.registerCredentials.password);
+	  }
+  }
 
+
+  ionViewDidLoad() {
+	  if(window.localStorage.length > 0){
+		  this.registerCredentials.email = window.localStorage.getItem("mail");
+		  this.registerCredentials.password = window.localStorage.getItem("password");
+		  this.isChecked = true;
+	  }
+  }
  
   public login() {
 	  

@@ -10,7 +10,7 @@
     <form (ngSubmit)="login()" #registerForm="ngForm">
       <ion-row>
         <ion-col>
-          <ion-list inset>
+          <ion-list inset >
             
             <ion-item>
               <ion-input type="text" placeholder="Email" name="email" [(ngModel)]="registerCredentials.email" (blur)="validateEmail(registerCredentials.email)" required></ion-input>
@@ -22,7 +22,7 @@
 			
           </ion-list>
 		  
-		  <ion-label><ion-checkbox ng-model="isChecked" ng-init="true">Checkbox Label</ion-checkbox> Recordarme</ion-label>
+		  <ion-label><ion-checkbox [(ngModel)]="isChecked" [ngModelOptions]="{standalone: true}" [disabled]="registerCredentials.email == '' || registerCredentials.password == ''" (click)="recordarDatos(isChecked)">Checkbox Label</ion-checkbox> Recordarme</ion-label>
 		  
         </ion-col>
 		
@@ -31,7 +31,6 @@
       <ion-row>
         <ion-col class="signup-col">
           <button ion-button class="submit-btn" style="color: black;" full type="submit" [disabled]="!registerForm.form.valid">Ingresar</button>
-          <button ion-button class="register-btn" type="button" block clear (click)="createAccount()">Registrarse</button>
         </ion-col>
       </ion-row>
       
