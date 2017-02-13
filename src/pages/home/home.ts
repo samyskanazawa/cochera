@@ -141,28 +141,35 @@ export class HomePage {
 		var error: boolean;
 		var outerThis = this;
 					
-			this.obtenerCocheras(horaDesde, horaHasta, fechaRese, mail, nombreCochera, this.disponibles[index].v_espacio, function(){			
-				if(!outerThis.errorMismaCochera){
-					if(!outerThis.extenderReserva){
-						if(!outerThis.error){
-							//debugger;
-							reserva.push({mail, nombreCochera, espacioCochera, fechaRese, horaDesde, horaHasta, fechaAlta, estado, fechaOcupa, fechaLibre, horaDesdeSort});
-							outerThis.reservasService.createReserva(reserva[0], function(resultado: boolean){
-							outerThis.buscar();
-							});
-						}else {
-									var titulo = 'Horario Inv\u00e1lido';
-									var subtitulo = 'El horario seleccionado se superpone con el de otra de sus reservas';
-									outerThis.errorHorarios = false;
+			this.obtenerCocheras(horaDesde, horaHasta, fechaRese, mail, nombreCochera, this.disponibles[index].v_espacio, function(){
+				if(!outerThis.errorLimiteHoras){
+					if(!outerThis.errorMismaCochera){
+						if(!outerThis.extenderReserva){
+							if(!outerThis.error){
+								//debugger;
+								reserva.push({mail, nombreCochera, espacioCochera, fechaRese, horaDesde, horaHasta, fechaAlta, estado, fechaOcupa, fechaLibre, horaDesdeSort});
+								outerThis.reservasService.createReserva(reserva[0], function(resultado: boolean){
+								outerThis.buscar();
+								});
+							}else {
+										var titulo = 'Horario Inv\u00e1lido';
+										var subtitulo = 'El horario seleccionado se superpone con el de otra de sus reservas';
+										outerThis.errorHorarios = false;
+										outerThis.alertGenerico(titulo, subtitulo);
+							}
+						} else {
+									var titulo = 'Extender Reserva';
+									var subtitulo = 'Ya cuenta con una reserva para esta cochera en el día seleccionado, puede extenderla desde la pestaña Mis Reservas';
+									outerThis.extenderReserva = false;
 									outerThis.alertGenerico(titulo, subtitulo);
 						}
-					} else {
-								var titulo = 'Extender Reserva';
-								var subtitulo = 'Ya cuenta con una reserva para esta cochera en el día seleccionado, puede extenderla desde la pestaña Mis Reservas';
-								outerThis.extenderReserva = false;
-								outerThis.alertGenerico(titulo, subtitulo);
 					}
-				}						
+				} else {
+					var titulo = 'Horario Inv\u00e1lido';
+					var subtitulo = 'El lapso de tiempo m\u00EDnimo para ocupar una cochera es de una hora';
+					outerThis.errorLimiteHoras = false;
+					outerThis.alertGenerico(titulo, subtitulo);
+				}		
 			});		
 	}
 	
@@ -207,7 +214,7 @@ export class HomePage {
 						}
 					} else {
 						var titulo = 'Extender Reserva';
-						var subtitulo = 'Ya cuenta con una reserva para esta cochera en el día seleccionado, puede extenderla desde la pestaña Mis Reservas';
+						var subtitulo = 'Ya cuenta con una reserva para esta cochera en el d\u00eda seleccionado, puede extenderla desde la pesta\u00f1a Mis Reservas';
 						outerThis.extenderReserva = false;
 						outerThis.alertGenerico(titulo, subtitulo);
 					}
