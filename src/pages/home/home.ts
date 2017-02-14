@@ -449,7 +449,6 @@ export class HomePage {
 						//if (outerThis.allUsuariosArray.length >= 0 && i <= (mailTemporal.length)-1) {
 							
 							var searchTerm = mailTemporal[iteradorMails];
-							debugger;
 							
 							for(q = 0; q < outerThis.allUsuariosArray[0].length; q++) {
 								if (outerThis.allUsuariosArray[0][q].mail == searchTerm && index == -1) {
@@ -628,7 +627,7 @@ export class HomePage {
 									for(iteradorDisponibles = 0; iteradorDisponibles < gruposH; iteradorDisponibles++){											
 										var horaDesdeDisponible = horariosDisponibles[l];
 										var horaHastaDisponible = horariosDisponibles[l+1];											
-										debugger;
+										//debugger;
 												
 										//Si los horarios que quiero reservar coinciden con algún horario disponible.
 										if ((numeroHoraDesde >= horaDesdeDisponible) && (numeroHoraHasta <= horaHastaDisponible)){												

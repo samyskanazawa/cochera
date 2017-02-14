@@ -485,7 +485,7 @@ export class CocherasPage {
  }
 
  
-  showPrompt() {
+  showPrompt(subtitulo: string) {
 	var index = this.disponibles.indexOf(this.indiceCocheraDisponible);
     let prompt = this.alertCtrl.create({
       title: 'Día: ' + this.reservasService.formatearFecha(this.disponibles[index].v_fecha) + ' - Cochera: ' + this.disponibles[index].v_espacio,
@@ -511,7 +511,7 @@ export class CocherasPage {
 		},*/
 		
       ],
-	
+	  message: "<br/><center><b>" + subtitulo + "</center></b>",
       buttons: [
         {
           text: 'Guardar',
@@ -539,7 +539,7 @@ export class CocherasPage {
 			var w;
 		
 			this.obtenerCocheras(horaDesde, horaHasta, fechaRese, mail, nombreCochera, this.disponibles[index].v_espacio, function(){
-				debugger;
+				//debugger;
 				if(!outerThis.errorHorarios){
 					if(!outerThis.errorRangoHorarios){
 						if(!outerThis.errorLimiteHoras){
@@ -552,46 +552,46 @@ export class CocherasPage {
 													outerThis.buscar();
 											});
 										} else {
-											var titulo = 'Horario Inválido';
+											//var titulo = 'Horario Inválido';
 											var subtitulo = 'No es posible guardar el horario deseado, esta cochera ya posee una reserva';
 											outerThis.errorHorarios = false;
-											outerThis.alertGenerico(titulo, subtitulo);
+											outerThis.showPrompt(subtitulo);
 										}
 									}else {
-										var titulo = 'Horario Inválido';
+										//var titulo = 'Horario Inválido';
 										var subtitulo = 'El horario seleccionado se superpone con el de otra reserva';
 										outerThis.errorHorarios = false;
-										outerThis.alertGenerico(titulo, subtitulo);
+										outerThis.showPrompt(subtitulo);
 									}
 								} else {
-									var titulo = 'Extender Reserva';
+									//var titulo = 'Extender Reserva';
 									var subtitulo = 'Ya cuenta con una reserva para esta cochera en el día seleccionado, puede extenderla desde la pestaña Mis Reservas';
 									outerThis.extenderReserva = false;
-									outerThis.alertGenerico(titulo, subtitulo);
+									outerThis.showPrompt(subtitulo);
 								}
 							} else {
-								var titulo = 'Cochera Inválida';
+								//var titulo = 'Cochera Inválida';
 								var subtitulo = 'Ya tiene reservada esta cochera en el día seleccionado';
 								outerThis.errorMismaCochera = false;
-								outerThis.alertGenerico(titulo, subtitulo);
+								outerThis.showPrompt(subtitulo);
 							}
 						} else {
-							var titulo = 'Horario Inválido';
+							//var titulo = 'Horario Inválido';
 							var subtitulo = 'El lapso de tiempo mínimo para una reserva es de una hora';
 							outerThis.errorLimiteHoras = false;
-							outerThis.alertGenerico(titulo, subtitulo);
+							outerThis.showPrompt(subtitulo);
 						}
 					} else {
-						var titulo = 'Horario Inválido';
+						//var titulo = 'Horario Inválido';
 						var subtitulo = 'El horario permitido es entre las 08:00 hs y las 20:00 hs';
 						outerThis.errorRangoHorarios = false;
-						outerThis.alertGenerico(titulo, subtitulo);
+						outerThis.showPrompt(subtitulo);
 					}
 				} else {
-					var titulo = 'Horario Inválido';
+					//var titulo = 'Horario Inválido';
 					var subtitulo = 'El horario inicial debe ser anterior al horario final';
 					outerThis.errorHorarios = false;
-					outerThis.alertGenerico(titulo, subtitulo);
+					outerThis.showPrompt(subtitulo);
 				}
 			});
 			
@@ -631,7 +631,7 @@ export class CocherasPage {
 			var horaHastaCampoHora: number = Number((horaHasta).substr(0,2));
 			var p;
 			
-			debugger;
+			//debugger;
 			
 			if(horaDesdeCampoHora <= horaHastaCampoHora){
 				
@@ -660,7 +660,7 @@ export class CocherasPage {
 						z = z + 1;
 						}
 
-						debugger;
+						//debugger;
 						
 						//if (!mismaCochera){
 							
@@ -736,7 +736,7 @@ export class CocherasPage {
 												horariosDisponibles.push(horaHastaInicial);
 												horariosDisponibles.push(horaFinal);
 										}
-									debugger;
+									//debugger;
 									//Si no tengo horarios disponibles entre las reservas existentes
 									if (horariosDisponibles.length == 0){
 										

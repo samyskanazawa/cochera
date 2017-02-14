@@ -192,7 +192,7 @@ export class Reservas {
 				
 				allreservasArray = data2;
 				z = 0;
-				debugger;
+				//debugger;
 					while(z < allreservasArray.length) {
 						//Tomo los horarios de todas las reservas del usuario y de todas las reservas sobre la cochera sobre la que 
 						//el usuario está editando su reserva
@@ -439,7 +439,7 @@ export class Reservas {
  
     this.http.delete('http://localhost:8080/reserva/' + id).subscribe((res) => {
 	  //Si falla, se mostrará un mensaje de error
-	  debugger;
+	  //debugger;
 		if(res.status < 200 || res.status >= 300) {
 			titulo = "Error";
 			if (texto == "Eliminar"){

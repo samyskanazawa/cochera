@@ -194,7 +194,7 @@ export class TabsPage {
 			{
 			  text: 'Guardar',
 			  handler: data => {
-				  debugger;
+				  //debugger;
 				  if((data.telefono).length >= 10){
 					var mensaje;
 					var outerThis = this;
