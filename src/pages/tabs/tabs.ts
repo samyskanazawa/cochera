@@ -19,7 +19,7 @@ export class TabsPage {
 
   private tieneReserva:boolean;
   private estaOcupandoCochera:boolean;
-  private mail: string = "hernan.ruiz@softtek.com";
+  private mail: string = window.localStorage.getItem("mail");
   private usuarioLogeado;
   private allUsuariosArray = [];
   private fechaRese = new Date().toISOString();
@@ -198,7 +198,8 @@ export class TabsPage {
 				  if((data.telefono).length >= 10){
 					var mensaje;
 					var outerThis = this;
-					this.usuariosService.habilitarUsuario(this.usuarioLogeado, mensaje, data.telefono, function(mensajeADevolver: string){
+					debugger;
+					this.usuariosService.habilitarUsuario(this.usuarioLogeado, mensaje, (data.telefono).toString(), function(mensajeADevolver: string){
 						if (mensajeADevolver == "Datos actualizados"){
 							var tituloCorrecto = "Datos Actualizados";
 							var subtituloCorrecto = "Los datos fueron actualizados correctamente";

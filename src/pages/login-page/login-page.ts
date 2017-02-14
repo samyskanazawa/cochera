@@ -70,9 +70,10 @@ export class LoginPage {
 					index = q;
 				}
 			}
+			
 			var usuario = outerThis.allUsuariosArray[0][index];
 			
-			if (usuario == null || (usuario.habilitado == false && (usuario.telefono.toString()).length >= 10)){
+			if (usuario == null || (usuario.habilitado == false && usuario.telefono != "")){
 				var titulo = "Acceso denegado";
 				var subtitulo = "Mail no autorizado";
 				outerThis.alertGenerico(titulo, subtitulo);
@@ -81,12 +82,12 @@ export class LoginPage {
 				var mensaje = outerThis.auth.login(outerThis.registerCredentials.email, outerThis.registerCredentials.password, usuario);
 				
 				if (mensaje == "Usuario no habilitado"){
-					var titulo = "Acceso denegado";
-					var subtitulo = "No se encuentra habilitado para utilizar la aplicación. Por favor ingrese su teléfono para continuar";
+					var titulo = "Información adicional requerida";
+					var subtitulo = "<br/><center><b>Por favor ingrese su teléfono para continuar (código de area + número)</b></center>";
 					outerThis.promptGenerico(titulo, subtitulo, usuario);
 				} else {
 					setTimeout(() => {
-						
+						window.localStorage.setItem("mail", outerThis.registerCredentials.email);
 						outerThis.nav.setRoot(TabsPage);
 					});
 				}

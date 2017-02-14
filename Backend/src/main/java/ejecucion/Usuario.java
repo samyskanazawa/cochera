@@ -8,7 +8,7 @@ public class Usuario {
 	private String id;
 	private String nombre;
 	private String apellido;
-	private int telefono;
+	private String telefono;
 	private String fechaDeAlta;
 	private boolean flag;
 	private String mail;
@@ -39,11 +39,11 @@ public class Usuario {
 		this.apellido = apellido;
 	}
 
-	public int getTelefono() {
+	public String getTelefono() {
 		return telefono;
 	}
 
-	public void setTelefono(int telefono) {
+	public void setTelefono(String telefono) {
 		this.telefono = telefono;
 	}
 
