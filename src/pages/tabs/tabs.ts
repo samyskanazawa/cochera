@@ -19,7 +19,7 @@ export class TabsPage {
 
   private tieneReserva:boolean;
   private estaOcupandoCochera:boolean;
-  private mail: string = window.localStorage.getItem("mail");
+  private mail: string = window.localStorage.getItem("email");
   private usuarioLogeado;
   private allUsuariosArray = [];
   private fechaRese = new Date().toISOString();
@@ -64,7 +64,10 @@ export class TabsPage {
   
     alertaReserva(reserva) {  
 	
-		if(reserva.horaDesde <= this.getHoraActual()) {
+		var horaDesde = Number((reserva.horaDesde).replace(":",""));
+		var horaActual = Number((this.getHoraActual()).replace(":",""));
+		
+		if(horaDesde <= horaActual){
 
 		  let alert = this.alertCtrl.create({	  
 			title: 'Reserva',
@@ -108,7 +111,7 @@ export class TabsPage {
 		
 		 let alert = this.alertCtrl.create({	  
 			title: 'Reserva',
-			message: 'Usted tiene reservada la cochera N° ' + reserva.espacioCochera + ' en el horario de: ' + reserva.horaDesde +  ' en: ' + reserva.nombreCochera + ' ¿ Desea liberarla ? ' ,
+			message: 'Usted tiene reservada la cochera N° ' + reserva.espacioCochera + ' en el horario desde las: ' + reserva.horaDesde +  ' en: ' + reserva.nombreCochera + ' ¿ Desea liberarla ? ' ,
 			buttons: [
 			  {
 				text: 'Liberar',
@@ -292,7 +295,8 @@ export class TabsPage {
 	  var reserva;
 	  var enHorario: boolean;
 	  var horaHasta = "20:00";
-	  var diaActual = new Date();
+	  var horarioActual = Number((this.getHoraActual()).replace(":",""));
+
 	  var alertAnterior = window.localStorage.getItem("alertAnterior");
 	  
 		  if(alertAnterior != "true"){
@@ -301,19 +305,19 @@ export class TabsPage {
 			}	 
 
 			for(iterador = 0; iterador < this.reservas.length ; iterador++){	  
-				if(this.reservas[iterador].estado == "Ocupado"){			
-					reserva = this.reservas[iterador];
-					this.estaOcupandoCochera = true;
-					break;		
-				} else {			   
-					enHorario = this.fechaRese.substr(0,10) == this.reservas[iterador].fechaRese.substr(0,10);	
-					if (enHorario){
+				enHorario = Number((this.reservas[iterador].horaHasta).replace(":","")) > horarioActual;
+				if (enHorario){
+					if(this.reservas[iterador].estado == "Ocupado"){			
 						reserva = this.reservas[iterador];
-						break;	
-				   } 			
-				}	  	  
+						this.estaOcupandoCochera = true;
+						break;		
+					} else {
+						reserva = this.reservas[iterador];
+						break;			
+					}
+				}				
 			}
-			  
+			
 			if(this.tieneReserva  === true && this.estaOcupandoCochera === false){
 				  this.alertaReserva(reserva);			  
 				   

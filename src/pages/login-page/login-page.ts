@@ -26,24 +26,27 @@ export class LoginPage {
  }
 
   recordarDatos(isChecked){
+	  //debugger;
 	  if(isChecked){
 		  this.isChecked = false;
 		  window.localStorage.removeItem("isChecked");
 		  window.localStorage.removeItem("mail");
-		  window.localStorage.removeItem("password");
+		  window.localStorage.removeItem("pass");
 	  } else {
 		  this.isChecked = true;
 		  window.localStorage.setItem("isChecked", "true");
 		  window.localStorage.setItem("mail", this.registerCredentials.email);
-		  window.localStorage.setItem("password", this.registerCredentials.password);
+		  window.localStorage.setItem("pass", this.registerCredentials.password);
 	  }
   }
 
 
   ionViewDidLoad() {
-	  if(window.localStorage.length > 0){
+	  this.isChecked = false;
+	  //debugger;
+	  if(window.localStorage.length > 1){
 		  this.registerCredentials.email = window.localStorage.getItem("mail");
-		  this.registerCredentials.password = window.localStorage.getItem("password");
+		  this.registerCredentials.password = window.localStorage.getItem("pass");
 		  this.isChecked = true;
 	  }
   }
@@ -87,7 +90,7 @@ export class LoginPage {
 					outerThis.promptGenerico(titulo, subtitulo, usuario);
 				} else {
 					setTimeout(() => {
-						window.localStorage.setItem("mail", outerThis.registerCredentials.email);
+						window.localStorage.setItem("email", outerThis.registerCredentials.email);
 						outerThis.nav.setRoot(TabsPage);
 					});
 				}
@@ -190,6 +193,7 @@ export class LoginPage {
   }
   
    promptGenerico(titulo: string, subtitulo: string, usuario) {
+	var subtituloError;
 	let prompt = this.alertCtrl.create({
 		  title: titulo,
 		  inputs: [
@@ -213,13 +217,14 @@ export class LoginPage {
 							var subtituloCorrecto = "Los datos fueron actualizados correctamente";
 							outerThis.alertGenerico(tituloCorrecto, subtituloCorrecto);
 						} else {
-							subtitulo = "<center><b>Error. No se pudo actualizar la informacion.</b></center><br><br>" + subtitulo;
-							outerThis.promptGenerico(titulo, subtitulo, usuario);
+							subtituloError = "<center><b>Error. No se pudo actualizar la informacion.</b></center><br><br>" + "<center><b>Por favor ingrese su teléfono para continuar (código de area + número)</b></center>";
+							outerThis.promptGenerico(titulo, subtituloError, usuario);
 						}
 					});
 				  } else {
-					  subtitulo = "<center><b>Formato de número telefónico inválido.</b></center><br><br>" + subtitulo; 
-					  this.promptGenerico(titulo, subtitulo, usuario);
+					  subtituloError = "<center><b>Formato de número telefónico inválido.</b></center><br><br>" + "<center><b>Por favor ingrese su teléfono para continuar (código de area + número)</b></center>";
+					  debugger;
+					  this.promptGenerico(titulo, subtituloError, usuario);
 				  }
 			  }
 			},
