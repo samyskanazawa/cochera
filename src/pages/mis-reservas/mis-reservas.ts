@@ -105,7 +105,7 @@ export class MisReservasPage {
 	var numeroHoraHastaReserva = Number((this.reservas[index].horaHasta).replace(":",""));
 	var numeroHoraDesdeReserva = Number((this.reservas[index].horaDesde).replace(":",""));
 	
-	if (horaActual > numeroHoraHastaReserva){
+	if ((d.toISOString().substr(0, 10) == this.reservas[index].fechaRese.substr(0,10)) && (horaActual > numeroHoraHastaReserva)){
 		this.indice = null;
 	}
 		
