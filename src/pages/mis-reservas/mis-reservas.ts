@@ -20,6 +20,8 @@ export class MisReservasPage {
   private mensaje: string;
   private indice: number;
   private indiceOcupado;
+  private indiceLiberar;
+  private indiceAlert;
   private mail: string = "hernan.ruiz@softtek.com";
   private fechaRese = new Date().toISOString();
   private reservasArray: any;
@@ -72,6 +74,8 @@ export class MisReservasPage {
    //debugger;
     this.indiceOcupado = null;
     this.indice = i;
+	this.indiceAlert = i;
+	this.indiceLiberar = i;
 	var index = this.reservas.indexOf(i);
 	var fecha = this.reservasService.formatearFecha(new Date().toISOString());
 	var fechaReserva = this.reservasService.formatearFecha(this.reservas[index].fechaRese);
@@ -100,7 +104,11 @@ export class MisReservasPage {
 	var horaActual = Number(horas.toString() + min.toString());
 	var numeroHoraHastaReserva = Number((this.reservas[index].horaHasta).replace(":",""));
 	var numeroHoraDesdeReserva = Number((this.reservas[index].horaDesde).replace(":",""));
-			
+	
+	if (horaActual > numeroHoraHastaReserva){
+		this.indice = null;
+	}
+		
 	//Valido para ocupar una cochera reservada: estado no Ocupado, fecha = hoy, hoario al hacer click en ocupar entre los horarios de reserva
 	if((this.reservas[index].estado != "Ocupado") && (fechaReserva == fecha) && (hora >= Number(horaDesdeReserva)) && (hora <= Number(horaHastaReserva)) && 
 		(horaActual >= numeroHoraDesdeReserva) && (horaActual <= numeroHoraHastaReserva)){
@@ -234,7 +242,7 @@ export class MisReservasPage {
   
   eliminarReserva() {
 	var textoBoton;
-	var index = this.reservas.indexOf(this.indice);
+	var index = this.reservas.indexOf(this.indiceAlert);
 		if (this.reservas[index].estado == "Reservado"){
 			var titulo = 'Eliminar Reserva';
 			var subtitulo = '¿Desea eliminar esta reserva?';

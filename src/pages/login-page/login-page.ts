@@ -26,7 +26,6 @@ export class LoginPage {
  }
 
   recordarDatos(isChecked){
-	  //debugger;
 	  if(isChecked){
 		  this.isChecked = false;
 		  window.localStorage.removeItem("isChecked");
@@ -43,7 +42,6 @@ export class LoginPage {
 
   ionViewDidLoad() {
 	  this.isChecked = false;
-	  //debugger;
 	  if(window.localStorage.length > 1){
 		  this.registerCredentials.email = window.localStorage.getItem("mail");
 		  this.registerCredentials.password = window.localStorage.getItem("pass");
@@ -223,7 +221,6 @@ export class LoginPage {
 					});
 				  } else {
 					  subtituloError = "<center><b>Formato de número telefónico inválido.</b></center><br><br>" + "<center><b>Por favor ingrese su teléfono para continuar (código de area + número)</b></center>";
-					  debugger;
 					  this.promptGenerico(titulo, subtituloError, usuario);
 				  }
 			  }

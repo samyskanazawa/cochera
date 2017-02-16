@@ -210,7 +210,9 @@ export class Reservas {
 					var posicionHoraHasta = temporal.indexOf(reserva.horaHasta);
 					temporal.splice(posicionHoraHasta, 1);
 					
-					if((numeroHoraDesde > numeroHoraActual && esDiaActual == true) || esDiaActual == false){
+					debugger;
+					
+					if((numeroHoraDesde > numeroHoraActual && esDiaActual == true) || esDiaActual == false || (esDiaActual == true && reserva.estado == "Ocupado")){
 							
 							if(numeroHoraDesde >= 800 && numeroHoraHasta <= 2000){
 							
