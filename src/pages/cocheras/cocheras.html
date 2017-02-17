@@ -64,9 +64,9 @@
 						</ion-list>
 				</div>
 				<ion-label class="label_boton"><b> </b>
-					<button ion-button type="button" class="boton" style="color: #222;" [disabled]="indiceCocheraNoDisponible==null">
+					<button ion-button type="button" class="boton" style="color: #222;" [disabled]="indiceCocheraNoDisponible==null" (click)="llamar()">
 						<ion-label style="text-align: center">Llamar: <ion-icon name="call"></ion-icon></ion-label>
-						<a ion-button href="tel:1564212803" >Llamar a Darío</a>
+						<!--<a ion-button href="tel:{{telefonoNoDisponible}}"></a>-->
 					</button>
 				</ion-label>
 			</div>

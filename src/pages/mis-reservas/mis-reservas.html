@@ -9,7 +9,7 @@
 			  <ion-col width-10 class="col" ></ion-col>
 			</ion-row >
 			<ion-list radio-group>
-				<ion-row class="row" *ngFor="let reserva of reservas | orderBy : ['fechaRese']; let i of reservas.length">
+				<ion-row class="row" *ngFor="let reserva of reservas | orderBy : ['horaDesde'] | orderBy : ['fechaRese']; let i of reservas.length">
 				  <ion-col width-15 class="col">{{(reservasService.formatearFecha(reserva.fechaRese)).substr(0,5)}}</ion-col>
 				  <ion-col width-50 class="col">{{reserva.nombreCochera}} - ({{reserva.espacio}})</ion-col>
 				  <ion-col width-15 class="col">{{reserva.horaDesde}}<br/>{{reserva.horaHasta}}</ion-col>

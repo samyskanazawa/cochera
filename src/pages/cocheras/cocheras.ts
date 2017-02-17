@@ -44,6 +44,7 @@ export class CocherasPage {
 	private nombresMesesAMostrar = this.getNombreMeses();//['Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 	private numerosDiasAMostrar = this.setDias();
 	private numerosMesesAMostrar = this.setMeses();
+	private telefonoNoDisponible: Number;
 	
 	
 	reservas: any;
@@ -141,9 +142,15 @@ export class CocherasPage {
   }
   
   marcarRadioCocheraNoDisponible(i){
-	  this.indiceCocheraNoDisponible = i;
+	this.indiceCocheraNoDisponible = i;
+	var index = this.noDisponibles.indexOf(this.indiceCocheraNoDisponible);
+	this.telefonoNoDisponible = this.noDisponibles[index].v_telefono;
   }
   
+  
+  llamar(){
+	  window.open("tel:" + this.telefonoNoDisponible);
+  }
   setHoraDesde(){
 	  this.horaDesde = new Date().toISOString();
   }

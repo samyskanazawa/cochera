@@ -296,6 +296,7 @@ export class TabsPage {
 	  var enHorario: boolean;
 	  var horaHasta = "20:00";
 	  var horarioActual = Number((this.getHoraActual()).replace(":",""));
+	  var diaActual = new Date();
 
 	  var alertAnterior = window.localStorage.getItem("alertAnterior");
 	  
@@ -306,7 +307,7 @@ export class TabsPage {
 
 			for(iterador = 0; iterador < this.reservas.length ; iterador++){	  
 				enHorario = Number((this.reservas[iterador].horaHasta).replace(":","")) > horarioActual;
-				if (enHorario){
+				if ((diaActual.toISOString().substr(0, 10) == this.reservas[iterador].fechaRese.substr(0,10)) && enHorario){
 					if(this.reservas[iterador].estado == "Ocupado"){			
 						reserva = this.reservas[iterador];
 						this.estaOcupandoCochera = true;
