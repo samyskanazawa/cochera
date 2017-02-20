@@ -209,12 +209,12 @@ export class TabsPage {
 							outerThis.getUsuarioLogeado();
 							outerThis.alertGenerico(tituloCorrecto, subtituloCorrecto);
 						} else {
-							subtitulo = "<center><b>Error. No se pudo actualizar la informacion.</b></center><br><br>" + subtitulo;
+							subtitulo = "Ingrese su número de celular<br><br><center><b>Error. No se pudo actualizar la informacion.</b></center><br><br>";
 							outerThis.modificarCelularAlert(titulo, subtitulo);
 						}
 					});
 				  } else {
-					  subtitulo = "<center><b>Formato de número telefónico inválido.</b></center><br><br>" + subtitulo; 
+					  subtitulo = "Ingrese su número de celular<br><br><center><b>Formato de número telefónico inválido.</b></center><br><br>"; 
 					  this.modificarCelularAlert(titulo, subtitulo);
 				  }
 			  }

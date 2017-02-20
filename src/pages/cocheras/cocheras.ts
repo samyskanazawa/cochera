@@ -147,10 +147,10 @@ export class CocherasPage {
 	this.telefonoNoDisponible = this.noDisponibles[index].v_telefono;
   }
   
-  
   llamar(){
 	  window.open("tel:" + this.telefonoNoDisponible);
   }
+  
   setHoraDesde(){
 	  this.horaDesde = new Date().toISOString();
   }

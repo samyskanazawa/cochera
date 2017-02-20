@@ -55,7 +55,7 @@
 						  <ion-col width-10 class="col"></ion-col>
 						</ion-row>
 						<ion-list radio-group>
-							<ion-row class="row" *ngFor="let item of noDisponibles | orderBy : ['v_espacio']; let i of noDisponibles.length">
+							<ion-row class="row" *ngFor="let item of noDisponibles | orderBy : ['v_nombre', 'horaDesde']; let i of noDisponibles.length">
 							  <ion-col width-30 class="col">{{item.v_nombre}} - ({{item.v_espacio}})</ion-col>
 							  <ion-col width-15 class="col">{{item.horaDesde}}<br/>{{item.horaHasta}}</ion-col>
 							  <ion-col width-30 class="col">{{item.v_nombreCompleto}}</ion-col>
