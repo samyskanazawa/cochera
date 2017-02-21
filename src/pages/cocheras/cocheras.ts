@@ -77,44 +77,50 @@ export class CocherasPage {
 	  ];
   }
   
+    getHoraActual(){	
+		var diaActual = new Date();
+		var hora = diaActual.getHours();
+		var minutos = diaActual.getMinutes();			
+		var horaActual;
+		var horas;
+		var min;
+				
+		if (minutos < 10){
+			min = "0" + minutos.toString();
+		}else{
+			min = minutos.toString();
+		}
+		
+		if (hora < 10){
+			horas = "0" + hora.toString();
+		}else{
+			horas = hora.toString();
+		}	
+		
+		horaActual = horas.toString() + ":" + min;		
+		return(horaActual);			
+	}
+	
   devolverColorFilaDisponible(i){
 	 //[ngStyle]="{'background-color': devolverColorFila(i)}"
-	 var indexDisponibles = this.disponibles.indexOf(i);
-	
+	 var indexDisponibles = this.disponibles.indexOf(i);	
 	 var hoy = new Date(this.fechaElegida).toISOString();
 	 var fechaSeteada = hoy.substr(0,10);
 	 var fechaHoy = new Date().toISOString();
 	 var fechaHoyParse = fechaHoy.substr(0,10);
 	 var colorDevuelto;
-
-	 var diaActual = new Date();
-	 var hora = diaActual.getHours();
-	 var minutos = diaActual.getMinutes();	
 	 var v_DispoFila = this.disponibles[indexDisponibles].v_Dispo;
 	 var v_DispoActual;
 	 var dispo;
 	 var horaHasta = "20:00";
-	 var horaActual;
 	 var horaDesde;
-	 var horas;
-	 var min;
+	 var horaActual = this.getHoraActual();
+
 		
-	 if (minutos < 10){
-	 	min = "0" + minutos.toString();
-	 }else{
-		min = minutos.toString();
-	 }
-		
-	 if (hora < 10){
-	 	horas = "0" + hora.toString();
-	 }else{
-	 	horas = hora.toString();
-	 }	
 	 
 	 if (this.flagColores == true){
 		 if (fechaHoyParse == fechaSeteada){
-			
-			horaActual = horas.toString() + ":" + min;			
+		 
 			horaDesde = horaActual;
 			v_DispoActual = this.reservasService.obtenerDiferenciaDeTiempo(horaDesde, horaHasta);
 			dispo  =   v_DispoActual - v_DispoFila;
@@ -544,6 +550,7 @@ export class CocherasPage {
 			var error: boolean;
 			var outerThis = this;
 			var w;
+			var horaActual = this.getHoraActual();
 		
 			this.obtenerCocheras(horaDesde, horaHasta, fechaRese, mail, nombreCochera, this.disponibles[index].v_espacio, function(){
 				//debugger;
@@ -590,7 +597,12 @@ export class CocherasPage {
 						}
 					} else {
 						//var titulo = 'Horario Inválido';
-						var subtitulo = 'El horario permitido es entre las 08:00 hs y las 20:00 hs';
+						
+						if (Number(horaDesde.replace(":","")) <= 800 && Number(horaActual.replace(":","")) <= 800 ){
+							var subtitulo = 'El horario permitido es entre las 8:00 hs y las 20:00 hs';
+						} else {
+						var subtitulo = 'El horario permitido es entre las: ' + horaActual + ' hs y las 20:00 hs';
+						}
 						outerThis.errorRangoHorarios = false;
 						outerThis.showPrompt(subtitulo);
 					}
@@ -637,12 +649,13 @@ export class CocherasPage {
 			var horaDesdeCampoHora: number = Number((horaDesde).substr(0,2));
 			var horaHastaCampoHora: number = Number((horaHasta).substr(0,2));
 			var p;
+			var horaActual = Number(this.getHoraActual().replace(":",""));
 			
 			//debugger;
 			
 			if(horaDesdeCampoHora <= horaHastaCampoHora){
 				
-				if(Number(horaDesde.replace(":","")) >= 800 && Number(horaHasta.replace(":","")) <= 2000){
+				if(Number(horaDesde.replace(":","")) >= 800 && Number(horaDesde.replace(":","")) >= horaActual && Number(horaHasta.replace(":","")) <= 2000){
 					//debugger;
 					if((horaHastaCampoHora - horaDesdeCampoHora) >= 1 && (Number(horaHasta.replace(":","")) - Number(horaDesde.replace(":",""))) >= 100){
 				
@@ -669,7 +682,6 @@ export class CocherasPage {
 
 						//debugger;
 						
-						//if (!mismaCochera){
 							
 							var numeroHoraDesde = Number(horaDesde.replace(":",""));
 							var numeroHoraHasta = Number(horaHasta.replace(":",""));
@@ -846,39 +858,7 @@ export class CocherasPage {
 			callback();
 		});	
 	}
-	
-	/*	var outerThis = this;
-		
-		this.cocherasService.getCocheras().then((data) => {
-			var v_items = data;
-			var v_item;
-			var item;
-			var v_espacio;
-			var estado;
-			var v_nombre;
-			this.disponibles =  [];
-			this.noDisponibles = [];
-			var allreservasArray;
-			debugger;
-			//var v_fechaFormateada = this.reservasService.formatearFecha(v_fecha);
-			//var fecha = (new Date(this.reservasService.formatearFechaADate(v_fecha))).toISOString();
-			//v_fecha = fecha;
-			
-			//Itero las cocheras encontradas para buscar reservas en el día seleccionado
-			for (let item of v_items) {
-				
-				v_item = item;
-				v_nombre = v_item.nombre;
-				v_espacio = v_item.espacio;
-				
-				//Se buscará por estado diferente a "Libre"
-				estado = "Libre";
-				this.buscarOtrasReservasDelUsuario(v_nombre, v_espacio, v_fecha, estado, v_mail, horaDesde, horaHasta, allreservasArray);
-			}
-			
-		});
-		callback();
-	}*/
+
   
   
   /*buscarOtrasReservasDelUsuario(nombre: string, espacio: number, v_fecha: string, v_mail: string, estado: string, horaDesde: string, horaHasta: string, allreservasArray){
