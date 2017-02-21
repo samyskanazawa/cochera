@@ -28,9 +28,11 @@ export class HomePage {
 	private errorHorarios: boolean;
 	private extenderReserva: boolean;
 	private indice: number;
-
+	private telefonoNoDisponible:number;
+	
+	
     constructor(public navCtrl: NavController,  public reservasService: Reservas, public usuariosService: Usuarios,  public cocherasService: Cocheras, public alertCtrl: AlertController) {
-    
+
     }
   
     devolverColorFilaDisponible(i){
@@ -48,6 +50,8 @@ export class HomePage {
 		var horas;
 		var min;
 		
+		//debugger;
+		
 		if (minutos < 10){
 			min = "0" + minutos.toString();
 		}else{
@@ -60,18 +64,24 @@ export class HomePage {
 			horas = hora.toString();
 		}	
 		
-		horaActual = horas.toString() + ":" + min;			
+		horaActual = horas.toString() + ":" + min;
+		var numeroHoraActual = Number(horas.toString() + min);
+		
 		horaDesde = horaActual;
 		v_DispoActual = this.reservasService.obtenerDiferenciaDeTiempo(horaDesde, horaHasta);
 		dispo  =   v_DispoActual - v_DispoFila;
 
-			
-		if (dispo > 0 ) {
+		if(numeroHoraActual >= 800){
+			if (dispo > 0) {
 				return "#FFFA93"; //amarillo 
+			} else {
+				return "#DAF291"; //verde 
+			}
+		} else if(v_DispoFila < 1200){
+				return "#FFFA93"; //amarillo
 		} else {
 				return "#DAF291"; //verde 
 		}
-
     }
  
     devolverColorFilaNoDisponible(i){
@@ -93,8 +103,14 @@ export class HomePage {
 		this.indiceCocheraNoDisponible = i;
 		this.indiceCocheraDisponible = null;
 		this.indiceOcupado = null;
+		var index = this.noDisponibles.indexOf(this.indiceCocheraNoDisponible);
+        this.telefonoNoDisponible = this.noDisponibles[index].v_telefono;
 	}
-	  
+	
+	llamar(){
+		window.open("tel:" + this.telefonoNoDisponible);
+	}
+  
 	getHoraActual(){	
 		var diaActual = new Date();
 		var hora = diaActual.getHours();
@@ -288,35 +304,53 @@ export class HomePage {
 		var horaHasta: string;
 		this.indiceOcupado = null;
 		this.indiceCocheraDisponible = null;
+		this.indiceCocheraNoDisponible = null;
+		var diaActual = new Date();
+		var hora = diaActual.getHours();
+		var minutos = diaActual.getMinutes();
+		var min = minutos.toString();
+		var horas = hora.toString();
 		
-		//Traigo de la base todas las cocheras
-		this.cocherasService.getCocheras().then((data) => {
-		
-		v_items = data;		
-		v_mail = "hernan.ruiz@softtek.com";
-        this.tmpDispo = [];
-		this.tmpNoDispo = [];		
-		this.disponibles =  [];
-		this.allUsuariosArray = [];
-		
-		//Itero las cocheras encontradas para buscar reservas actuales
-		for (let item of v_items) {
-			
-			v_item = item;
-			v_nombre = v_item.nombre;
-			v_espacio = v_item.espacio;
-			
-			//Se buscará por estado diferente a "Libre"
-			estado = "Libre";
-			this.queryReservas(v_nombre, v_espacio, v_fecha, estado, v_mail, horaDesde, horaHasta, allreservasArray );		
+		if (hora < 10){
+			horas = "0" + hora.toString();
 		}
-		console.log(data);
-		//this.disponibles = v_items;	
-		this.disponibles = this.tmpDispo;
-		this.noDisponibles = this.tmpNoDispo;
 		
-    });
-  
+		if (minutos < 10){
+			min = "0" + minutos.toString();
+		}
+		
+		var horaActual = Number(horas + minutos);
+		
+		if (horaActual < 2000 && horaActual >= 0){
+		
+			//Traigo de la base todas las cocheras
+			this.cocherasService.getCocheras().then((data) => {
+			
+				v_items = data;		
+				v_mail = "hernan.ruiz@softtek.com";
+				this.tmpDispo = [];
+				this.tmpNoDispo = [];		
+				this.disponibles =  [];
+				this.allUsuariosArray = [];
+				
+				//Itero las cocheras encontradas para buscar reservas actuales
+				for (let item of v_items) {
+					
+					v_item = item;
+					v_nombre = v_item.nombre;
+					v_espacio = v_item.espacio;
+					
+					//Se buscará por estado diferente a "Libre"
+					estado = "Libre";
+					this.queryReservas(v_nombre, v_espacio, v_fecha, estado, v_mail, horaDesde, horaHasta, allreservasArray );		
+				}
+				console.log(data);
+				//this.disponibles = v_items;	
+				this.disponibles = this.tmpDispo;
+				this.noDisponibles = this.tmpNoDispo;
+			
+			});
+		}
    }
    
       queryReservas(v_nombre,v_espacio, v_fecha, estado, v_mail, horaDesde, horaHasta, allreservasArray ){
@@ -361,7 +395,7 @@ export class HomePage {
 
 		if (allreservasArray.length <= 0) {
 			
-			if(diaActual.toISOString().substr(0, 10) == v_fecha.substr(0,10)){
+			if(diaActual.toISOString().substr(0, 10) == v_fecha.substr(0,10) && Number(horaActual.replace(":","")) >= 800){
 				horaDesde = horaActual;
 			} else {
 				horaDesde = "08:00";
@@ -374,7 +408,7 @@ export class HomePage {
 			
 			//Busca rango disponible
 			z = 0;
-			if(diaActual.toISOString().substr(0, 10) == v_fecha.substr(0,10)){
+			if(diaActual.toISOString().substr(0, 10) == v_fecha.substr(0,10) && Number(horaActual.replace(":","")) >= 800){
 				horadesde = horaActual;
 			} else {
 				horadesde = "08:00";

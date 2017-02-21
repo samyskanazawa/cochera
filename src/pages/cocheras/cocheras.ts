@@ -77,6 +77,30 @@ export class CocherasPage {
 	  ];
   }
   
+    /*getHoraActual(){	
+		var diaActual = new Date();
+		var hora = diaActual.getHours();
+		var minutos = diaActual.getMinutes();			
+		var horaActual;
+		var horas;
+		var min;
+				
+		if (minutos < 10){
+			min = "0" + minutos.toString();
+		}else{
+			min = minutos.toString();
+		}
+		
+		if (hora < 10){
+			horas = "0" + hora.toString();
+		}else{
+			horas = hora.toString();
+		}	
+		
+		horaActual = horas.toString() + ":" + min;		
+		return(horaActual);			
+	}*/
+	
   devolverColorFilaDisponible(i){
 	 //[ngStyle]="{'background-color': devolverColorFila(i)}"
 	 var indexDisponibles = this.disponibles.indexOf(i);
@@ -109,10 +133,12 @@ export class CocherasPage {
 	 	horas = "0" + hora.toString();
 	 }else{
 	 	horas = hora.toString();
-	 }	
+	 }
+
+	 var numeroHoraActual = Number(horas.toString() + min);
 	 
 	 if (this.flagColores == true){
-		 if (fechaHoyParse == fechaSeteada){
+		 if (fechaHoyParse == fechaSeteada && numeroHoraActual >= 800){
 			
 			horaActual = horas.toString() + ":" + min;			
 			horaDesde = horaActual;
@@ -174,8 +200,7 @@ export class CocherasPage {
 
   setMeses() : Array<number>{
 	   //this.minDate = new Date().toISOString();
-	   
-	   var fechaParametro = new Date(this.fechaElegida);
+	   var fechaParametro = new Date(this.minDate);
 	   var cantidadMeses = 12 - (fechaParametro.getMonth()+1);
 	   var numerosMeses = [];
 	   var i = 0;
@@ -184,6 +209,8 @@ export class CocherasPage {
 	   for (i = fechaParametro.getMonth(); i <= cantidadMeses+1; i++){
 		   numerosMeses.push(i+1);
 	   }
+	   
+	   //this.fechaElegida = this.minDate;
 	   
 	   //console.log(numerosMeses);
 	   
@@ -304,7 +331,7 @@ export class CocherasPage {
 
 		if (allreservasArray.length <= 0) {
 			
-			if(diaActual.toISOString().substr(0, 10) == v_fecha.substr(0,10)){
+			if((diaActual.toISOString().substr(0, 10) == v_fecha.substr(0,10)) && (Number(horaActual.replace(":","")) >= 800)){
 				horaDesde = horaActual;
 			} else {
 				horaDesde = "08:00";
@@ -317,7 +344,7 @@ export class CocherasPage {
 			
 			//Busca rango disponible
 			z = 0;
-			if(diaActual.toISOString().substr(0, 10) == v_fecha.substr(0,10)){
+			if((diaActual.toISOString().substr(0, 10) == v_fecha.substr(0,10)) && (Number(horaActual.replace(":","")) >= 800)){
 				horadesde = horaActual;
 			} else {
 				horadesde = "08:00";
@@ -544,6 +571,7 @@ export class CocherasPage {
 			var error: boolean;
 			var outerThis = this;
 			var w;
+			//var horaActual = this.getHoraActual();
 		
 			this.obtenerCocheras(horaDesde, horaHasta, fechaRese, mail, nombreCochera, this.disponibles[index].v_espacio, function(){
 				//debugger;
@@ -589,8 +617,13 @@ export class CocherasPage {
 							outerThis.showPrompt(subtitulo);
 						}
 					} else {
-						//var titulo = 'Horario Inválido';
-						var subtitulo = 'El horario permitido es entre las 08:00 hs y las 20:00 hs';
+						/*var titulo = 'Horario Inválido';
+						if (Number(horaDesde.replace(":","")) <= 800 && Number(horaActual.replace(":","")) <= 800 ){
+							var subtitulo = 'El horario permitido es entre las 8:00 hs y las 20:00 hs';
+						} else {
+						var subtitulo = 'El horario permitido es entre las: ' + horaActual + ' hs y las 20:00 hs';
+						}*/
+						var subtitulo = 'El horario permitido es entre las 8:00 hs y las 20:00 hs';
 						outerThis.errorRangoHorarios = false;
 						outerThis.showPrompt(subtitulo);
 					}
@@ -637,12 +670,13 @@ export class CocherasPage {
 			var horaDesdeCampoHora: number = Number((horaDesde).substr(0,2));
 			var horaHastaCampoHora: number = Number((horaHasta).substr(0,2));
 			var p;
+			//var horaActual = Number(this.getHoraActual().replace(":",""));
 			
 			//debugger;
 			
 			if(horaDesdeCampoHora <= horaHastaCampoHora){
 				
-				if(Number(horaDesde.replace(":","")) >= 800 && Number(horaHasta.replace(":","")) <= 2000){
+				if(Number(horaDesde.replace(":","")) >= 800 /*&& Number(horaDesde.replace(":","")) >= horaActual*/ && Number(horaHasta.replace(":","")) <= 2000){
 					//debugger;
 					if((horaHastaCampoHora - horaDesdeCampoHora) >= 1 && (Number(horaHasta.replace(":","")) - Number(horaDesde.replace(":",""))) >= 100){
 				
@@ -669,7 +703,6 @@ export class CocherasPage {
 
 						debugger;
 						
-						//if (!mismaCochera){
 							
 							var numeroHoraDesde = Number(horaDesde.replace(":",""));
 							var numeroHoraHasta = Number(horaHasta.replace(":",""));
@@ -698,6 +731,8 @@ export class CocherasPage {
 									}
 								}
 								
+								debugger;
+								
 								//Guardamos los datos de las reservas de otros usuarios sobre la misma cochera que queremos reservar
 								if(mismaCochera == true){
 									var item;
@@ -711,7 +746,7 @@ export class CocherasPage {
 								
 								//Si el usuario logeado tiene una o más reservas sobre la cochera que quiere resevar, guardamos esos datos
 								if (temporal.length > 0){
-									temporalJoin.concat(temporal);
+									temporalJoin = temporalJoin.concat(temporal);
 								}
 								
 								temporalJoin.sort();
@@ -854,7 +889,7 @@ export class CocherasPage {
 			callback();
 		});	
 	}
-	
+
 	
 	igualA(array: any[], hora: number) {
 		

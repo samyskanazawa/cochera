@@ -230,7 +230,10 @@ export class Reservas {
 														var horaHasta1 = temporal [n+1];
 													
 														var horaDesde1Numero = Number(horaDesde1.replace(":",""));
-														var horaHasta1Numero = Number(horaHasta1.replace(":","")); 
+														var horaHasta1Numero = Number(horaHasta1.replace(":",""));
+
+														debugger;
+														
 														if(!error) {
 															//Si extiendo hora Hasta y se me superpone con otra reserva existente.
 															if ((numeroHoraDesde < horaDesde1Numero) && (numeroHoraHasta > horaDesde1Numero) && (numeroHoraHasta < horaHasta1Numero)){							
@@ -238,9 +241,9 @@ export class Reservas {
 																	subtitulo= "El horario de finalización seleccionado se superpone con los de otra reserva,<br> que abarca desde las " + horaDesde1 + " hs hasta las " + horaHasta1 + " hs";
 																	error = true;
 															} else 
-															
+														
 															//Si atraso hora Desde y se me superpone con otra reserva existente.
-															if ((numeroHoraDesde > horaDesde1Numero) && (numeroHoraDesde < horaHasta1Numero) && (numeroHoraHasta > horaHasta1Numero)){
+															if ((numeroHoraDesde >= horaDesde1Numero) && (numeroHoraDesde < horaHasta1Numero) && (numeroHoraHasta > horaHasta1Numero)){
 																titulo = "Error";
 																subtitulo = "El horario de inicio seleccionado se superpone con los de otra reserva,<br> que abarca desde las " + horaDesde1 + " hs hasta las " + horaHasta1 + " hs";
 																error = true;
@@ -312,7 +315,7 @@ export class Reservas {
 									//this.alertGenerico(titulo, subtitulo);
 								}
 						} else {
-							subtitulo = "Los horarios ingresados no pueden ser anteriores a las 08:00 hs ni posteriores a las 20:00";
+							subtitulo = "Los horarios ingresados no pueden ser anteriores a las 08:00 hs ni posteriores a las 20:00 hs";
 							//this.alertGenerico(titulo, subtitulo);
 						}
 					} else {

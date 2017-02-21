@@ -37,6 +37,7 @@ export class MisReservasPage {
 	  this.reservas[0].checked = true;
 	  this.indiceOcupado = null;
 	  this.indice = null;
+	  this.indiceLiberar = null;
 	});
   }
   
