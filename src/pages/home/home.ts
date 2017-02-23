@@ -29,8 +29,7 @@ export class HomePage {
 	private extenderReserva: boolean;
 	private indice: number;
 	private telefonoNoDisponible:number;
-	
-	
+
     constructor(public navCtrl: NavController,  public reservasService: Reservas, public usuariosService: Usuarios,  public cocherasService: Cocheras, public alertCtrl: AlertController) {
 
     }
@@ -110,7 +109,7 @@ export class HomePage {
 	llamar(){
 		window.open("tel:" + this.telefonoNoDisponible);
 	}
-  
+
 	getHoraActual(){	
 		var diaActual = new Date();
 		var hora = diaActual.getHours();
