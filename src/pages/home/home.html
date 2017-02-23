@@ -29,7 +29,12 @@
 		<ion-col class="signup-col"> <b> </b>
           <button ion-button type="button" style="color: #222;" [disabled]="indiceCocheraDisponible==null" (click)="reservarCochera()" class="submit-btn"><ion-label style="text-align: center">Reservar:<ion-icon name="car"></ion-icon></ion-label></button>
 		  <button ion-button type="button" style="color: #222;"   [disabled]="indiceOcupado==null" (click)="ocuparCochera()" class="boton"><ion-label style="text-align: center">Ocupar: <ion-icon name="create"></ion-icon></ion-label></button>
-          <button ion-button type="button" style="color: #222;" [disabled]="indiceCocheraNoDisponible==null"  class="submit-btn"><ion-label style="text-align: center">Llamar:<ion-icon name="call"></ion-icon></ion-label></button>
+         	<ion-label class="label_boton"><b> </b>
+					<button ion-button type="button" class="boton" style="color: #222;" [disabled]="indiceCocheraNoDisponible==null" (click)="llamar()">
+						<ion-label style="text-align: center">Llamar: <ion-icon name="call"></ion-icon></ion-label>
+						<!--<a ion-button href="tel:{{telefonoNoDisponible}}"></a>-->
+					</button>
+				</ion-label>
         </ion-col>
 		<ion-col>
 			<ion-label><b>Referencias:</b></ion-label>

@@ -28,6 +28,7 @@ export class HomePage {
 	private errorHorarios: boolean;
 	private extenderReserva: boolean;
 	private indice: number;
+	private telefonoNoDisponible:number;
 
     constructor(public navCtrl: NavController,  public reservasService: Reservas, public usuariosService: Usuarios,  public cocherasService: Cocheras, public alertCtrl: AlertController) {
     
@@ -93,7 +94,12 @@ export class HomePage {
 		this.indiceCocheraNoDisponible = i;
 		this.indiceCocheraDisponible = null;
 		this.indiceOcupado = null;
+		 var index = this.noDisponibles.indexOf(this.indiceCocheraNoDisponible);
+         this.telefonoNoDisponible = this.noDisponibles[index].v_telefono;
 	}
+	 llamar(){
+   window.open("tel:" + this.telefonoNoDisponible);
+  }
 	  
 	getHoraActual(){	
 		var diaActual = new Date();
