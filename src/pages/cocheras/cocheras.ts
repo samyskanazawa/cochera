@@ -597,12 +597,7 @@ export class CocherasPage {
 						}
 					} else {
 						//var titulo = 'Horario Inválido';
-						
-						if (Number(horaDesde.replace(":","")) <= 800 && Number(horaActual.replace(":","")) <= 800 ){
-							var subtitulo = 'El horario permitido es entre las 8:00 hs y las 20:00 hs';
-						} else {
-						var subtitulo = 'El horario permitido es entre las: ' + horaActual + ' hs y las 20:00 hs';
-						}
+						var subtitulo = 'El horario permitido es entre las 8:00 hs y las 20:00 hs';
 						outerThis.errorRangoHorarios = false;
 						outerThis.showPrompt(subtitulo);
 					}
@@ -655,7 +650,7 @@ export class CocherasPage {
 			
 			if(horaDesdeCampoHora <= horaHastaCampoHora){
 				
-				if(Number(horaDesde.replace(":","")) >= 800 && Number(horaDesde.replace(":","")) >= horaActual && Number(horaHasta.replace(":","")) <= 2000){
+				if(Number(horaDesde.replace(":","")) >= 800 && Number(horaHasta.replace(":","")) <= 2000){
 					//debugger;
 					if((horaHastaCampoHora - horaDesdeCampoHora) >= 1 && (Number(horaHasta.replace(":","")) - Number(horaDesde.replace(":",""))) >= 100){
 				
