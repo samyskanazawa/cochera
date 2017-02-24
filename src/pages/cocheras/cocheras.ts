@@ -574,6 +574,26 @@ export class CocherasPage {
 			var error: boolean;
 			var outerThis = this;
 			var w;
+			var diaActual = new Date();
+			var hora = diaActual.getHours();
+			var minutos = diaActual.getMinutes();
+			var min;
+			var horas;
+			
+			if (minutos < 10){
+				min = "0" + minutos.toString();
+			}else{
+				min = minutos.toString();
+			}
+			
+			if (hora < 10){
+				horas = "0" + hora.toString();
+			}else{
+				horas = hora.toString();
+			}
+			
+			var horaActual = Number(horas.toString() + min.toString());
+			var horaActualString = horas.toString() + ":" + min.toString();
 
 			//var horaActual = this.getHoraActual();
 		
@@ -621,14 +641,15 @@ export class CocherasPage {
 							outerThis.showPrompt(subtitulo);
 						}
 					} else {
-						/*var titulo = 'Horario Inválido';
-						if (Number(horaDesde.replace(":","")) <= 800 && Number(horaActual.replace(":","")) <= 800 ){
-							var subtitulo = 'El horario permitido es entre las 8:00 hs y las 20:00 hs';
+						/*var titulo = 'Horario Inválido';*/
+						debugger;
+						if ((diaActual.toISOString().substr(0, 10) == outerThis.disponibles[index].v_fecha.substr(0,10)) && (Number(horaDesde.replace(":","")) > 800)){
+							var subtitulo = 'El horario permitido es entre las ' + horaActualString + ' hs y las 20:00 hs';
 						} else {
-						var subtitulo = 'El horario permitido es entre las: ' + horaActual + ' hs y las 20:00 hs';
-						}*/
+							var subtitulo = 'El horario permitido es entre las 08:00 hs y las 20:00 hs';
+						}
 						//var titulo = 'Horario Inválido';
-						var subtitulo = 'El horario permitido es entre las 8:00 hs y las 20:00 hs';
+						//var subtitulo = 'El horario permitido es entre las 8:00 hs y las 20:00 hs';
 						outerThis.errorRangoHorarios = false;
 						outerThis.showPrompt(subtitulo);
 					}
@@ -675,13 +696,36 @@ export class CocherasPage {
 			var horaDesdeCampoHora: number = Number((horaDesde).substr(0,2));
 			var horaHastaCampoHora: number = Number((horaHasta).substr(0,2));
 			var p;
-
+			var diaActual = new Date();
+			var hora = diaActual.getHours();
+			var minutos = diaActual.getMinutes();
+			var min;
+			var horas;
+			
+			if (minutos < 10){
+				min = "0" + minutos.toString();
+			}else{
+				min = minutos.toString();
+			}
+			
+			if (hora < 10){
+				horas = "0" + hora.toString();
+			}else{
+				horas = hora.toString();
+			}
+			
+			var horaActual = Number(horas.toString() + min.toString());
+			//var horaActualString = horas.toString() + ":" + min.toString();
+			
+			if (diaActual.toISOString().substr(0, 10) != v_fecha.substr(0,10)){
+				horaActual = 800;
+			}
 			
 			//debugger;
 			
 			if(horaDesdeCampoHora <= horaHastaCampoHora){
 				
-				if(Number(horaDesde.replace(":","")) >= 800 && Number(horaHasta.replace(":","")) <= 2000){
+				if(Number(horaDesde.replace(":","")) >= horaActual && Number(horaHasta.replace(":","")) <= 2000){
 					//debugger;
 					if((horaHastaCampoHora - horaDesdeCampoHora) >= 1 && (Number(horaHasta.replace(":","")) - Number(horaDesde.replace(":",""))) >= 100){
 				

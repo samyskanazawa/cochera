@@ -29,6 +29,7 @@ export class HomePage {
 	private extenderReserva: boolean;
 	private indice: number;
 	private telefonoNoDisponible:number;
+	private mail = "hernan.ruiz@softtek.com";
 
     constructor(public navCtrl: NavController,  public reservasService: Reservas, public usuariosService: Usuarios,  public cocherasService: Cocheras, public alertCtrl: AlertController) {
 
@@ -99,11 +100,16 @@ export class HomePage {
 	}
 	  
 	marcarRadioCocheraNoDisponible(i){
-		this.indiceCocheraNoDisponible = i;
+		
+		var index = this.noDisponibles.indexOf(i);
+        this.telefonoNoDisponible = this.noDisponibles[index].v_telefono;
+		
+		if(this.noDisponibles[index].v_mail != this.mail){
+			this.indiceCocheraNoDisponible = i;
+		}
+		
 		this.indiceCocheraDisponible = null;
 		this.indiceOcupado = null;
-		var index = this.noDisponibles.indexOf(this.indiceCocheraNoDisponible);
-        this.telefonoNoDisponible = this.noDisponibles[index].v_telefono;
 	}
 	
 	llamar(){
@@ -326,7 +332,7 @@ export class HomePage {
 			this.cocherasService.getCocheras().then((data) => {
 			
 				v_items = data;		
-				v_mail = "hernan.ruiz@softtek.com";
+				v_mail = "leandro.fragala@softtek.com";
 				this.tmpDispo = [];
 				this.tmpNoDispo = [];		
 				this.disponibles =  [];

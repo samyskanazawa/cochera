@@ -413,7 +413,7 @@ export class Reservas {
 			titulo = "Error";
 			subtitulo = "La reserva no fue generada";
 			booleano = false;
-		} 
+		}
 		//Si todo sale bien, se muestr mensaje confirmándolo
 		else {
 		
@@ -421,7 +421,7 @@ export class Reservas {
 		
 		    if(reserva.estado == "Reservado"){
 			titulo ="Reserva";
-			subtitulo= "Cochera reservada exitosamente de: " + reserva.horaDesde + " a " + reserva.horaHasta;			
+			subtitulo= "Cochera reservada exitosamente desde las: " + reserva.horaDesde + " hs hasta las " + reserva.horaHasta + " hs";			
 			}
 			if(reserva.estado == "Ocupado"){
 		    titulo ="Cochera";
