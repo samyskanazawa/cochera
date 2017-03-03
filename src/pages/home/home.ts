@@ -267,12 +267,13 @@ export class HomePage {
 		var estado: String;
 		var horaDesde:string;
 		var horaHasta: string;
+		var outerThis = this;
 	
 		//Traigo de la base todas las cocheras
 		this.cocherasService.getCocheras().then((data) => {
 			
 			v_items = data;
-			v_mail = "hernan.ruiz@softtek.com";
+			v_mail = outerThis.mail;
 			this.tmpDispo = [];
 			this.tmpNoDispo = [];
 			this.disponibles =  [];
@@ -315,6 +316,7 @@ export class HomePage {
 		var minutos = diaActual.getMinutes();
 		var min = minutos.toString();
 		var horas = hora.toString();
+		var outerThis = this;
 		
 		if (hora < 10){
 			horas = "0" + hora.toString();
@@ -332,7 +334,7 @@ export class HomePage {
 			this.cocherasService.getCocheras().then((data) => {
 			
 				v_items = data;		
-				v_mail = "leandro.fragala@softtek.com";
+				v_mail = outerThis.mail;
 				this.tmpDispo = [];
 				this.tmpNoDispo = [];		
 				this.disponibles =  [];

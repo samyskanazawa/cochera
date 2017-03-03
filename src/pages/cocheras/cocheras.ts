@@ -45,6 +45,7 @@ export class CocherasPage {
 	private numerosDiasAMostrar = this.setDias();
 	private numerosMesesAMostrar = this.setMeses();
 	private telefonoNoDisponible: Number;
+	private mail = "hernan.ruiz@softtek.com";
 	
 	
 	reservas: any;
@@ -171,9 +172,13 @@ export class CocherasPage {
   }
   
   marcarRadioCocheraNoDisponible(i){
-	this.indiceCocheraNoDisponible = i;
-	var index = this.noDisponibles.indexOf(this.indiceCocheraNoDisponible);
+	this.indiceCocheraNoDisponible = null;
+	var index = this.noDisponibles.indexOf(i);
 	this.telefonoNoDisponible = this.noDisponibles[index].v_telefono;
+	
+	if(this.noDisponibles[index].v_mail != this.mail){
+		this.indiceCocheraNoDisponible = i;
+	}
   }
   
   llamar(){
@@ -782,7 +787,7 @@ export class CocherasPage {
 								}
 								
 
-
+								debugger;
 								//Guardamos los datos de las reservas de otros usuarios sobre la misma cochera que queremos reservar
 								if(mismaCochera == true){
 									var item;
@@ -796,7 +801,7 @@ export class CocherasPage {
 								
 								//Si el usuario logeado tiene una o más reservas sobre la cochera que quiere resevar, guardamos esos datos
 								if (temporal.length > 0){
-									temporalJoin.concat(temporal);
+									temporalJoin = temporalJoin.concat(temporal);
 								}
 								
 								temporalJoin.sort();
