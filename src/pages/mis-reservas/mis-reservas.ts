@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { NavController, ViewController } from 'ionic-angular';
 import { AlertController } from 'ionic-angular';
 import { Reservas } from '../../providers/reservas';
-import { OrderBy } from '../../pipes/sort';
 
 /*
   Generated class for the MisReservas page.
@@ -87,7 +86,6 @@ export class MisReservasPage {
 	var min;
 	
 	var horaDesdeReserva = (this.reservas[index].horaDesde).substr(0,2);
-	var minutosDesdeReserva = (this.reservas[index].horaDesde).substr(3,2);
 	var horaHastaReserva = (this.reservas[index].horaHasta).substr(0,2);
 	
 	if (minutos < 10){
@@ -135,8 +133,6 @@ export class MisReservasPage {
   setMensaje(index, callback){
 	var reserva = this.reservas[index];
 	var outerThis = this;
-	var array;
-	var texto = "";
 	
 	this.reservasService.findByQuery(reserva.nombreCochera, reserva.espacioCochera, reserva.fechaRese, reserva.estado).then((data2) => {
 		
@@ -152,7 +148,6 @@ export class MisReservasPage {
 	//debugger;
 	var outerThis = this;
 	this.mensaje = "";
-	var titulo;
 	if (subtitulo == null || subtitulo == "undefined"){subtitulo == ""};
 
 	this.setMensaje(index, function(){

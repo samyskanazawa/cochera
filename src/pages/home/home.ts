@@ -17,7 +17,6 @@ export class HomePage {
 	private fechaActual = new Date().toISOString();
 	private tmpDispo;
 	private tmpNoDispo;
-	private tmpDispoOut;
 	private allUsuariosArray = [];
 	private indiceCocheraDisponible: any;
 	private indiceCocheraNoDisponible: any;
@@ -27,7 +26,6 @@ export class HomePage {
 	private errorLimiteHoras: boolean;
 	private errorHorarios: boolean;
 	private extenderReserva: boolean;
-	private indice: number;
 	private telefonoNoDisponible:number;
 	private mail = "hernan.ruiz@softtek.com";
 
@@ -156,10 +154,6 @@ export class HomePage {
 		var fechaAlta = "";
 		var fechaOcupa = "";
 		var fechaLibre = "";
-		var contadorReservas = 0;
-		var item;
-		var resultado: boolean;
-		var error: boolean;
 		var outerThis = this;
 					
 			this.obtenerCocheras(horaDesde, horaHasta, fechaRese, mail, nombreCochera, this.disponibles[index].v_espacio, function(){
@@ -210,10 +204,6 @@ export class HomePage {
 		var fechaAlta = "";
 		var fechaOcupa = "";
 		var fechaLibre = "";
-		var contadorReservas = 0;
-		var item;
-		var resultado: boolean;
-		var error: boolean;
 		var outerThis = this;
 						
 		this.obtenerCocheras(horaDesde, horaHasta, fechaRese, mail, nombreCochera, this.disponibles[index].v_espacio, function(){
@@ -299,7 +289,6 @@ export class HomePage {
     ionViewDidEnter() {	
 		var v_items;
 		var v_item;
-		var item;
 		var v_espacio;
 		var v_nombre;
 		var v_mail;
@@ -438,9 +427,6 @@ export class HomePage {
 					for(iterador = 0; iterador<gruposN; iterador++){
 						var horaDesde1 = temporal[n];
 						var horaHasta1 = temporal [n+1];
-						
-						var minutosDesdeReserva = (horaDesde1).substr(3,2);
-						var numeroHoraHastaReserva = (horaHasta1).replace(":","");
 					
 						//debugger;
 					
@@ -547,7 +533,6 @@ export class HomePage {
 	obtenerCocheras(horaDesde: string, horaHasta: string, v_fecha: string, v_mail: string, nombre: string, espacio: number, callback){		
 		var allreservasArray;
 		var outerThis = this;
-		var mismaCochera: boolean = false;
 		//debugger;
 			
 		this.reservasService.getReservasByMailAndFechaRese(v_mail, v_fecha).then((data) => {
@@ -590,7 +575,6 @@ export class HomePage {
 					var n : number = 0;
 					var j : number = 0;
 					var iterador;
-					var c;
 					var horaDesde1Numero = 2000;
 					var horaHasta1Numero = 0;
 					var horaInicial = 800;
@@ -605,15 +589,15 @@ export class HomePage {
 											horariosDisponibles.push(horaDesdeInicial);
 							}									
 							for(iterador = 1; iterador < gruposN; iterador++){
-							j = j + 2;
-							var horaDesdeActual = Number(temporal[j].replace(":",""));
-							var horaHastaActual = Number(temporal[j+1].replace(":",""));
-								if (horaHastaInicial < horaDesdeActual){
-									horariosDisponibles.push(horaHastaInicial);
-									horariosDisponibles.push(horaDesdeActual);
-								}						
-							horaDesdeInicial = horaDesdeActual;
-							horaHastaInicial = horaHastaActual;
+								j = j + 2;
+								var horaDesdeActual = Number(temporal[j].replace(":",""));
+								var horaHastaActual = Number(temporal[j+1].replace(":",""));
+									if (horaHastaInicial < horaDesdeActual){
+										horariosDisponibles.push(horaHastaInicial);
+										horariosDisponibles.push(horaDesdeActual);
+									}						
+								horaDesdeInicial = horaDesdeActual;
+								horaHastaInicial = horaHastaActual;
 							}
 									
 							if (horaHastaInicial < horaFinal){

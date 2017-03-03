@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers, RequestOptions } from '@angular/http';
+import { Http, Headers } from '@angular/http';
 import { AlertController } from 'ionic-angular';
 import 'rxjs/add/operator/map';
 
@@ -15,7 +15,6 @@ import 'rxjs/add/operator/map';
 export class Reservas {
 
   data: any;
-  private indice = 0;
   private resultado: boolean;
  
   constructor(public http: Http, public alertCtrl: AlertController) {
@@ -138,7 +137,6 @@ export class Reservas {
 	var min;
 	//var horaActual = Number(hora.toString() + minutos.toString());
 	var numeroHoraActual;
-	var esMiReserva: boolean = false;
 	var estado = "libre";
 	var esDiaActual: boolean = false;
 	
@@ -403,8 +401,6 @@ export class Reservas {
  
 	var titulo;
 	var subtitulo;
-	var booleano: boolean;
-	var resultado: boolean
  
     this.http.post('http://localhost:8080/reserva', JSON.stringify(reserva), {headers: headers})
       .subscribe(res => {
@@ -412,7 +408,6 @@ export class Reservas {
 		if(res.status < 200 || res.status >= 300) {
 			titulo = "Error";
 			subtitulo = "La reserva no fue generada";
-			booleano = false;
 		}
 		//Si todo sale bien, se muestr mensaje confirmándolo
 		else {
@@ -420,15 +415,14 @@ export class Reservas {
 		//ROME2 agrega condicional por ocupado o reservado
 		
 		    if(reserva.estado == "Reservado"){
-			titulo ="Reserva";
-			subtitulo= "Cochera reservada exitosamente desde las: " + reserva.horaDesde + " hs hasta las " + reserva.horaHasta + " hs";			
+				titulo ="Reserva";
+				subtitulo= "Cochera reservada exitosamente desde las: " + reserva.horaDesde + " hs hasta las " + reserva.horaHasta + " hs";			
 			}
 			if(reserva.estado == "Ocupado"){
-		    titulo ="Cochera";
-			subtitulo="Usted ocupó la cochera exitosamente";				
+				titulo ="Cochera";
+				subtitulo="Usted ocupó la cochera exitosamente";				
 			}
-			booleano = true;
-			console.log(res.json());
+				console.log(res.json());
 		}
 		this.alertGenerico2(titulo, subtitulo, function(){
 			callback();

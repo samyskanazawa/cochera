@@ -41,9 +41,6 @@ export class CocherasPage {
 	private extenderReserva: boolean;
 	private flagColores: boolean;
 	private ultimoColor;
-	private nombresMesesAMostrar = this.getNombreMeses();//['Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
-	private numerosDiasAMostrar = this.setDias();
-	private numerosMesesAMostrar = this.setMeses();
 	private telefonoNoDisponible: Number;
 	private mail = "hernan.ruiz@softtek.com";
 	
@@ -113,7 +110,6 @@ export class CocherasPage {
 	 var fechaSeteada = hoy.substr(0,10);
 	 var fechaHoy = new Date().toISOString();
 	 var fechaHoyParse = fechaHoy.substr(0,10);
-	 var colorDevuelto;
 
 	 var diaActual = new Date();
 	 var hora = diaActual.getHours();
@@ -193,7 +189,7 @@ export class CocherasPage {
 	  this.horaHasta = new Date().toISOString();
   }
   
-  setDias() : Array<number>{
+  /*setDias() : Array<number>{
 	   var fecha = new Date();
 	   var diaActual = fecha.getDate();
 	   var numerosADevolver = [];
@@ -204,7 +200,7 @@ export class CocherasPage {
 	   }
 	   
 	   return numerosADevolver;
-  }
+  }*/
 
   setMeses() : Array<number>{
 	   //this.minDate = new Date().toISOString();
@@ -212,7 +208,6 @@ export class CocherasPage {
 	   var cantidadMeses = 12 - (fechaParametro.getMonth()+1);
 	   var numerosMeses = [];
 	   var i = 0;
-	   var m = 0;
 	   
 	   for (i = fechaParametro.getMonth(); i <= cantidadMeses+1; i++){
 		   numerosMeses.push(i+1);
@@ -375,9 +370,6 @@ export class CocherasPage {
 					for(iterador = 0; iterador<gruposN; iterador++){
 						var horaDesde1 = temporal[n];
 						var horaHasta1 = temporal [n+1];
-						
-						var minutosDesdeReserva = (horaDesde1).substr(3,2);
-						var numeroHoraHastaReserva = (horaHasta1).replace(":","");
 					
 						//debugger;
 					
@@ -573,12 +565,7 @@ export class CocherasPage {
 			var fechaAlta = "";
 			var fechaOcupa = "";
 			var fechaLibre = "";
-			var contadorReservas = 0;
-			var item;
-			var resultado: boolean;
-			var error: boolean;
 			var outerThis = this;
-			var w;
 			var diaActual = new Date();
 			var hora = diaActual.getHours();
 			var minutos = diaActual.getMinutes();
@@ -597,7 +584,6 @@ export class CocherasPage {
 				horas = hora.toString();
 			}
 			
-			var horaActual = Number(horas.toString() + min.toString());
 			var horaActualString = horas.toString() + ":" + min.toString();
 
 			//var horaActual = this.getHoraActual();
@@ -687,7 +673,6 @@ export class CocherasPage {
 		
 		var allreservasArray;
 		var outerThis = this;
-		var mismaCochera: boolean = false;
 		//debugger;
 		
 		this.reservasService.getReservasByFechaRese(v_fecha).then((data) => {
@@ -696,11 +681,10 @@ export class CocherasPage {
 			var temporal = [];
 			var temporalReservasOtrosUsuarios = [];
 			var cocherasResevadasOtrosUsuarios = [];
-			var temporalMailOtrosUsuarios: Array<string> = [];
+			//var temporalMailOtrosUsuarios: Array<string> = [];
 			var horariosDisponibles = [];
 			var horaDesdeCampoHora: number = Number((horaDesde).substr(0,2));
 			var horaHastaCampoHora: number = Number((horaHasta).substr(0,2));
-			var p;
 			var diaActual = new Date();
 			var hora = diaActual.getHours();
 			var minutos = diaActual.getMinutes();
@@ -768,7 +752,6 @@ export class CocherasPage {
 								var n : number = 0;
 								var j : number = 0;
 								var iterador;
-								var c;
 								var r;
 								var mismaCochera = false;
 								var horaDesde1Numero = 2000;

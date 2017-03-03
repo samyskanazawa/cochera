@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
-import { AlertController, LoadingController, Loading } from 'ionic-angular';
+import { AlertController } from 'ionic-angular';
 import { Http, Headers } from '@angular/http';
-import { TabsPage } from '../pages/tabs/tabs';
-import { LoginPage } from '../../pages/login-page/login-page';
 import 'rxjs/add/operator/map';
 
 /*
@@ -60,8 +58,6 @@ private mensaje: string;
   
   habilitarUsuario(usuario, mensaje, telefono, callback){
  
-	var mensajeADevolver;
-	//var booleano: boolean;
 	usuario.telefono = telefono;
 	usuario.habilitado = true;
 	var outerThis = this;
@@ -77,7 +73,6 @@ private mensaje: string;
 	  let id = (usuario._links.self.href).substr(30);
 	  let headers = new Headers();
 	  headers.append('Content-Type', 'application/json');
-	  var outerThis = this;
    	  var titulo;
 	  var subtitulo;
 	  

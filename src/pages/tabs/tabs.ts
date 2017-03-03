@@ -23,8 +23,6 @@ export class TabsPage {
   private usuarioLogeado;
   private allUsuariosArray = [];
   private fechaRese = new Date().toISOString();
-  private actualiza = false;
-  private alertAnterior: boolean = false;
   reservas: any;
   loading: Loading;
 
@@ -294,7 +292,6 @@ export class TabsPage {
 	  var iterador;
 	  var reserva;
 	  var enHorario: boolean;
-	  var horaHasta = "20:00";
 	  var horarioActual = Number((this.getHoraActual()).replace(":",""));
 	  var diaActual = new Date();
 
