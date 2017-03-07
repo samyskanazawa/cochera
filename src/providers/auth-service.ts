@@ -22,11 +22,10 @@ export class AuthService {
  
   public login(email: string, password: string, usuario) {
 	  
-		if(usuario.habilitado == false){
+		if(usuario.habilitado == true && usuario.telefono == ""){
 			var error = "Usuario no habilitado";
 			return error; 
 		} else {
-		
 		
 			/*
 				if(res.status == 401) {
