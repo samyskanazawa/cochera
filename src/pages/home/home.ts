@@ -83,8 +83,14 @@ export class HomePage {
     }
  
     devolverColorFilaNoDisponible(i){
-		return "#FD7D7D"; //Rojo
-    }
+		var indexNoDisponibles = this.noDisponibles.indexOf(i);	
+		
+		if (this.mail == this.noDisponibles[indexNoDisponibles].v_mail){
+			return "#E1DEDE"; //gris
+		} else {
+			return "#FD7D7D"; //Rojo
+		}
+	}
   
 	marcarRadioCocheraDisponible(i){
 		this.indiceCocheraDisponible = i;
@@ -92,9 +98,9 @@ export class HomePage {
 		this.indiceOcupado = null;
 		var index = this.disponibles.indexOf(this.indiceCocheraDisponible);
 		var horaDesde = this.disponibles[index].horaDesde;
-				if(!(horaDesde > this.getHoraActual())){
-					this.indiceOcupado = index;	
-				}			
+			if(!(horaDesde > this.getHoraActual())){
+				this.indiceOcupado = index;	
+			}
 	}
 	  
 	marcarRadioCocheraNoDisponible(i){
@@ -104,6 +110,8 @@ export class HomePage {
 		
 		if(this.noDisponibles[index].v_mail != this.mail){
 			this.indiceCocheraNoDisponible = i;
+		} else {
+			this.indiceCocheraNoDisponible = null;
 		}
 		
 		this.indiceCocheraDisponible = null;
