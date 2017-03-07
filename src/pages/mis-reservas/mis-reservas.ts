@@ -21,7 +21,7 @@ export class MisReservasPage {
   private indiceOcupado;
   private indiceLiberar;
   private indiceAlert;
-  private mail: string = "hernan.ruiz@softtek.com";
+  private mail: string = window.localStorage.getItem("email");//"hernan.ruiz@softtek.com";
   private fechaRese = new Date().toISOString();
   private reservasArray: any;
   reservas: any;

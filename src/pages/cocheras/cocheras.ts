@@ -42,7 +42,7 @@ export class CocherasPage {
 	private flagColores: boolean;
 	private ultimoColor;
 	private telefonoNoDisponible: Number;
-	private mail = "hernan.ruiz@softtek.com";
+	private mail = window.localStorage.getItem("email");//"hernan.ruiz@softtek.com";
 	
 	
 	reservas: any;

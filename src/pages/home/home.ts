@@ -27,7 +27,7 @@ export class HomePage {
 	private errorHorarios: boolean;
 	private extenderReserva: boolean;
 	private telefonoNoDisponible:number;
-	private mail = "hernan.ruiz@softtek.com";
+	private mail = window.localStorage.getItem("email");//"hernan.ruiz@softtek.com";
 
     constructor(public navCtrl: NavController,  public reservasService: Reservas, public usuariosService: Usuarios,  public cocherasService: Cocheras, public alertCtrl: AlertController) {
 

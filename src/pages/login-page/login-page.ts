@@ -16,33 +16,41 @@ export class LoginPage {
   private isChecked: boolean = false;
  
   constructor(private nav: NavController, private auth: AuthService, private alertCtrl: AlertController, private loadingCtrl: LoadingController, private usuariosService: Usuarios) {}
-
+  
  validateEmail(email) {
 	 if (email != "" && ! /^\w+[a-zA-Z0-9_]+\.[a-zA-Z0-9_]+@softtek.com/.test(email)){
 	 //^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/.test(email)) {
 		 this.showAdv("Dominio Incorrecto");
 		 this.registerCredentials.email="";
+		 this.registerCredentials.password="";
+		 window.localStorage.removeItem("mail");
+		 window.localStorage.removeItem("pass");
+		 window.localStorage.removeItem("isChecked");
+		 window.localStorage.setItem("isChecked", "false");
+		 this.isChecked = false;
 	 } 
  }
 
   recordarDatos(isChecked){
 	  if(isChecked){
-		  this.isChecked = false;
 		  window.localStorage.removeItem("isChecked");
+		  window.localStorage.setItem("isChecked", "false");
+		  this.isChecked = false;
 		  window.localStorage.removeItem("mail");
 		  window.localStorage.removeItem("pass");
 	  } else {
-		  this.isChecked = true;
+		  window.localStorage.removeItem("isChecked");
 		  window.localStorage.setItem("isChecked", "true");
+		  this.isChecked = true;
 		  window.localStorage.setItem("mail", this.registerCredentials.email);
 		  window.localStorage.setItem("pass", this.registerCredentials.password);
 	  }
   }
 
 
-  ionViewDidLoad() {
+  ionViewWillLoad() {
 	  this.isChecked = false;
-	  if(window.localStorage.length > 1){
+	  if(window.localStorage.length > 2){
 		  this.registerCredentials.email = window.localStorage.getItem("mail");
 		  this.registerCredentials.password = window.localStorage.getItem("pass");
 		  this.isChecked = true;
@@ -61,6 +69,13 @@ export class LoginPage {
 	  var subtitulo = "Por favor complete los campos para ingresar";
 	  this.alertGenerico(titulo, subtitulo);
     } else {
+		
+		if ((this.registerCredentials.email != window.localStorage.getItem("mail")) && this.isChecked == true){
+		  window.localStorage.removeItem("mail");
+		  window.localStorage.removeItem("pass");
+		  window.localStorage.setItem("mail", this.registerCredentials.email);
+		  window.localStorage.setItem("pass", this.registerCredentials.password);
+		}
 		
 		this.buscarsUsuarios(function(){
 			

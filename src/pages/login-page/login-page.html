@@ -22,7 +22,7 @@
 			
           </ion-list>
 		  
-		  <ion-label><ion-checkbox [(ngModel)]="isChecked" [ngModelOptions]="{standalone: true}" [disabled]="registerCredentials.email == '' || registerCredentials.password == ''" (click)="recordarDatos(isChecked)">Checkbox Label</ion-checkbox> Recordarme</ion-label>
+		  <ion-label><ion-checkbox [(ngModel)]="isChecked" [ngModelOptions]="{standalone: true}" [disabled]="registerCredentials.email == '' || registerCredentials.password == ''" (click)="recordarDatos(isChecked)" checked={{isChecked}}>Checkbox Label</ion-checkbox> Recordarme</ion-label>
 		  
         </ion-col>
 		
