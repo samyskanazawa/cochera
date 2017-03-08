@@ -18,7 +18,7 @@ export class LoginPage {
   constructor(private nav: NavController, private auth: AuthService, private alertCtrl: AlertController, private loadingCtrl: LoadingController, private usuariosService: Usuarios) {}
   
  validateEmail(email) {
-	 if (email != "" && ! /^\w+[a-zA-Z0-9_]+\.[a-zA-Z0-9_]+@softtek.com/.test(email)){
+	 if (email != "" && ! /^[a-zA-Z0-9_]+\.[a-zA-Z0-9_]+@softtek.com/.test(email)){
 	 //^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/.test(email)) {
 		 this.showAdv("Dominio Incorrecto");
 		 this.registerCredentials.email="";
