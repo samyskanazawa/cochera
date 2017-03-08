@@ -23,24 +23,20 @@ export class LoginPage {
 		 this.showAdv("Dominio Incorrecto");
 		 this.registerCredentials.email="";
 		 this.registerCredentials.password="";
-		 window.localStorage.removeItem("mail");
-		 window.localStorage.removeItem("pass");
-		 window.localStorage.removeItem("isChecked");
-		 window.localStorage.setItem("isChecked", "false");
-		 this.isChecked = false;
+		 if(this.isChecked == true){
+			this.isChecked = false;
+			window.localStorage.removeItem("mail");
+			window.localStorage.removeItem("pass");
+		 }
 	 } 
  }
 
   recordarDatos(isChecked){
 	  if(isChecked){
-		  window.localStorage.removeItem("isChecked");
-		  window.localStorage.setItem("isChecked", "false");
 		  this.isChecked = false;
 		  window.localStorage.removeItem("mail");
 		  window.localStorage.removeItem("pass");
 	  } else {
-		  window.localStorage.removeItem("isChecked");
-		  window.localStorage.setItem("isChecked", "true");
 		  this.isChecked = true;
 		  window.localStorage.setItem("mail", this.registerCredentials.email);
 		  window.localStorage.setItem("pass", this.registerCredentials.password);
@@ -50,7 +46,7 @@ export class LoginPage {
 
   ionViewWillLoad() {
 	  this.isChecked = false;
-	  if(window.localStorage.length > 2){
+	  if(window.localStorage.length > 1){
 		  this.registerCredentials.email = window.localStorage.getItem("mail");
 		  this.registerCredentials.password = window.localStorage.getItem("pass");
 		  this.isChecked = true;
@@ -90,6 +86,13 @@ export class LoginPage {
 			var usuario = outerThis.allUsuariosArray[0][index];
 			
 			if (usuario == null || (usuario.habilitado == false && usuario.telefono != "")){
+				if(outerThis.isChecked == true){
+					outerThis.registerCredentials.email="";
+					outerThis.registerCredentials.password="";
+					outerThis.isChecked = false;
+					window.localStorage.removeItem("mail");
+					window.localStorage.removeItem("pass");
+				}
 				var titulo = "Acceso denegado";
 				var subtitulo = "Mail no autorizado";
 				outerThis.alertGenerico(titulo, subtitulo);
