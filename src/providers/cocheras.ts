@@ -18,11 +18,6 @@ export class Cocheras {
   }
  
   getCocheras(){
- 
-    if (this.data) {
-      return Promise.resolve(this.data);
-    }
- 
     return new Promise(resolve => {
  
       this.http.get('http://localhost:8080/cochera')
@@ -32,6 +27,5 @@ export class Cocheras {
           resolve(this.data);
         });
     });
- 
   }
 }

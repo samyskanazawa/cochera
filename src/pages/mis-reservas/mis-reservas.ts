@@ -15,15 +15,15 @@ import { Reservas } from '../../providers/reservas';
 })
 export class MisReservasPage {
 
-  private tieneReserva:boolean;
-  private mensaje: string;
-  private indice: number;
-  private indiceOcupado;
-  private indiceLiberar;
-  private indiceAlert;
-  private mail: string = window.localStorage.getItem("email");//"hernan.ruiz@softtek.com";
-  private fechaRese = new Date().toISOString();
-  private reservasArray: any;
+  public tieneReserva:boolean;
+  public mensaje: string;
+  public indice: number;
+  public indiceOcupado;
+  public indiceLiberar;
+  public indiceAlert;
+  public mail: string = window.localStorage.getItem("email");//"hernan.ruiz@softtek.com";
+  public fechaRese = new Date().toISOString();
+  public reservasArray: any;
   reservas: any;
   radios: any;
   
@@ -40,38 +40,26 @@ export class MisReservasPage {
 	});
   }
   
-  /*getReservas(){
-	  var fecha = new Date().toISOString();
-	  debugger;
-	  var fechaTransformada = this.formatearFecha(fecha);
-	  this.reservasService.getReservasByFecha(fechaTransformada).then((data) => {
-      console.log(data);
-      this.reservas = data;
-	  this.reservas[0].checked = true;
-    });
-  }*/
-  
-  constructor(public navCtrl: NavController, public reservasService: Reservas, private viewCtrl: ViewController, public alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController, public reservasService: Reservas, public viewCtrl: ViewController, public alertCtrl: AlertController) {
 	this.tieneReserva = false;
 	
   }
   
   deleteReserva(reserva, texto: string){
  
-    //Remove locally
+    //Remover localmente
       let index = this.reservas.indexOf(reserva);
  
       if(index > -1){
         this.reservas.splice(index, 1);
       }   
  
-    //Remove from database
+    //Remover de la base
 	this.reservasService.deleteReserva(reserva.id, texto);
 	this.indice = null;
   }
   
    marcarRadioButton(i){
-   //debugger;
     this.indiceOcupado = null;
     this.indice = i;
 	this.indiceAlert = i;
@@ -117,7 +105,6 @@ export class MisReservasPage {
   }
   
   devolverColorFila(i){
-	//[ngStyle]="{'background-color': devolverColorFila(i)}"
 	var index = this.reservas.indexOf(i);
 	var diaActual = new Date();
 	
@@ -142,17 +129,30 @@ export class MisReservasPage {
   
   showPrompt(subtitulo: string) {
 	var index = this.reservas.indexOf(this.indice);
-	//debugger;
 	var outerThis = this;
 	this.mensaje = "";
+	var texto = "";
+	
+	if (this.reservas[index].estado == "Ocupado"){
+		texto = "<br>Horario Desde: <b>" + outerThis.reservas[index].horaDesde + " hs</b>";
+		if (outerThis.mensaje != ""){
+			texto = "<br>" + texto;
+		}
+	}
+	
 	if (subtitulo == null || subtitulo == "undefined"){subtitulo == ""};
+	
+	if (subtitulo != ""){
+		texto = "<br><center><b>" + subtitulo + "</b></center>" + texto;
+	}
 
 	this.setMensaje(index, function(){
 		if(outerThis.reservasArray.length > 1){
-			outerThis.mensaje = "Esta cochera tiene una o más reservas además de la actual";
+			outerThis.mensaje = "<center>Esta cochera tiene una o más reservas además de la actual</center>";
+			texto = outerThis.mensaje + texto;
 		}
 
-	  if (outerThis.reservas[index].estado == "Ocupado"){ 
+	  if (outerThis.reservas[index].estado == "Ocupado"){
 		let prompt = outerThis.alertCtrl.create({
 		  title: 'Día: ' + outerThis.reservasService.formatearFecha(outerThis.reservas[index].fechaRese),
 		  cssClass: 'alertcss',
@@ -164,7 +164,7 @@ export class MisReservasPage {
 			  value: outerThis.reservas[index].horaHasta,			  
 			},
 		  ],
-		  message: "<center><b>" + subtitulo + "</b></center>" + "<br>"+ "<br>" + outerThis.mensaje + ". " + "<br>" + "<br>" + "<b/>Horario Desde: " +outerThis.reservas[index].horaDesde.fontcolor("negro") + "<br>",
+		  message: texto,
 		  buttons: [
 			{
 			  text: 'Guardar',
@@ -204,7 +204,7 @@ export class MisReservasPage {
 			  value: outerThis.reservas[index].horaHasta
 			},
 		  ],
-		  message: "<center><b>" + subtitulo + "</b></center>" + "<br>"+ "<br>" + outerThis.mensaje,
+		  message: texto,
 		  buttons: [
 			{
 			  text: 'Guardar',
@@ -232,7 +232,6 @@ export class MisReservasPage {
 	
   }
 
-  
   eliminarReserva() {
 	var textoBoton;
 	var index = this.reservas.indexOf(this.indiceAlert);
@@ -254,6 +253,7 @@ export class MisReservasPage {
         handler: () => {
 			this.deleteReserva(this.reservas[index], textoBoton);
 			this.indiceOcupado = null;
+			this.indiceLiberar = null;
 		}
       },
 	   {

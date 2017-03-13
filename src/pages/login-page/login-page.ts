@@ -12,14 +12,13 @@ import { Usuarios } from '../../providers/usuarios';
 export class LoginPage {
   loading: Loading;
   registerCredentials = {email: '', password: ''};
-  private allUsuariosArray = [];
-  private isChecked: boolean = false;
+  public allUsuariosArray = [];
+  public isChecked: boolean = false;
  
-  constructor(private nav: NavController, private auth: AuthService, private alertCtrl: AlertController, private loadingCtrl: LoadingController, private usuariosService: Usuarios) {}
+  constructor(public nav: NavController, public auth: AuthService, public alertCtrl: AlertController, public loadingCtrl: LoadingController, public usuariosService: Usuarios) {}
   
  validateEmail(email) {
 	 if (email != "" && ! /^[a-zA-Z0-9_]+\.[a-zA-Z0-9_]+@softtek.com/.test(email)){
-	 //^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/.test(email)) {
 		 this.showAdv("Dominio Incorrecto");
 		 this.registerCredentials.email="";
 		 this.registerCredentials.password="";
@@ -58,7 +57,6 @@ export class LoginPage {
 	var outerThis = this;
 	var q;
 	var index = -1;
-    this.showLoading();
 	
 	if (this.registerCredentials.email === null || this.registerCredentials.password === null) {
       var titulo = "Error";
@@ -107,37 +105,21 @@ export class LoginPage {
 				} else {
 					setTimeout(() => {
 						window.localStorage.setItem("email", outerThis.registerCredentials.email);
-						outerThis.nav.setRoot(TabsPage);
+						outerThis.nav.setRoot(TabsPage);	
 					});
 				}
 			}
 		});
-	
-		this.loading.dismiss();
-	
-	
-	
-		/*this.auth.login(usuario).subscribe(allowed => {
-		  if (allowed) {
-			setTimeout(() => {
-			this.loading.dismiss();
-			this.nav.setRoot(TabsPage);
-			});
-		  } else {
-			this.showError("Acceso Denegado");
-		  }
-		},
-		error => {
-		  this.showError("Por favor complete los campos");
-		});*/
 	}
   }
   
   buscarsUsuarios (callback) {
+	  this.showLoading();
 	  this.usuariosService.getUsuarios().then((data) => {
 		this.allUsuariosArray.push(data);
 		callback();
-	});
+	  });
+	  this.loading.dismiss();
   }
  
   showLoading() {

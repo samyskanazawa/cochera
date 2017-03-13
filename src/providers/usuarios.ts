@@ -13,18 +13,13 @@ import 'rxjs/add/operator/map';
 export class Usuarios {
 
 data: any;
-private mensaje: string;
+public mensaje: string;
  
-  constructor(public http: Http, private alertCtrl: AlertController) {
+  constructor(public http: Http, public alertCtrl: AlertController) {
     this.data = null;
   }
  
   getUsuariosByMail(mail: string){
- 
-    /*if (this.data) {
-      return Promise.resolve(this.data);
-    }*/
- 
     return new Promise<any>(resolve => {
  
       this.http.get('http://localhost:8080/usuario/search/findByMail?mail=' + mail)
@@ -39,11 +34,6 @@ private mensaje: string;
   
   
   getUsuarios(){
- 
-    /*if (this.data) {
-      return Promise.resolve(this.data);
-    }*/
- 
     return new Promise(resolve => {
  
       this.http.get('http://localhost:8080/usuario')

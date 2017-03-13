@@ -3,7 +3,6 @@ import { Http, Headers } from '@angular/http';
 import { AlertController } from 'ionic-angular';
 import 'rxjs/add/operator/map';
 
-
 /*
   Generated class for the Reservas provider.
 
@@ -15,7 +14,7 @@ import 'rxjs/add/operator/map';
 export class Reservas {
 
   data: any;
-  private resultado: boolean;
+  public resultado: boolean;
  
   constructor(public http: Http, public alertCtrl: AlertController) {
     this.data = null;
@@ -26,11 +25,6 @@ export class Reservas {
   }
   
   getReservasByMailAndFechaRese(mail: string, fecha: string){
- 
-    /*if (this.data) {
-      return Promise.resolve(this.data);
-    }*/
-	
     return new Promise(resolve => {
  
       this.http.get('http://localhost:8080/reserva/search/findByMailAndFechaRese?mail=' + mail + '&fechaRese=' + fecha)
@@ -45,11 +39,6 @@ export class Reservas {
   }
   
   getReservasByFechaReseAndEstado(fechaRese: string, estado: string){
- 
-    /*if (this.data) {
-      return Promise.resolve(this.data);
-    }*/
-	
     return new Promise(resolve => {
  
       this.http.get('http://localhost:8080/reserva/search/findByFechaReseAndEstado?fechaRese=' + fechaRese + '&estado=' + estado)
@@ -64,11 +53,6 @@ export class Reservas {
   }
   
   getReservasByFechaRese(fecha: string){
- 
-    /*if (this.data) {
-      return Promise.resolve(this.data);
-    }*/
-	
     return new Promise(resolve => {
  
       this.http.get('http://localhost:8080/reserva/search/findByFechaRese?fechaRese=' + fecha)
@@ -83,11 +67,6 @@ export class Reservas {
   }
   
   getReservasByMail(mail: string){
- 
-    /*if (this.data) {
-      return Promise.resolve(this.data);
-    }*/
- 
     return new Promise(resolve => {
  
       this.http.get('http://localhost:8080/reserva/search/findByMail?mail=' + mail)
@@ -101,10 +80,6 @@ export class Reservas {
   }
   
  findByQuery( nombreCochera: string, espacioCochera: number, fechaRese: string, estado: string){
- 
-    /*if (this.data) {
-      return Promise.resolve(this.data);
-    }*/
     return new Promise(resolve => {
 	
       this.http.get('http://localhost:8080/reserva/search/findByQuery?nombreCochera='+ nombreCochera + '&espacioCochera=' + espacioCochera + '&fechaRese=' + fechaRese + '&estado' + estado)
@@ -119,7 +94,6 @@ export class Reservas {
  
   editReserva(reserva, horaDesde, horaHasta, callback){
  
-	//let id = (reserva._links.self.href).substr(30);
 	let id = reserva.id;
 	var allreservasArray;
 	var z;
@@ -135,7 +109,6 @@ export class Reservas {
 	var hora = diaActual.getHours();
 	var minutos = diaActual.getMinutes();
 	var min;
-	//var horaActual = Number(hora.toString() + minutos.toString());
 	var numeroHoraActual;
 	var estado = "libre";
 	var esDiaActual: boolean = false;
@@ -190,7 +163,6 @@ export class Reservas {
 				
 				allreservasArray = data2;
 				z = 0;
-				//debugger;
 					while(z < allreservasArray.length) {
 						//Tomo los horarios de todas las reservas del usuario y de todas las reservas sobre la cochera sobre la que 
 						//el usuario está editando su reserva
@@ -208,9 +180,9 @@ export class Reservas {
 					var posicionHoraHasta = temporal.indexOf(reserva.horaHasta);
 					temporal.splice(posicionHoraHasta, 1);
 					
-					debugger;
+					temporal.sort();
 					
-					if((numeroHoraDesde > numeroHoraActual && esDiaActual == true) || esDiaActual == false || (esDiaActual == true && reserva.estado == "Ocupado")){
+					if((numeroHoraDesde >= numeroHoraActual && esDiaActual == true) || esDiaActual == false || (esDiaActual == true && reserva.estado == "Ocupado")){
 							
 							if(numeroHoraDesde >= 800 && numeroHoraHasta <= 2000){
 							
@@ -229,8 +201,6 @@ export class Reservas {
 													
 														var horaDesde1Numero = Number(horaDesde1.replace(":",""));
 														var horaHasta1Numero = Number(horaHasta1.replace(":",""));
-
-														debugger;
 														
 														if(!error) {
 															//Si extiendo hora Hasta y se me superpone con otra reserva existente.
@@ -306,20 +276,16 @@ export class Reservas {
 											}
 									}else{
 										subtitulo = "El lapso mínimo de horarios debe ser de al menos una hora";
-										//this.alertGenerico(titulo, subtitulo);
 									}
 								} else {
 									subtitulo = "El horario inicial debe ser anterior al horario final";
-									//this.alertGenerico(titulo, subtitulo);
 								}
 						} else {
 							subtitulo = "Los horarios ingresados no pueden ser anteriores a las 08:00 hs ni posteriores a las 20:00 hs";
-							//this.alertGenerico(titulo, subtitulo);
 						}
 					} else {
 						esDiaActual = false;
 						subtitulo = "El horario de inicio no puede ser anterior a la hora actual para la fecha en curso";
-						//this.alertGenerico(titulo, subtitulo);
 					}
 					callback(subtitulo);
 			});
@@ -381,8 +347,8 @@ export class Reservas {
 				subtitulo = "Cochera ocupada exitosamente"				
 			}else {				
 				titulo ="Ocupando cochera";
-			    subtitulo = "Ocupación exitosa de la cochera N° " + reserva.espacioCochera + " en " + reserva.nombreCochera + " en el horario: " 
-				+ reserva.horaDesde + ' a ' + reserva.horaHasta;
+			    subtitulo = "Ocupación exitosa de la cochera N° " + reserva.espacioCochera + " en " + reserva.nombreCochera + " en el horario de: " 
+				+ reserva.horaDesde + ' hs a ' + reserva.horaHasta + " hs";
 			}					
 
             console.log(res.json());
@@ -438,7 +404,6 @@ export class Reservas {
  
     this.http.delete('http://localhost:8080/reserva/' + id).subscribe((res) => {
 	  //Si falla, se mostrará un mensaje de error
-	  //debugger;
 		if(res.status < 200 || res.status >= 300) {
 			titulo = "Error";
 			if (texto == "Eliminar"){
@@ -479,7 +444,6 @@ export class Reservas {
 	}
 	
 	var hora = Number(e[0]) - Number(s[0]) - hora_adicional;
-	//var min = (min/60)*100;
 	minuto = min.toString();
 	
 	if (min < 10){
@@ -489,15 +453,6 @@ export class Reservas {
 	var diferencia = hora.toString() + (minuto).substring(0,2);
 	return Number(diferencia);
   }
-  
-  /*formatearFecha(fecha) {
-	  var date = new Date(fecha);
-	  var mm = date.getMonth() + 1; // getMonth() inicia en 0
-	  var dd = date.getDate() + 1;
-
-	  return [(dd>9 ? '' : '0') + dd, (mm>9 ? '' : '0') + mm, date.getFullYear()].join('/');
-			 
-  };*/
   
   alertGenerico(titulo: string, subtitulo: string) {
 	let alert = this.alertCtrl.create({
@@ -534,7 +489,7 @@ export class Reservas {
 formatearFecha(fecha) {
 	  
 	  var date = new Date(fecha);
-	  var mm = date.getMonth() + 1; // getMonth() is zero-based
+	  var mm = date.getMonth() + 1; // getMonth() arranca en 0
 	  var dd = date.getDate();
 	  return [(dd>9 ? '' : '0') + dd, (mm>9 ? '' : '0') + mm, date.getFullYear()].join('/');
 			 
@@ -547,72 +502,13 @@ formatearFecha(fecha) {
 	  var mes = fecha.substr(3,2);
 	  var anio = fecha.substr(6,4);
 	  
-	  //debugger;
 	  var fechaAFormatear = [mes, dia, anio].join('/');
 	  
 	  var date = new Date(fechaAFormatear);
-	  var mm = date.getMonth() + 1; // getMonth() is zero-based
+	  var mm = date.getMonth() + 1; // getMonth() arranca en 0
 	  var dd = date.getDate();
 	  return [(dd>9 ? '' : '0') + dd, (mm>9 ? '' : '0') + mm, date.getFullYear()].join('/');
 			 
   };
-  
-/*formatearDate(fecha :string){
-		
-		this.indice++;
-		var mes = fecha.substr(4,3);
-		var dia = fecha.substr(8,2);
-		var anio = fecha.substr(24,28);
-		var monthNames = [
-		  "Jan", "Feb", "Mar",
-		  "Apr", "May", "Jun", "Jul",
-		  "Aug", "Sep", "Oct",
-		  "Nov", "Dec"
-		];
-		var mesADevolver = monthNames.indexOf(mes) + 1;
-		
-		return(dia + '/' + ((mesADevolver > 9 ? '' : '0') + mesADevolver ) + '/' + anio); 
-  }
-  
-  levantarDatos(reservas: any[]){
-
-	  var item;
-	  var i;
-	  if (this.flagGuardar == false){
-		  
-		  if (this.indice == reservas.length - 1){
-			  this.flagGuardar = true;
-			  this.indice = 0;
-		  }
-		  
-		  return this.formatearDate(reservas[this.indice].fechaRese);
-    
-	  } else {
-		  for (i = 0; i < reservas.length; i++){
-			  if (i == reservas.length - 1){
-				  this.flagGuardar = false;
-				  this.indice = 0;
-			  }
-			  return this.formatearFecha(reservas[i].fechaRese);
-		  }	  
-	  }
-  }
-  
-  
-  formatearDateGuardar(fecha :string){
-		
-		var mes = fecha.substr(4,3);
-		var dia = fecha.substr(8,2);
-		var anio = fecha.substr(24,28);
-		var monthNames = [
-		  "Jan", "Feb", "Mar",
-		  "Apr", "May", "Jun", "Jul",
-		  "Aug", "Sep", "Oct",
-		  "Nov", "Dec"
-		];
-		var mesADevolver = monthNames.indexOf(mes) + 1;
-		
-		return(((mesADevolver > 9 ? '' : '0') + mesADevolver ) + '/' + dia + '/' + anio); 
-  }*/
 
 }

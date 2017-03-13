@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController , LoadingController, Loading } from 'ionic-angular';
+import { NavController , LoadingController, Loading, Platform } from 'ionic-angular';
 import { HomePage } from '../home/home';
 import { MisReservasPage } from '../mis-reservas/mis-reservas';
 import { CocherasPage } from '../cocheras/cocheras';
@@ -11,23 +11,21 @@ import { AlertController } from 'ionic-angular';
   templateUrl: 'tabs.html'
 })
 export class TabsPage {
-  // this tells the tabs component which Pages
-  // should be each tab's root Page
   tab1Root: any = HomePage;
   tab2Root: any = MisReservasPage;
   tab3Root: any = CocherasPage;
 
-  private tieneReserva:boolean;
-  private estaOcupandoCochera:boolean;
-  private mail: string = window.localStorage.getItem("email");
-  private usuarioLogeado;
-  private allUsuariosArray = [];
-  private fechaRese = new Date().toISOString();
+  public tieneReserva:boolean;
+  public estaOcupandoCochera:boolean;
+  public mail: string = window.localStorage.getItem("email");
+  public usuarioLogeado;
+  public allUsuariosArray = [];
+  public fechaRese = new Date().toISOString();
   reservas: any;
   loading: Loading;
 
 
-  constructor(private nav: NavController, public alertCtrl: AlertController, public reservasService: Reservas, private loadingCtrl: LoadingController, private usuariosService: Usuarios) {
+  constructor(public nav: NavController, public alertCtrl: AlertController, public reservasService: Reservas, public platform: Platform, public loadingCtrl: LoadingController, public usuariosService: Usuarios) {
 				this.estaOcupandoCochera = false;
 				this.tieneReserva = false;
 				this.getUsuarioLogeado();
@@ -59,7 +57,6 @@ export class TabsPage {
 	});
   }
   
-  
     alertaReserva(reserva) {  
 	
 		var horaDesde = Number((reserva.horaDesde).replace(":",""));
@@ -69,7 +66,7 @@ export class TabsPage {
 
 		  let alert = this.alertCtrl.create({	  
 			title: 'Reserva',
-			message: 'Usted tiene reservada la cochera N° ' + reserva.espacioCochera + ' en ' + reserva.nombreCochera + ' ¿ Desea realizar alguna acción ? ' ,
+			message: 'Usted tiene reservada la cochera N° ' + reserva.espacioCochera + ' en ' + reserva.nombreCochera + ' ¿Desea realizar alguna acción? ' ,
 			buttons: [
 			  {
 				text: 'Ocupar',
@@ -77,9 +74,7 @@ export class TabsPage {
 				  console.log('Cancel clicked');
 				  window.localStorage.setItem("alertAnterior", "true");
 				  this.reservasService.ocupar(reserva, 'Inicio');
-				  this.nav.setRoot(TabsPage)
-				  //alert.dismiss();
-				  
+				  this.nav.setRoot(TabsPage);
 				}
 			  },
 			  {
@@ -88,9 +83,7 @@ export class TabsPage {
 				  console.log('Cancel clicked');
 				  window.localStorage.setItem("alertAnterior", "true");
 				  this.deleteReserva(reserva , 'Liberar');
-				  this.nav.setRoot(TabsPage)
-				  //alert.dismiss();
-
+				  this.nav.setRoot(TabsPage);
 				}
 				
 			  },
@@ -109,7 +102,7 @@ export class TabsPage {
 		
 		 let alert = this.alertCtrl.create({	  
 			title: 'Reserva',
-			message: 'Usted tiene reservada la cochera N° ' + reserva.espacioCochera + ' en el horario desde las: ' + reserva.horaDesde +  ' en: ' + reserva.nombreCochera + ' ¿ Desea liberarla ? ' ,
+			message: 'Usted tiene reservada la cochera N° ' + reserva.espacioCochera + ' en el horario desde las ' + reserva.horaDesde +  ' hs hasta las ' + reserva.horaHasta + ' hs en: ' + reserva.nombreCochera + ' ¿Desea liberarla? ' ,
 			buttons: [
 			  {
 				text: 'Liberar',
@@ -117,9 +110,7 @@ export class TabsPage {
 				  console.log('Cancel clicked');
 				  window.localStorage.setItem("alertAnterior", "true");
 				  this.deleteReserva(reserva , 'Liberar');
-				  this.nav.setRoot(TabsPage)
-				  //alert.dismiss();
-
+				  this.nav.setRoot(TabsPage);
 				}
 				
 			  },
@@ -139,22 +130,21 @@ export class TabsPage {
 
 	deleteReserva(reserva, texto: string){
  
-		//Remove locally
+		//Remover localmente
 		let index = this.reservas.indexOf(reserva);
 			 
 		if(index > -1){
-		this.reservas.splice(index, 1);
+			this.reservas.splice(index, 1);
 		}   
 			 
-		//Remove from database
+		//Remover de la base
 		this.reservasService.deleteReserva(reserva.id, texto);
-
 	} 
 	
     alertaCocheraOcupada(reserva) {
 	  let alert = this.alertCtrl.create({
 		title: 'Cochera',
-		message: 'Actualmente está ocupando la cochera N° ' + reserva.espacioCochera  + ' en ' + reserva.nombreCochera + ' ¿ Desea liberarla ? ',
+		message: 'Actualmente está ocupando la cochera N° ' + reserva.espacioCochera  + ' en ' + reserva.nombreCochera + ' ¿Desea liberarla? ',
 		buttons: [
 		  {
 			text: 'Liberar',
@@ -163,8 +153,6 @@ export class TabsPage {
 			  window.localStorage.setItem("alertAnterior", "true");
 			  this.deleteReserva(reserva, 'Liberar');
 			  this.nav.setRoot(TabsPage);
-			  //alert.dismiss();
-			  
 			}
 		  },
 		  {
@@ -195,7 +183,6 @@ export class TabsPage {
 			{
 			  text: 'Guardar',
 			  handler: data => {
-				  //debugger;
 				  if((data.telefono).length >= 10){
 					var mensaje;
 					var outerThis = this;
@@ -207,12 +194,12 @@ export class TabsPage {
 							outerThis.getUsuarioLogeado();
 							outerThis.alertGenerico(tituloCorrecto, subtituloCorrecto);
 						} else {
-							subtitulo = "Ingrese su número de celular<br><br><center><b>Error. No se pudo actualizar la informacion.</b></center><br><br>";
+							subtitulo = "<center><b>Error. No se pudo actualizar la informacion.</b></center><br>Ingrese su número de celular";
 							outerThis.modificarCelularAlert(titulo, subtitulo);
 						}
 					});
 				  } else {
-					  subtitulo = "Ingrese su número de celular<br><br><center><b>Formato de número telefónico inválido.</b></center><br><br>"; 
+					  subtitulo = "<center><b>Formato de número telefónico inválido.</b></center><br>Ingrese su número de celular"; 
 					  this.modificarCelularAlert(titulo, subtitulo);
 				  }
 			  }
@@ -234,7 +221,7 @@ export class TabsPage {
     buttons: [
       {
         text: 'Si',
-        role: 'cancel',
+        handler: () => { this.exitApp() },
       },
 	  {
         text: 'No',
@@ -244,6 +231,10 @@ export class TabsPage {
   });
   alert.present();
 }
+
+ exitApp(){
+    this.platform.exitApp();
+  }
 
    alertGenerico(titulo: string, subtitulo: string) {
 	let alert = this.alertCtrl.create({
