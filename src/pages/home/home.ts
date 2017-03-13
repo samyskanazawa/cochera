@@ -146,6 +146,8 @@ export class HomePage {
   
 	ocuparCochera(){
 	    var index = this.disponibles.indexOf(this.indiceCocheraDisponible);
+		this.indiceCocheraDisponible = null;
+		this.indiceOcupado = null;
 		var reserva = [];
 		var mail = this.disponibles[index].v_mail;
 		var nombreCochera = this.disponibles[index].v_nombre;
@@ -194,7 +196,9 @@ export class HomePage {
 	
 	
 	reservarCochera(){
-		var index = this.disponibles.indexOf(this.indiceCocheraDisponible);	
+		var index = this.disponibles.indexOf(this.indiceCocheraDisponible);
+		this.indiceCocheraDisponible = null;
+		this.indiceOcupado = null;		
 		var reserva = [];
 		var mail = this.disponibles[index].v_mail;
 		var nombreCochera = this.disponibles[index].v_nombre;
