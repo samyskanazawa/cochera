@@ -369,9 +369,10 @@ export class HomePage {
 			min = "0" + minutos.toString();
 		}
 		
-		var horaActual = Number(horas + minutos);
-		
-		if (horaActual < 2000 && horaActual >= 0){
+		var horaActual = horas + min;
+		var numerohoraActual = Number(horaActual.replace(":",""));
+		debugger;
+		if (numerohoraActual < 2000 && numerohoraActual >= 0){
 		
 			//Traigo de la base todas las cocheras
 			this.cocherasService.getCocheras().then((data) => {

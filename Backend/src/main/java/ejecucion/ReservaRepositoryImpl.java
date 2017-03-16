@@ -1,5 +1,7 @@
 package ejecucion;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -7,9 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.scheduling.annotation.Scheduled;
 
 public class ReservaRepositoryImpl implements ReservaRepositoryCustom{
+	
+	@DateTimeFormat(iso = ISO.DATE_TIME)
+	private Date fecha = new Date(System.currentTimeMillis() - 24 * 60 * 60 * 1000L);
 	
 	@Autowired
 	private MongoTemplate mongoTemplate;
@@ -72,12 +79,15 @@ public class ReservaRepositoryImpl implements ReservaRepositoryCustom{
 	@Scheduled(cron = "0 1 20 * * *")
 	public void deleteAnterioresByFechaRese() {
 		
-		String fecha = new Date().toString();
-		Date[] vectorFechas = DateUtils.getDates(fecha);
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+		String fechaISO = df.format(fecha);
+		System.out.println(fechaISO);
+		
+		Date[] vectorFechas = DateUtils.getDates(fechaISO);
 		
 		Query query = new Query();
 		query.addCriteria(Criteria
-			.where("fechaRese").lte(vectorFechas[0])
+			.where("fechaRese").lte(vectorFechas[1])
 		);
 		
 		mongoTemplate.findAllAndRemove(query, clazz);
