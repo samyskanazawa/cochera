@@ -1,5 +1,5 @@
-**Stk Parking**
-===============
+# **Stk Parking**
+=================
 
 Motivación
 ----------
@@ -18,7 +18,7 @@ Entorno de Desarrollo
 ---------------------
    
 + Base de Datos: **MongoDB**
-+ Backend: *Java 1.8**, **Spring Boot**
++ Backend: **Java 1.8**, **Spring Boot**
 + FrontEnd: **Ionic 2**
 
 Integrantes
