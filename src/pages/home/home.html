@@ -29,7 +29,7 @@
 		<ion-col class="signup-col"> <b> </b>
           <button ion-button type="button" style="color: #222;" [disabled]="indiceCocheraDisponible==null" (click)="reservarCochera()" class="submit-btn"><ion-label style="text-align: center">Reservar:<ion-icon name="car"></ion-icon></ion-label></button>
 		  <button ion-button type="button" style="color: #222;" [disabled]="indiceOcupado==null" (click)="ocuparCochera()" class="boton"><ion-label style="text-align: center">Ocupar: <ion-icon name="create"></ion-icon></ion-label></button>
-          <button ion-button type="button" style="color: #222;" [disabled]="indiceCocheraNoDisponible==null" (click)="llamar()" class="submit-btn"><ion-label style="text-align: center">Llamar:<ion-icon name="call"></ion-icon></ion-label></button>
+          <button ion-button type="button" style="color: #222;" [disabled]="indiceLlamar==null" (click)="llamar()" class="submit-btn"><ion-label style="text-align: center">Llamar:<ion-icon name="call"></ion-icon></ion-label></button>
         </ion-col>
 		<ion-col>
 			<ion-label><b>Referencias:</b></ion-label>

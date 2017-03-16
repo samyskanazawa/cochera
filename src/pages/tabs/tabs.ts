@@ -66,7 +66,7 @@ export class TabsPage {
 
 		  let alert = this.alertCtrl.create({	  
 			title: 'Reserva',
-			message: 'Usted tiene reservada la cochera N° ' + reserva.espacioCochera + ' en ' + reserva.nombreCochera + ' ¿Desea realizar alguna acción? ' ,
+			message: 'Usted tiene reservada la cochera N° ' + reserva.espacioCochera + ' en ' + reserva.nombreCochera + ' ¿Desea realizar alguna acci\u00F3n? ' ,
 			buttons: [
 			  {
 				text: 'Ocupar',
@@ -144,7 +144,7 @@ export class TabsPage {
     alertaCocheraOcupada(reserva) {
 	  let alert = this.alertCtrl.create({
 		title: 'Cochera',
-		message: 'Actualmente está ocupando la cochera N° ' + reserva.espacioCochera  + ' en ' + reserva.nombreCochera + ' ¿Desea liberarla? ',
+		message: 'Actualmente est\u00E1 ocupando la cochera N° ' + reserva.espacioCochera  + ' en ' + reserva.nombreCochera + ' ¿Desea liberarla? ',
 		buttons: [
 		  {
 			text: 'Liberar',
@@ -173,7 +173,7 @@ export class TabsPage {
 		  inputs: [
 			{
 			  name: 'telefono',
-			  placeholder: 'Ingrese su número de teléfono',
+			  placeholder: 'Ingrese su n\u00FAmero de tel\u00E9fono',
 			  type: 'number',
 			  value: this.usuarioLogeado.telefono
 			},
@@ -186,7 +186,6 @@ export class TabsPage {
 				  if((data.telefono).length >= 10){
 					var mensaje;
 					var outerThis = this;
-					debugger;
 					this.usuariosService.habilitarUsuario(this.usuarioLogeado, mensaje, (data.telefono).toString(), function(mensajeADevolver: string){
 						if (mensajeADevolver == "Datos actualizados"){
 							var tituloCorrecto = "Datos Actualizados";
@@ -194,12 +193,12 @@ export class TabsPage {
 							outerThis.getUsuarioLogeado();
 							outerThis.alertGenerico(tituloCorrecto, subtituloCorrecto);
 						} else {
-							subtitulo = "<center><b>Error. No se pudo actualizar la informacion.</b></center><br>Ingrese su número de celular";
+							subtitulo = "<center><b>Error. No se pudo actualizar la informaci\u00F3n.</b></center><br>Ingrese su n\u00FAmero de celular";
 							outerThis.modificarCelularAlert(titulo, subtitulo);
 						}
 					});
 				  } else {
-					  subtitulo = "<center><b>Formato de número telefónico inválido.</b></center><br>Ingrese su número de celular"; 
+					  subtitulo = "<center><b>Formato de n\u00FAmero telef\u00F3nico inv\u00E1lido.</b></center><br>Ingrese su n\u00FAmero de celular"; 
 					  this.modificarCelularAlert(titulo, subtitulo);
 				  }
 			  }
@@ -217,7 +216,7 @@ export class TabsPage {
    salirAlert() {
 	let alert = this.alertCtrl.create({
     title: "Salir",
-    subTitle: "Desea salir de la aplicación",
+    subTitle: "Desea salir de la aplicaci\u00F3n",
     buttons: [
       {
         text: 'Si',

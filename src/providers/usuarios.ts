@@ -58,6 +58,19 @@ public mensaje: string;
 	});
   }
   
+  habilitarUsuarioConContrasena(usuario, mensaje, telefono, contrasena, callback){
+ 
+	usuario.telefono = telefono;
+	usuario.clave = contrasena;
+	usuario.habilitado = true;
+	var outerThis = this;
+
+    this.actualizarDatosUsuario(usuario, mensaje, function(){
+		mensaje = outerThis.mensaje;
+		callback(mensaje);
+	});
+  }
+  
   actualizarDatosUsuario(usuario: any, mensaje: string, callback){
 	  
 	  let id = (usuario._links.self.href).substr(30);

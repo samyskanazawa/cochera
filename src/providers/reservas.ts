@@ -37,7 +37,7 @@ export class Reservas {
     });
  
   }
-  
+    
   getReservasByFechaReseAndEstado(fechaRese: string, estado: string){
     return new Promise(resolve => {
  
@@ -118,7 +118,7 @@ export class Reservas {
 	} else {
 		min = minutos.toString();
 	}
-	
+
 	var horaActual = hora.toString() + ":" + min;
 	
 	if (numeroHoraDesde<1000){	
@@ -181,7 +181,7 @@ export class Reservas {
 					temporal.splice(posicionHoraHasta, 1);
 					
 					temporal.sort();
-					
+
 					if((numeroHoraDesde >= numeroHoraActual && esDiaActual == true) || esDiaActual == false || (esDiaActual == true && reserva.estado == "Ocupado")){
 							
 							if(numeroHoraDesde >= 800 && numeroHoraHasta <= 2000){
@@ -189,6 +189,8 @@ export class Reservas {
 								if((numeroHoraDesde != numeroHoraHasta) && (numeroHoraDesde < numeroHoraHasta)){
 						
 									if(horaHastaCampoHora - horaDesdeCampoHora >= 1 && numeroHoraHasta - numeroHoraDesde >= 100){
+										
+										if(numeroHoraHasta >= Number(horaActual.replace(":", ""))){
 												
 												var m: number = temporal.length;
 												var gruposN = m/2;
@@ -274,8 +276,11 @@ export class Reservas {
 
 												this.getReservasByMailAndFechaRese(reserva.mail, reserva.fechaRese);
 											}
+										} else {
+											subtitulo = "El horario de finalizaci\u00F3n no puede ser anterior a la hora actual para la fecha en curso";
+										}
 									}else{
-										subtitulo = "El lapso mínimo de horarios debe ser de al menos una hora";
+										subtitulo = "El lapso m\u00EDnimo de horarios debe ser de al menos una hora";
 									}
 								} else {
 									subtitulo = "El horario inicial debe ser anterior al horario final";
@@ -291,7 +296,6 @@ export class Reservas {
 			});
 	} 
 }
-  
   
   ocupar(reserva, texto: string){
 
@@ -331,7 +335,7 @@ export class Reservas {
 			reserva.horaDesdeSort = Number(reserva.horaDesde.replace(":",""));
 		}
 	}
- 
+  
     this.http.put('http://localhost:8080/reserva/' + id, JSON.stringify(reserva), {headers: headers})
       .subscribe(res => {
 		 //Si falla, se mostrará un mensaje de error
@@ -346,8 +350,8 @@ export class Reservas {
 				titulo = "Ocupar";
 				subtitulo = "Cochera ocupada exitosamente"				
 			}else {				
-				titulo ="Ocupando cochera";
-			    subtitulo = "Ocupación exitosa de la cochera N° " + reserva.espacioCochera + " en " + reserva.nombreCochera + " en el horario de: " 
+				titulo = "Ocupando cochera";
+			    subtitulo = "Ocupaci\u00F3n exitosa de la cochera N° " + reserva.espacioCochera + " en " + reserva.nombreCochera + " en el horario de: " 
 				+ reserva.horaDesde + ' hs a ' + reserva.horaHasta + " hs";
 			}					
 
@@ -386,7 +390,7 @@ export class Reservas {
 			}
 			if(reserva.estado == "Ocupado"){
 				titulo ="Cochera";
-				subtitulo="Usted ocupó la cochera exitosamente";				
+				subtitulo="Usted ocup\u00F3 la cochera exitosamente";				
 			}
 				console.log(res.json());
 		}
@@ -422,8 +426,10 @@ export class Reservas {
 				subtitulo = "Cochera liberada exitosamente";
 			}
 			
-			this.alertGenerico(titulo, subtitulo);
-			console.log(res.json());
+			if(texto != "Inicio"){
+				this.alertGenerico(titulo, subtitulo);
+				console.log(res.json());
+			}
 		}
     });    
  

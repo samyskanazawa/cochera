@@ -18,16 +18,42 @@ export class LoginPage {
   constructor(public nav: NavController, public auth: AuthService, public alertCtrl: AlertController, public loadingCtrl: LoadingController, public usuariosService: Usuarios) {}
   
  validateEmail(email) {
-	 if (email != "" && ! /^[a-zA-Z0-9_]+\.[a-zA-Z0-9_]+@softtek.com/.test(email)){
-		 this.showAdv("Dominio Incorrecto");
-		 this.registerCredentials.email="";
-		 this.registerCredentials.password="";
-		 if(this.isChecked == true){
+	if (email != "" && ! /^[a-zA-Z0-9_]+\.[a-zA-Z0-9_]+@softtek.com/.test(email.toLowerCase())){
+		
+		this.showAdv("Dominio Incorrecto");
+		this.registerCredentials.email="";
+		this.registerCredentials.password="";
+		
+		if(this.isChecked == true){
 			this.isChecked = false;
 			window.localStorage.removeItem("mail");
 			window.localStorage.removeItem("pass");
-		 }
-	 } 
+		}
+		
+	} else {
+		var outerThis = this;
+		var x;
+		var index = -1;
+		
+		this.buscarsUsuarios(function(){
+			var searchTerm = outerThis.registerCredentials.email;
+					
+			for(x = 0; x < outerThis.allUsuariosArray[0].length; x++) {
+				if (outerThis.allUsuariosArray[0][x].mail == searchTerm && index == -1) {
+					index = x;
+				}
+			}
+			
+			var usuario = outerThis.allUsuariosArray[0][index];
+			var mensaje = outerThis.auth.login(outerThis.registerCredentials.email, outerThis.registerCredentials.password, usuario);
+						
+			if (mensaje == "Usuario no habilitado"){
+				var titulo = "Informaci\u00F3n adicional requerida";
+				var subtitulo = "<br/><center><b>Por favor ingrese su n\u00FAmero de tel\u00E9fono celular (c\u00F3digo de area + n\u00FAmero) y contrase\u00f1a para contirunar</b></center>";
+				outerThis.promptGenerico(titulo, subtitulo, usuario);
+			}
+		});
+	}
  }
 
   recordarDatos(isChecked){
@@ -94,19 +120,21 @@ export class LoginPage {
 				var titulo = "Acceso denegado";
 				var subtitulo = "Mail no autorizado";
 				outerThis.alertGenerico(titulo, subtitulo);
+			
+			} else if(outerThis.registerCredentials.password == usuario.clave){
+				setTimeout(() => {
+					window.localStorage.setItem("email", outerThis.registerCredentials.email);
+					outerThis.nav.setRoot(TabsPage);	
+				});
 			} else {
+				outerThis.showAdv("Credenciales incorrectas");
+				outerThis.registerCredentials.email="";
+				outerThis.registerCredentials.password="";
 				
-				var mensaje = outerThis.auth.login(outerThis.registerCredentials.email, outerThis.registerCredentials.password, usuario);
-				
-				if (mensaje == "Usuario no habilitado"){
-					var titulo = "Información adicional requerida";
-					var subtitulo = "<br/><center><b>Por favor ingrese su teléfono para continuar (código de area + número)</b></center>";
-					outerThis.promptGenerico(titulo, subtitulo, usuario);
-				} else {
-					setTimeout(() => {
-						window.localStorage.setItem("email", outerThis.registerCredentials.email);
-						outerThis.nav.setRoot(TabsPage);	
-					});
+				if(outerThis.isChecked == true){
+					outerThis.isChecked = false;
+					window.localStorage.removeItem("mail");
+					window.localStorage.removeItem("pass");
 				}
 			}
 		});
@@ -197,8 +225,18 @@ export class LoginPage {
 		  inputs: [
 			{
 			  name: 'telefono',
-			  placeholder: 'Ingrese su número de teléfono',
+			  placeholder: 'Ingrese su n\u00FAmero de teléfono',
 			  type: 'number',		  
+			},
+			{
+			  name: 'contrasena',
+			  placeholder: 'Ingrese una contrase\u00f1a',
+			  type: 'password',		  
+			},
+			{
+			  name: 'repetirContrasena',
+			  placeholder: 'Repita la contrase\u00f1a',
+			  type: 'password',		  
 			},
 		  ],
 		  message: subtitulo,
@@ -206,21 +244,36 @@ export class LoginPage {
 			{
 			  text: 'Guardar',
 			  handler: data => {
-				  if((data.telefono).length >= 10){
-					var mensaje;
-					var outerThis = this;
-					this.usuariosService.habilitarUsuario(usuario, mensaje, data.telefono, function(mensajeADevolver: string){
-						if (mensajeADevolver == "Datos actualizados"){
-							var tituloCorrecto = "Datos Actualizados";
-							var subtituloCorrecto = "Los datos fueron actualizados correctamente";
-							outerThis.alertGenerico(tituloCorrecto, subtituloCorrecto);
-						} else {
-							subtituloError = "<center><b>Error. No se pudo actualizar la informacion.</b></center><br><br>" + "<center><b>Por favor ingrese su teléfono para continuar (código de area + número)</b></center>";
-							outerThis.promptGenerico(titulo, subtituloError, usuario);
-						}
-					});
+				  if (data.contrasena != "" || data.repetirContrasena != ""){
+					  if ((data.contrasena).length >= 8){
+						  if(data.contrasena == data.repetirContrasena){
+							  if((data.telefono).length >= 10){
+									var mensaje;
+									var outerThis = this;
+									this.usuariosService.habilitarUsuarioConContrasena(usuario, mensaje, data.telefono, data.contrasena, function(mensajeADevolver: string){
+										if (mensajeADevolver == "Datos actualizados"){
+											var tituloCorrecto = "Datos Actualizados";
+											var subtituloCorrecto = "Los datos fueron actualizados correctamente";
+											outerThis.alertGenerico(tituloCorrecto, subtituloCorrecto);
+										} else {
+											subtituloError = "<center><b>Error. No se pudo actualizar la informaci\u00F3n.</b></center><br>" + "<center><b>Por favor ingrese su n\u00FAmero de tel\u00E9fono celular (c\u00F3digo de area + n\u00FAmero) y contrase\u00f1a para contirunar</b></center>";
+											outerThis.promptGenerico(titulo, subtituloError, usuario);
+										}
+									});
+								} else {
+									subtituloError = "<center><b>Formato de n\u00FAmero telef\u00F3nico inv\u00E1lido.</b></center><br>" + "<center><b>Por favor ingrese su n\u00FAmero de tel\u00E9fono celular (c\u00F3digo de area + n\u00FAmero) y contrase\u00f1a para contirunar</b></center>";
+									this.promptGenerico(titulo, subtituloError, usuario);
+								}
+						  } else {
+								subtituloError = "<center><b>Las contrase\u00f1as no coinciden.</b></center><br>" + "<center><b>Por favor ingrese su n\u00FAmero de tel\u00E9fono celular (c\u00F3digo de area + n\u00FAmero) y contrase\u00f1a para contirunar</b></center>";
+								this.promptGenerico(titulo, subtituloError, usuario);
+						  }
+					  } else {
+						  subtituloError = "<center><b>Las contrase\u00f1a requiere como m\u00EDnimo ocho d\u00EDgitos.</b></center><br>" + "<center><b>Por favor ingrese su n\u00FAmero de tel\u00E9fono celular (c\u00F3digo de area + n\u00FAmero) y contrase\u00f1a para contirunar</b></center>";
+						  this.promptGenerico(titulo, subtituloError, usuario);
+					  }
 				  } else {
-					  subtituloError = "<center><b>Formato de número telefónico inválido.</b></center><br><br>" + "<center><b>Por favor ingrese su teléfono para continuar (código de area + número)</b></center>";
+					  subtituloError = "<center><b>Por favor ingrese su n\u00FAmero de tel\u00E9fono celular (c\u00F3digo de area + n\u00FAmero) y contrase\u00f1a para contirunar</b></center>";
 					  this.promptGenerico(titulo, subtituloError, usuario);
 				  }
 			  }

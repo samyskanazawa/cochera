@@ -148,7 +148,7 @@ export class MisReservasPage {
 
 	this.setMensaje(index, function(){
 		if(outerThis.reservasArray.length > 1){
-			outerThis.mensaje = "<center>Esta cochera tiene una o más reservas además de la actual</center>";
+			outerThis.mensaje = "<center>Esta cochera tiene una o m\u00E1s reservas además de la actual</center>";
 			texto = outerThis.mensaje + texto;
 		}
 

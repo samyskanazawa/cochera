@@ -22,24 +22,9 @@ export class AuthService {
  
   public login(email: string, password: string, usuario) {
 	  
-		if(usuario.habilitado == true && usuario.telefono == ""){
-			var error = "Usuario no habilitado";
-			return error; 
-		} else {
-		
-			/*
-				if(res.status == 401) {
-						this.nav.setRoot(TabsPage)
-				} 
-			*/
-			
-			  return Observable.create(observer => {
-				// At this point make a request to your backend to make a real check!
-				let access = (password !== "pass" && email !== "email");
-				observer.next(access);
-				observer.complete();
-			  });
-		}
-    
+	if(usuario.habilitado == true && usuario.telefono == ""){
+		var error = "Usuario no habilitado";
+		return error; 
+	}
   }
 }

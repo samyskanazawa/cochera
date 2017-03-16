@@ -192,7 +192,7 @@ export class CocherasPage {
 		  console.log(this.hoy);
 		  this.habilitarBoton = this.hoy;
 	  } else {
-		  var titulo = 'Fecha inválida';
+		  var titulo = 'Fecha inv\u00E1lida';
 		  var subtitulo = 'La fecha ingresada debe ser mayor o igual a la fecha actual';
 		  fechaElegida = this.minDate;
 		  this.changeDate(fechaElegida);
@@ -431,7 +431,7 @@ export class CocherasPage {
 	var horaDesde:string;
 	var horaHasta: string;
 	
-	v_mail = "hernan.ruiz@softtek.com";
+	v_mail = this.mail;
 	
 	//Traigo de la base todas las cocheras
 	this.cocherasService.getCocheras().then((data) => {
@@ -471,7 +471,7 @@ export class CocherasPage {
 	}
 	var index = this.disponibles.indexOf(this.indiceCocheraDisponible);
     let prompt = this.alertCtrl.create({
-      title: 'Día: ' + this.reservasService.formatearFecha(this.disponibles[index].v_fecha) + ' - Cochera: ' + this.disponibles[index].v_espacio,
+      title: 'D\u00EDa: ' + this.reservasService.formatearFecha(this.disponibles[index].v_fecha) + ' - Cochera: ' + this.disponibles[index].v_espacio,
       inputs: [
 	  
         {
@@ -549,17 +549,17 @@ export class CocherasPage {
 										outerThis.showPrompt(subtitulo);
 									}
 								} else {
-									var subtitulo = 'Ya cuenta con una reserva para esta cochera en el día seleccionado, puede extenderla desde la pestaña Mis Reservas';
+									var subtitulo = 'Ya cuenta con una reserva para esta cochera en el d\u00EDa seleccionado, puede extenderla desde la pesta\u00F1a Mis Reservas';
 									outerThis.extenderReserva = false;
 									outerThis.showPrompt(subtitulo);
 								}
 							} else {
-								var subtitulo = 'Ya tiene reservada esta cochera en el día seleccionado';
+								var subtitulo = 'Ya tiene reservada esta cochera en el d\u00EDa seleccionado';
 								outerThis.errorMismaCochera = false;
 								outerThis.showPrompt(subtitulo);
 							}
 						} else {
-							var subtitulo = 'El lapso de tiempo mínimo para una reserva es de una hora';
+							var subtitulo = 'El lapso de tiempo m\u00EDnimo para una reserva es de una hora';
 							outerThis.errorLimiteHoras = false;
 							outerThis.showPrompt(subtitulo);
 						}

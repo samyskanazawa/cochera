@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.scheduling.annotation.Scheduled;
 
 public class ReservaRepositoryImpl implements ReservaRepositoryCustom{
 	
@@ -65,6 +66,21 @@ public class ReservaRepositoryImpl implements ReservaRepositoryCustom{
 			);
 
 		return mongoTemplate.find(query, clazz);
+	}
+	
+	@Override
+	@Scheduled(cron = "0 1 20 * * *")
+	public void deleteAnterioresByFechaRese() {
+		
+		String fecha = new Date().toString();
+		Date[] vectorFechas = DateUtils.getDates(fecha);
+		
+		Query query = new Query();
+		query.addCriteria(Criteria
+			.where("fechaRese").lte(vectorFechas[0])
+		);
+		
+		mongoTemplate.findAllAndRemove(query, clazz);
 	}
 
 }
