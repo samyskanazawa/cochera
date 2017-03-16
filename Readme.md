@@ -1,8 +1,9 @@
-# **Stk Parking**
-=================
+**Stk Parking**
+===============
 
-Motivación
-----------
+
+### **Motivación**
+
 
 **Stk Parking** surge a partir de la necesidad de tener una aplicación que permita administrar de manera rápida y ágil las cocheras che posee actualmente Sofftek.
 para ello se decidió hacer una aplicación mobile hibrida que permita ver el estado actual de las cocheras, con las siguientes funcionalidades:
@@ -14,15 +15,15 @@ para ello se decidió hacer una aplicación mobile hibrida que permita ver el es
 + Reservar cochera en una fecha futura
 + Comunicarse con un usuario que tiene reserva.
 
-Entorno de Desarrollo
----------------------
+### **Entorno de Desarrollo**
+
    
 + Base de Datos: **MongoDB**
-+ Backend: **Java 1.8**, **Spring Boot**
++ Backend: **Java 1.8, Spring Boot**
 + FrontEnd: **Ionic 2**
 
-Integrantes
------------
+### **Integrantes**
+
 
 + Ariel Szocki
 + Daniel Camacho
