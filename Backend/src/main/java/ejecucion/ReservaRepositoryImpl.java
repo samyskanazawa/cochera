@@ -16,7 +16,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 public class ReservaRepositoryImpl implements ReservaRepositoryCustom{
 	
 	@DateTimeFormat(iso = ISO.DATE_TIME)
-	private Date fecha = new Date(System.currentTimeMillis() - 24 * 60 * 60 * 1000L);
+	private Date fecha = new Date();
 	
 	@Autowired
 	private MongoTemplate mongoTemplate;
@@ -76,7 +76,7 @@ public class ReservaRepositoryImpl implements ReservaRepositoryCustom{
 	}
 	
 	@Override
-	@Scheduled(cron = "0 1 20 * * *")
+	@Scheduled(cron = "0 0 23 * * *")
 	public void deleteAnterioresByFechaRese() {
 		
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");

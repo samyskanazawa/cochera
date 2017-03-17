@@ -189,7 +189,6 @@ export class CocherasPage {
 		  fechaHoy = fechaHoy + "03:00:00.000+0000";
 		  this.fechaElegida = fechaHoy;
 		  this.hoy = fechaHoy;
-		  console.log(this.hoy);
 		  this.habilitarBoton = this.hoy;
 	  } else {
 		  var titulo = 'Fecha inv\u00E1lida';
@@ -582,9 +581,7 @@ export class CocherasPage {
         },
 		{
           text: 'Cerrar',
-          handler: data => {
-            console.log('Cancel clicked');
-          }
+          role: 'cancel',
         },
       ]
     });

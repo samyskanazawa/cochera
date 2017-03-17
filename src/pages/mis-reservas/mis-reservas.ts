@@ -31,7 +31,6 @@ export class MisReservasPage {
   ionViewDidEnter() {
     
 	this.reservasService.getReservasByMailAndFechaRese(this.mail, this.fechaRese).then((data) => {
-	  console.log(data);
 	  this.reservas = data;
 	  this.reservas[0].checked = true;
 	  this.indiceOcupado = null;

@@ -71,7 +71,6 @@ export class TabsPage {
 			  {
 				text: 'Ocupar',
 				handler: () => {
-				  console.log('Cancel clicked');
 				  window.localStorage.setItem("alertAnterior", "true");
 				  this.reservasService.ocupar(reserva, 'Inicio');
 				  this.nav.setRoot(TabsPage);
@@ -80,7 +79,6 @@ export class TabsPage {
 			  {
 				text: 'Liberar',
 				handler: () => {
-				  console.log('Cancel clicked');
 				  window.localStorage.setItem("alertAnterior", "true");
 				  this.deleteReserva(reserva , 'Liberar');
 				  this.nav.setRoot(TabsPage);
@@ -90,9 +88,6 @@ export class TabsPage {
 			  {
 				text: 'Cerrar',
 				role: 'cancel',
-				handler: () => {
-				  console.log('Cancel clicked');
-				}
 			  }
 			]
 		  });
@@ -107,7 +102,6 @@ export class TabsPage {
 			  {
 				text: 'Liberar',
 				handler: () => {
-				  console.log('Cancel clicked');
 				  window.localStorage.setItem("alertAnterior", "true");
 				  this.deleteReserva(reserva , 'Liberar');
 				  this.nav.setRoot(TabsPage);
@@ -117,9 +111,6 @@ export class TabsPage {
 			  {
 				text: 'Cerrar',
 				role: 'cancel',
-				handler: () => {
-				  console.log('Cancel clicked');
-				}
 			  }
 			]
 		  });
@@ -149,7 +140,6 @@ export class TabsPage {
 		  {
 			text: 'Liberar',
 			handler: () => {
-			  console.log('Cancel clicked');
 			  window.localStorage.setItem("alertAnterior", "true");
 			  this.deleteReserva(reserva, 'Liberar');
 			  this.nav.setRoot(TabsPage);
@@ -157,9 +147,7 @@ export class TabsPage {
 		  },
 		  {
 			text: 'Cerrar',
-			handler: () => {
-			  console.log('Buy clicked');
-			}
+			role: 'cancel',
 		  }
 		]
 	  });
@@ -277,44 +265,46 @@ export class TabsPage {
 	
     ionViewDidLoad() {      
 	  this.reservasService.getReservasByMailAndFechaRese(this.mail, this.fechaRese).then((data) => {
-	  console.log(data);
 	  this.reservas = data;
-	  var iterador;
+	  var item;
 	  var reserva;
 	  var enHorario: boolean;
 	  var horarioActual = Number((this.getHoraActual()).replace(":",""));
 	  var diaActual = new Date();
 
-	  var alertAnterior = window.localStorage.getItem("alertAnterior");
-	  
-		  if(alertAnterior != "true"){
-			if(this.reservas.length > 0 ){
-				this.tieneReserva = true;
-			}	 
+		  if (this.reservas != null){
+			var alertAnterior = window.localStorage.getItem("alertAnterior");
 
-			for(iterador = 0; iterador < this.reservas.length ; iterador++){	  
-				enHorario = Number((this.reservas[iterador].horaHasta).replace(":","")) > horarioActual;
-				if ((diaActual.toISOString().substr(0, 10) == this.reservas[iterador].fechaRese.substr(0,10)) && enHorario){
-					if(this.reservas[iterador].estado == "Ocupado"){			
-						reserva = this.reservas[iterador];
-						this.estaOcupandoCochera = true;
-						break;		
-					} else {
-						reserva = this.reservas[iterador];
-						break;			
-					}
-				}				
-			}
-			
-			if(this.tieneReserva  === true && this.estaOcupandoCochera === false){
-				  this.alertaReserva(reserva);			  
-				   
-			} else if (this.estaOcupandoCochera === true){
-				   this.alertaCocheraOcupada(reserva);
-			}
-		  } else {
+			if(alertAnterior != "true"){
+				if(this.reservas.length > 0 ){
+					this.tieneReserva = true;
+				}	 
+
+				for(item in this.reservas){	  
+					enHorario = Number((this.reservas[item].horaHasta).replace(":","")) > horarioActual;
+					if ((diaActual.toISOString().substr(0, 10) == this.reservas[item].fechaRese.substr(0,10)) && enHorario){
+						if(this.reservas[item].estado == "Ocupado"){			
+							reserva = this.reservas[item];
+							this.estaOcupandoCochera = true;
+							break;		
+						} else {
+							if(reserva == null || this.reservas[item].horaDesde < reserva.horaDesde){
+								reserva = this.reservas[item];
+							}
+						}
+					}				
+				}
+
+				if(this.tieneReserva  === true && this.estaOcupandoCochera === false){
+					  this.alertaReserva(reserva);			  
+					   
+				} else if (this.estaOcupandoCochera === true){
+					   this.alertaCocheraOcupada(reserva);
+				}
+			} else {
 			  window.localStorage.removeItem("alertAnterior");
-		  }		
+			}
+		  }	  			  
 	  });	
 
     }

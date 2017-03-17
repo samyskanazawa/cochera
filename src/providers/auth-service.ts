@@ -21,8 +21,8 @@ export class AuthService {
  
   public login(email: string, password: string, usuario) {
 	  
-	if(usuario.habilitado == true && usuario.telefono == ""){
-		var error = "Usuario no habilitado";
+	if(usuario.habilitado == false && usuario.telefono == "" && usuario.clave == ""){
+		var error = "Primer ingreso";
 		return error; 
 	}
   }

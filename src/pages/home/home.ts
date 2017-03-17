@@ -371,7 +371,7 @@ export class HomePage {
 		
 		var horaActual = horas + min;
 		var numerohoraActual = Number(horaActual.replace(":",""));
-		debugger;
+		
 		if (numerohoraActual < 2000 && numerohoraActual >= 0){
 		
 			//Traigo de la base todas las cocheras
@@ -395,7 +395,7 @@ export class HomePage {
 					estado = "Libre";
 					this.queryReservas(v_nombre, v_espacio, v_fecha, estado, v_mail, horaDesde, horaHasta, allreservasArray );		
 				}
-				console.log(data);
+				
 				this.disponibles = this.tmpDispo;
 				this.noDisponibles = this.tmpNoDispo;
 			

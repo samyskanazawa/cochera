@@ -47,7 +47,7 @@ export class LoginPage {
 			var usuario = outerThis.allUsuariosArray[0][index];
 			var mensaje = outerThis.auth.login(outerThis.registerCredentials.email, outerThis.registerCredentials.password, usuario);
 						
-			if (mensaje == "Usuario no habilitado"){
+			if (mensaje == "Primer ingreso"){
 				var titulo = "Informaci\u00F3n adicional requerida";
 				var subtitulo = "<br/><center><b>Por favor ingrese su n\u00FAmero de tel\u00E9fono celular (c\u00F3digo de area + n\u00FAmero) y contrase\u00f1a para contirunar</b></center>";
 				outerThis.promptGenerico(titulo, subtitulo, usuario);
@@ -109,7 +109,7 @@ export class LoginPage {
 			
 			var usuario = outerThis.allUsuariosArray[0][index];
 			
-			if (usuario == null || (usuario.habilitado == false && usuario.telefono != "")){
+			if (usuario == null || (usuario.habilitado == false && usuario.telefono != "" && usuario.clave != "")){
 				if(outerThis.isChecked == true){
 					outerThis.registerCredentials.email="";
 					outerThis.registerCredentials.password="";
