@@ -428,7 +428,6 @@ export class Reservas {
 			
 			if(texto != "Inicio"){
 				this.alertGenerico(titulo, subtitulo);
-				console.log(res.json());
 			}
 		}
     });    

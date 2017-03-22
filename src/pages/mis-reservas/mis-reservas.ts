@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, ViewController } from 'ionic-angular';
+import { NavController, ViewController, LoadingController, Loading } from 'ionic-angular';
 import { AlertController } from 'ionic-angular';
 import { Reservas } from '../../providers/reservas';
 
@@ -21,6 +21,7 @@ export class MisReservasPage {
   public indiceOcupado;
   public indiceLiberar;
   public indiceAlert;
+  public loading: Loading;
   public mail: string = window.localStorage.getItem("email");//"hernan.ruiz@softtek.com";
   public fechaRese = new Date().toISOString();
   public reservasArray: any;
@@ -32,14 +33,13 @@ export class MisReservasPage {
     
 	this.reservasService.getReservasByMailAndFechaRese(this.mail, this.fechaRese).then((data) => {
 	  this.reservas = data;
-	  this.reservas[0].checked = true;
 	  this.indiceOcupado = null;
 	  this.indice = null;
 	  this.indiceLiberar = null;
 	});
   }
   
-  constructor(public navCtrl: NavController, public reservasService: Reservas, public viewCtrl: ViewController, public alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController, public reservasService: Reservas, public viewCtrl: ViewController, public alertCtrl: AlertController, public loadingCtrl: LoadingController) {
 	this.tieneReserva = false;
 	
   }
@@ -126,7 +126,10 @@ export class MisReservasPage {
 	
   }
   
+
+  
   showPrompt(subtitulo: string) {
+    
 	var index = this.reservas.indexOf(this.indice);
 	var outerThis = this;
 	this.mensaje = "";
@@ -150,17 +153,18 @@ export class MisReservasPage {
 			outerThis.mensaje = "<center>Esta cochera tiene una o m\u00E1s reservas además de la actual</center>";
 			texto = outerThis.mensaje + texto;
 		}
-
+	
 	  if (outerThis.reservas[index].estado == "Ocupado"){
 		let prompt = outerThis.alertCtrl.create({
 		  title: 'Día: ' + outerThis.reservasService.formatearFecha(outerThis.reservas[index].fechaRese),
+		  enableBackdropDismiss: false,
 		  cssClass: 'alertcss',
 		  inputs: [
 			{
 			  name: 'hasta',
 			  placeholder: 'Hasta',
 			  type: 'time',
-			  value: outerThis.reservas[index].horaHasta,			  
+			  value: outerThis.reservas[index].horaHasta,
 			},
 		  ],
 		  message: texto,
@@ -183,11 +187,20 @@ export class MisReservasPage {
 			},
 		  ]
 		});
+		prompt.onDidDismiss((data) => outerThis.reservasService.editReserva(outerThis.reservas[index], outerThis.reservas[index].horaDesde, data.hasta, function(subtitulo){
+						if (subtitulo == ""){
+							outerThis.marcarRadioButton(outerThis.indice);
+						} else if (subtitulo != "No se pudo ocupar la cochera" || subtitulo != "Los horarios fueron modificados exitosamente"){
+							outerThis.showPrompt(subtitulo);
+						}
+					})
+				);
 		prompt.present();
 	   
 	  } else {
 		  let prompt = outerThis.alertCtrl.create({
 		  title: 'Día: ' + outerThis.reservasService.formatearFecha(outerThis.reservas[index].fechaRese),
+		  enableBackdropDismiss: false,
 		  cssClass: 'alertcss',
 		  inputs: [
 			{
@@ -212,10 +225,10 @@ export class MisReservasPage {
 					if (subtitulo == ""){
 						outerThis.marcarRadioButton(outerThis.indice);
 					} else if (subtitulo != "No se pudo ocupar la cochera" || subtitulo != "Los horarios fueron modificados exitosamente"){
+						window.localStorage.setItem("noCancel", 'true');
 						outerThis.showPrompt(subtitulo);
 					}
 				});
-				
 			  }
 			},
 			{
@@ -224,11 +237,33 @@ export class MisReservasPage {
 			},
 		  ]
 		});
+		prompt.onDidDismiss((data) => {
+						if(window.localStorage.getItem("noCancel") == null){
+							outerThis.reservasService.editReserva(outerThis.reservas[index], data.desde, data.hasta, 
+							function(subtitulo){
+								if (subtitulo == ""){
+									outerThis.marcarRadioButton(outerThis.indice);
+								} else if (subtitulo != "No se pudo ocupar la cochera" || subtitulo != "Los horarios fueron modificados exitosamente"){
+									outerThis.showPrompt(subtitulo);
+								}
+							});
+						} else {
+							outerThis.marcarRadioButton(outerThis.indice);
+							window.localStorage.removeItem("noCancel");
+						}
+					}
+				);
 		prompt.present();
 	  }
-	  
   });
 	
+  }
+  
+  showLoading() {
+    this.loading = this.loadingCtrl.create({
+      content: 'Por favor aguarde...'
+    });
+    this.loading.present();
   }
 
   eliminarReserva() {

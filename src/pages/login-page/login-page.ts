@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { NavController, AlertController, LoadingController, Loading } from 'ionic-angular';
 import { AuthService } from '../../providers/auth-service';
 import { TabsPage } from '../tabs/tabs';
@@ -10,10 +10,14 @@ import { Usuarios } from '../../providers/usuarios';
   templateUrl: 'login-page.html'
 })
 export class LoginPage {
+  @ViewChild('input') myInput ;
   loading: Loading;
   registerCredentials = {email: '', password: ''};
   public allUsuariosArray = [];
   public isChecked: boolean = false;
+  public flagOnDismiss = false;
+  public flagCancelclicked = false;
+  public flagFocus;
  
   constructor(public nav: NavController, public auth: AuthService, public alertCtrl: AlertController, public loadingCtrl: LoadingController, public usuariosService: Usuarios) {}
   
@@ -45,12 +49,20 @@ export class LoginPage {
 			}
 			
 			var usuario = outerThis.allUsuariosArray[0][index];
-			var mensaje = outerThis.auth.login(outerThis.registerCredentials.email, outerThis.registerCredentials.password, usuario);
-						
-			if (mensaje == "Primer ingreso"){
-				var titulo = "Informaci\u00F3n adicional requerida";
-				var subtitulo = "<br/><center><b>Por favor ingrese su n\u00FAmero de tel\u00E9fono celular (c\u00F3digo de area + n\u00FAmero) y contrase\u00f1a para contirunar</b></center>";
-				outerThis.promptGenerico(titulo, subtitulo, usuario);
+			
+			if(usuario == null){
+				var titulo = "Acceso denegado";
+				var subtitulo = "Mail no autorizado";
+				outerThis.alertGenerico(titulo, subtitulo);
+				outerThis.registerCredentials.email="";
+			} else{
+				var mensaje = outerThis.auth.login(outerThis.registerCredentials.email, outerThis.registerCredentials.password, usuario);
+							
+				if (mensaje == "Primer ingreso"){
+					var titulo = "Informaci\u00F3n adicional requerida";
+					var subtitulo = "<br/><center><b>Por favor ingrese su n\u00FAmero de tel\u00E9fono celular (c\u00F3digo de area + n\u00FAmero) y contrase\u00f1a para contirunar</b></center>";
+					outerThis.promptGenerico(titulo, subtitulo, usuario);
+				}
 			}
 		});
 	}
@@ -71,7 +83,7 @@ export class LoginPage {
 
   ionViewWillLoad() {
 	  this.isChecked = false;
-	  if(window.localStorage.length > 1){
+	  if(window.localStorage.length > 2){
 		  this.registerCredentials.email = window.localStorage.getItem("mail");
 		  this.registerCredentials.password = window.localStorage.getItem("pass");
 		  this.isChecked = true;
@@ -80,6 +92,7 @@ export class LoginPage {
  
   public login() {
 	  
+	this.flagFocus = true;  
 	var outerThis = this;
 	var q;
 	var index = -1;
@@ -142,12 +155,21 @@ export class LoginPage {
   }
   
   buscarsUsuarios (callback) {
-	  this.showLoading();
-	  this.usuariosService.getUsuarios().then((data) => {
-		this.allUsuariosArray.push(data);
-		callback();
-	  });
-	  this.loading.dismiss();
+	  if(this.flagFocus){
+		this.showLoading();
+		this.usuariosService.getUsuarios().then((data) => {
+			this.allUsuariosArray.push(data);
+			callback();
+		});
+		this.loading.dismiss();
+	  } else {
+		this.usuariosService.getUsuarios().then((data) => {
+			this.allUsuariosArray.push(data);
+			callback();
+		});
+	  }
+	  
+	  
   }
  
   showLoading() {
@@ -197,10 +219,12 @@ export class LoginPage {
   }
   
    alertGenerico(titulo: string, subtitulo: string) {
-    setTimeout(() => {
-      this.loading.dismiss();
-    });
- 
+    if(this.flagFocus){
+		setTimeout(() => {
+			this.loading.dismiss();
+		});
+	}
+	
     let alert = this.alertCtrl.create({
       title: titulo,
       subTitle: subtitulo,
@@ -222,6 +246,7 @@ export class LoginPage {
 	var subtituloError;
 	let prompt = this.alertCtrl.create({
 		  title: titulo,
+		  enableBackdropDismiss: false,
 		  inputs: [
 			{
 			  name: 'telefono',
@@ -244,38 +269,8 @@ export class LoginPage {
 			{
 			  text: 'Guardar',
 			  handler: data => {
-				  if (data.contrasena != "" || data.repetirContrasena != ""){
-					  if ((data.contrasena).length >= 8){
-						  if(data.contrasena == data.repetirContrasena){
-							  if((data.telefono).length >= 10){
-									var mensaje;
-									var outerThis = this;
-									this.usuariosService.habilitarUsuarioConContrasena(usuario, mensaje, data.telefono, data.contrasena, function(mensajeADevolver: string){
-										if (mensajeADevolver == "Datos actualizados"){
-											var tituloCorrecto = "Datos Actualizados";
-											var subtituloCorrecto = "Los datos fueron actualizados correctamente";
-											outerThis.alertGenerico(tituloCorrecto, subtituloCorrecto);
-										} else {
-											subtituloError = "<center><b>Error. No se pudo actualizar la informaci\u00F3n.</b></center><br>" + "<center><b>Por favor ingrese su n\u00FAmero de tel\u00E9fono celular (c\u00F3digo de area + n\u00FAmero) y contrase\u00f1a para contirunar</b></center>";
-											outerThis.promptGenerico(titulo, subtituloError, usuario);
-										}
-									});
-								} else {
-									subtituloError = "<center><b>Formato de n\u00FAmero telef\u00F3nico inv\u00E1lido.</b></center><br>" + "<center><b>Por favor ingrese su n\u00FAmero de tel\u00E9fono celular (c\u00F3digo de area + n\u00FAmero) y contrase\u00f1a para contirunar</b></center>";
-									this.promptGenerico(titulo, subtituloError, usuario);
-								}
-						  } else {
-								subtituloError = "<center><b>Las contrase\u00f1as no coinciden.</b></center><br>" + "<center><b>Por favor ingrese su n\u00FAmero de tel\u00E9fono celular (c\u00F3digo de area + n\u00FAmero) y contrase\u00f1a para contirunar</b></center>";
-								this.promptGenerico(titulo, subtituloError, usuario);
-						  }
-					  } else {
-						  subtituloError = "<center><b>Las contrase\u00f1a requiere como m\u00EDnimo ocho d\u00EDgitos.</b></center><br>" + "<center><b>Por favor ingrese su n\u00FAmero de tel\u00E9fono celular (c\u00F3digo de area + n\u00FAmero) y contrase\u00f1a para contirunar</b></center>";
-						  this.promptGenerico(titulo, subtituloError, usuario);
-					  }
-				  } else {
-					  subtituloError = "<center><b>Por favor ingrese su n\u00FAmero de tel\u00E9fono celular (c\u00F3digo de area + n\u00FAmero) y contrase\u00f1a para contirunar</b></center>";
-					  this.promptGenerico(titulo, subtituloError, usuario);
-				  }
+				window.localStorage.setItem("noCancel", 'true');
+				subtituloError = this.guardar(data, titulo, usuario);
 			  }
 			},
 			 {
@@ -284,6 +279,62 @@ export class LoginPage {
 			},
 		  ]
 		});
+		onkeypress = function(e) {
+			var key = e.charCode || e.keyCode || 0;     
+			if (key == 13) {
+				window.localStorage.setItem("noCancel", 'true');
+			}
+		}
+		prompt.onDidDismiss((data) => {
+			if(subtituloError == null || subtitulo == ""){
+				this.guardar(data, titulo, usuario);
+			}
+		});
 		prompt.present();
+	}
+	
+	
+	cancelHandler(){
+		this.flagOnDismiss = true;
+	}
+	
+	guardar(data, titulo, usuario){
+	  var subtituloError;
+		if(window.localStorage.getItem("noCancel") == 'true'){
+		  window.localStorage.removeItem("noCancel");
+		  if (data.contrasena != "" || data.repetirContrasena != ""){
+			  if ((data.contrasena).length >= 8){
+				  if(data.contrasena == data.repetirContrasena){
+					  if((data.telefono).length >= 10){
+							var mensaje;
+							var outerThis = this;
+							this.usuariosService.habilitarUsuarioConContrasena(usuario, mensaje, data.telefono, data.contrasena, function(mensajeADevolver: string){
+								if (mensajeADevolver == "Datos actualizados"){
+									var tituloCorrecto = "Datos Actualizados";
+									var subtituloCorrecto = "Los datos fueron actualizados correctamente";
+									outerThis.alertGenerico(tituloCorrecto, subtituloCorrecto);
+								} else {
+									subtituloError = "<center><b>Error. No se pudo actualizar la informaci\u00F3n.</b></center><br>" + "<center><b>Por favor ingrese su n\u00FAmero de tel\u00E9fono celular (c\u00F3digo de area + n\u00FAmero) y contrase\u00f1a para contirunar</b></center>";
+									outerThis.promptGenerico(titulo, subtituloError, usuario);
+								}
+							});
+						} else {
+							subtituloError = "<center><b>Formato de n\u00FAmero telef\u00F3nico inv\u00E1lido.</b></center><br>" + "<center><b>Por favor ingrese su n\u00FAmero de tel\u00E9fono celular (c\u00F3digo de area + n\u00FAmero) y contrase\u00f1a para contirunar</b></center>";
+							this.promptGenerico(titulo, subtituloError, usuario);
+						}
+				  } else {
+						subtituloError = "<center><b>Las contrase\u00f1as no coinciden.</b></center><br>" + "<center><b>Por favor ingrese su n\u00FAmero de tel\u00E9fono celular (c\u00F3digo de area + n\u00FAmero) y contrase\u00f1a para contirunar</b></center>";
+						this.promptGenerico(titulo, subtituloError, usuario);
+				  }
+			  } else {
+				  subtituloError = "<center><b>Las contrase\u00f1a requiere como m\u00EDnimo ocho d\u00EDgitos.</b></center><br>" + "<center><b>Por favor ingrese su n\u00FAmero de tel\u00E9fono celular (c\u00F3digo de area + n\u00FAmero) y contrase\u00f1a para contirunar</b></center>";
+				  this.promptGenerico(titulo, subtituloError, usuario);
+			  }
+		  } else {
+			  subtituloError = "<center><b>Por favor ingrese su n\u00FAmero de tel\u00E9fono celular (c\u00F3digo de area + n\u00FAmero) y contrase\u00f1a para contirunar</b></center>";
+			  this.promptGenerico(titulo, subtituloError, usuario);
+		  }
+	  }
+	  return subtituloError;
 	}
 }

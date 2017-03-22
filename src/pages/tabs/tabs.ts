@@ -57,64 +57,65 @@ export class TabsPage {
 	});
   }
   
-    alertaReserva(reserva) {  
-	
-		var horaDesde = Number((reserva.horaDesde).replace(":",""));
-		var horaActual = Number((this.getHoraActual()).replace(":",""));
-		
-		if(horaDesde <= horaActual){
+    alertaReserva(reserva) {
+		if(reserva != null){
+			var horaDesde = Number((reserva.horaDesde).replace(":",""));
+			var horaActual = Number((this.getHoraActual()).replace(":",""));
+			
+			if(horaDesde <= horaActual){
 
-		  let alert = this.alertCtrl.create({	  
-			title: 'Reserva',
-			message: 'Usted tiene reservada la cochera N° ' + reserva.espacioCochera + ' en ' + reserva.nombreCochera + ' ¿Desea realizar alguna acci\u00F3n? ' ,
-			buttons: [
-			  {
-				text: 'Ocupar',
-				handler: () => {
-				  window.localStorage.setItem("alertAnterior", "true");
-				  this.reservasService.ocupar(reserva, 'Inicio');
-				  this.nav.setRoot(TabsPage);
-				}
-			  },
-			  {
-				text: 'Liberar',
-				handler: () => {
-				  window.localStorage.setItem("alertAnterior", "true");
-				  this.deleteReserva(reserva , 'Liberar');
-				  this.nav.setRoot(TabsPage);
-				}
-				
-			  },
-			  {
-				text: 'Cerrar',
-				role: 'cancel',
-			  }
-			]
-		  });
+			  let alert = this.alertCtrl.create({	  
+				title: 'Reserva',
+				message: 'Usted tiene reservada la cochera N° ' + reserva.espacioCochera + ' en ' + reserva.nombreCochera + ' ¿Desea realizar alguna acci\u00F3n? ' ,
+				buttons: [
+				  {
+					text: 'Ocupar',
+					handler: () => {
+					  window.localStorage.setItem("alertAnterior", "true");
+					  this.reservasService.ocupar(reserva, 'Inicio');
+					  this.nav.setRoot(TabsPage);
+					}
+				  },
+				  {
+					text: 'Liberar',
+					handler: () => {
+					  window.localStorage.setItem("alertAnterior", "true");
+					  this.deleteReserva(reserva , 'Liberar');
+					  this.nav.setRoot(TabsPage);
+					}
+					
+				  },
+				  {
+					text: 'Cerrar',
+					role: 'cancel',
+				  }
+				]
+			  });
 
-		  alert.present();		
-		}  else {
-		
-		 let alert = this.alertCtrl.create({	  
-			title: 'Reserva',
-			message: 'Usted tiene reservada la cochera N° ' + reserva.espacioCochera + ' en el horario desde las ' + reserva.horaDesde +  ' hs hasta las ' + reserva.horaHasta + ' hs en: ' + reserva.nombreCochera + ' ¿Desea liberarla? ' ,
-			buttons: [
-			  {
-				text: 'Liberar',
-				handler: () => {
-				  window.localStorage.setItem("alertAnterior", "true");
-				  this.deleteReserva(reserva , 'Liberar');
-				  this.nav.setRoot(TabsPage);
-				}
-				
-			  },
-			  {
-				text: 'Cerrar',
-				role: 'cancel',
-			  }
-			]
-		  });
-		  alert.present();			
+			  alert.present();		
+			}  else {
+			
+			 let alert = this.alertCtrl.create({	  
+				title: 'Reserva',
+				message: 'Usted tiene reservada la cochera N° ' + reserva.espacioCochera + ' en el horario desde las ' + reserva.horaDesde +  ' hs hasta las ' + reserva.horaHasta + ' hs en: ' + reserva.nombreCochera + ' ¿Desea liberarla? ' ,
+				buttons: [
+				  {
+					text: 'Liberar',
+					handler: () => {
+					  window.localStorage.setItem("alertAnterior", "true");
+					  this.deleteReserva(reserva , 'Liberar');
+					  this.nav.setRoot(TabsPage);
+					}
+					
+				  },
+				  {
+					text: 'Cerrar',
+					role: 'cancel',
+				  }
+				]
+			  });
+			  alert.present();			
+			}
 		}
     }
  
@@ -171,24 +172,8 @@ export class TabsPage {
 			{
 			  text: 'Guardar',
 			  handler: data => {
-				  if((data.telefono).length >= 10){
-					var mensaje;
-					var outerThis = this;
-					this.usuariosService.habilitarUsuario(this.usuarioLogeado, mensaje, (data.telefono).toString(), function(mensajeADevolver: string){
-						if (mensajeADevolver == "Datos actualizados"){
-							var tituloCorrecto = "Datos Actualizados";
-							var subtituloCorrecto = "Los datos fueron actualizados correctamente";
-							outerThis.getUsuarioLogeado();
-							outerThis.alertGenerico(tituloCorrecto, subtituloCorrecto);
-						} else {
-							subtitulo = "<center><b>Error. No se pudo actualizar la informaci\u00F3n.</b></center><br>Ingrese su n\u00FAmero de celular";
-							outerThis.modificarCelularAlert(titulo, subtitulo);
-						}
-					});
-				  } else {
-					  subtitulo = "<center><b>Formato de n\u00FAmero telef\u00F3nico inv\u00E1lido.</b></center><br>Ingrese su n\u00FAmero de celular"; 
-					  this.modificarCelularAlert(titulo, subtitulo);
-				  }
+				  window.localStorage.setItem("noCancel", 'true');
+				  this.modificarCel(data, titulo, subtitulo);
 			  }
 			},
 			 {
@@ -197,7 +182,40 @@ export class TabsPage {
 			},
 		  ]
 		});
+		onkeypress = function(e) {
+			var key = e.charCode || e.keyCode || 0;     
+			if (key == 13) {
+				window.localStorage.setItem("noCancel", 'true');
+			}
+		}
+		prompt.onDidDismiss((data) => {
+			this.modificarCel(data, titulo, subtitulo);
+		});
 		prompt.present();
+	}
+	
+	modificarCel(data, titulo, subtitulo){
+		if(window.localStorage.getItem("noCancel") == 'true'){
+			window.localStorage.removeItem("noCancel");
+			if((data.telefono).length >= 10){
+				var mensaje;
+				var outerThis = this;
+				this.usuariosService.habilitarUsuario(this.usuarioLogeado, mensaje, (data.telefono).toString(), function(mensajeADevolver: string){
+					if (mensajeADevolver == "Datos actualizados"){
+						var tituloCorrecto = "Datos Actualizados";
+						var subtituloCorrecto = "Los datos fueron actualizados correctamente";
+						outerThis.getUsuarioLogeado();
+						outerThis.alertGenerico(tituloCorrecto, subtituloCorrecto);
+					} else {
+						subtitulo = "<center><b>Error. No se pudo actualizar la informaci\u00F3n.</b></center><br>Ingrese su n\u00FAmero de celular";
+						outerThis.modificarCelularAlert(titulo, subtitulo);
+					}
+				});
+			} else {
+				subtitulo = "<center><b>Formato de n\u00FAmero telef\u00F3nico inv\u00E1lido.</b></center><br>Ingrese su n\u00FAmero de celular"; 
+				this.modificarCelularAlert(titulo, subtitulo);
+			}
+		}			
 	}
 	
   
