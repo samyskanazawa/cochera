@@ -800,6 +800,7 @@ export class HomePage {
 	alertGenerico(titulo: string, subtitulo: string) {
 		let alert = this.alertCtrl.create({
 		title: titulo,
+		enableBackdropDismiss: false,
 		subTitle: subtitulo,
 			buttons: [
 			  {

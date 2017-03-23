@@ -126,8 +126,6 @@ export class MisReservasPage {
 	
   }
   
-
-  
   showPrompt(subtitulo: string) {
     
 	var index = this.reservas.indexOf(this.indice);
@@ -280,6 +278,7 @@ export class MisReservasPage {
 		}
 	let alert = this.alertCtrl.create({
     title: titulo,
+	enableBackdropDismiss: false,
     subTitle: subtitulo,
     buttons: [
       {
@@ -303,6 +302,7 @@ export class MisReservasPage {
 	var index = this.reservas.indexOf(this.indice);
 	let alert = this.alertCtrl.create({
     title: 'Ocupar Reserva ',
+	enableBackdropDismiss: false,
     subTitle: '¿Desea ocupar la cochera en el horario de reserva seleccionado?',
     buttons: [
       {
@@ -325,6 +325,7 @@ export class MisReservasPage {
   alertGenerico(titulo: string, subtitulo: string) {
 	let alert = this.alertCtrl.create({
     title: titulo,
+	enableBackdropDismiss: false,
     subTitle: subtitulo,
     buttons: [
       {

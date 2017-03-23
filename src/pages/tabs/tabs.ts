@@ -159,6 +159,7 @@ export class TabsPage {
 	modificarCelularAlert(titulo: string, subtitulo: string) {
 	let prompt = this.alertCtrl.create({
 		  title: titulo,
+		  enableBackdropDismiss: false,
 		  inputs: [
 			{
 			  name: 'telefono',

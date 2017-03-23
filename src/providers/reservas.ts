@@ -462,6 +462,7 @@ export class Reservas {
   alertGenerico(titulo: string, subtitulo: string) {
 	let alert = this.alertCtrl.create({
     title: titulo,
+	enableBackdropDismiss: false,
     subTitle: subtitulo,
     buttons: [
       {
@@ -477,6 +478,7 @@ export class Reservas {
   alertGenerico2(titulo: string, subtitulo: string, callback) {
 	let alert = this.alertCtrl.create({
     title: titulo,
+	enableBackdropDismiss: false,
     subTitle: subtitulo,
     buttons: [
       {

@@ -50,7 +50,7 @@ export class LoginPage {
 			
 			var usuario = outerThis.allUsuariosArray[0][index];
 			
-			if(usuario == null){
+			if(outerThis.registerCredentials.email !== "" && usuario == null){
 				var titulo = "Acceso denegado";
 				var subtitulo = "Mail no autorizado";
 				outerThis.alertGenerico(titulo, subtitulo);
@@ -227,6 +227,7 @@ export class LoginPage {
 	
     let alert = this.alertCtrl.create({
       title: titulo,
+	  enableBackdropDismiss: false,
       subTitle: subtitulo,
       buttons:  [
 			{
