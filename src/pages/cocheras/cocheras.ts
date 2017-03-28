@@ -137,18 +137,13 @@ export class CocherasPage {
 			v_DispoActual = this.reservasService.obtenerDiferenciaDeTiempo(horaDesde, horaHasta);
 			dispo  =   v_DispoActual - v_DispoFila;
 				
-			if (dispo > 0 ) {
-					this.ultimoColor = "#FFFA93"; //amarillo 
-			} else {
-					this.ultimoColor = "#DAF291"; //verde 
+			if (dispo <= 0 ) {
+				this.ultimoColor = "#DAF291"; //verde
 			}
 			
 		 } else {
-		
 			if(this.disponibles[indexDisponibles].v_Dispo == 1200) {
-					this.ultimoColor = "#DAF291";
-			}else{
-					this.ultimoColor = "#FFFA93";
+					this.ultimoColor = "#DAF291"; //verde
 			}
 		 }
 	 }

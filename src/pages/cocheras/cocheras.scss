@@ -1,6 +1,6 @@
 page-cocheras {
 
-  .submit-btn {
+  .submit-btn-cocheras {
        background: #B5E61D;
        border-radius: 30px !important;
        border: 2px solid #000000;
@@ -70,15 +70,22 @@ scroll-content {
 
 }
 
-.boton {
+.boton-cocheras {
    background: #B5E61D;
    border-radius: 30px !important;
    border: 2px solid #000000;
 }
 
+.labelTexto {
+   white-space: normal !important;
+   max-width: none !important;
+   width: 100%;
+}
+
 .label-md {
     margin: 10px 3px 12px 0;
 }
+
 .picker-md .picker-toolbar {
     box-shadow: 0 0 10px #222 inset;
     display: -webkit-flex;

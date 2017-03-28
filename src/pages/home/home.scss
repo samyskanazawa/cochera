@@ -104,12 +104,20 @@ page-home {
    background: #B5E61D;
    border-radius: 30px !important;
    border: 2px solid #000000;
+   font-size: 82%;
+}
+
+.labelTexto {
+   white-space: normal !important;
+   max-width: none !important;
+   width: 100%;
 }
 
 .submit-btn {
 	background: #B5E61D;
 	border-radius: 30px !important;
 	border: 2px solid #000000;
+	font-size: 82%;
 }
 
 scroll-content {

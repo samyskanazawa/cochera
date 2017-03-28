@@ -73,15 +73,11 @@ export class HomePage {
 		dispo  =   v_DispoActual - v_DispoFila;
 
 		if(numeroHoraActual >= 800){
-			if (dispo > 0) {
-				return "#FFFA93"; //amarillo 
-			} else {
+			if (dispo <= 0) {
 				return "#DAF291"; //verde 
 			}
-		} else if(v_DispoFila < 1200){
-				return "#FFFA93"; //amarillo
-		} else {
-				return "#DAF291"; //verde 
+		} else if(v_DispoFila >= 1200){
+			return "#DAF291"; //verde 
 		}
     }
 	
@@ -286,8 +282,6 @@ export class HomePage {
 		this.indiceOcupado = null;		
 		var reserva = [];
 		var index;
-		
-		debugger;
 		
 		if (this.flagDisponibleParcial){
 			index = this.disponiblesParcial.indexOf(this.indiceCocheraDisponibleParcial);
@@ -542,7 +536,6 @@ export class HomePage {
 						var horaDesde1 = temporal[n];
 						var horaHasta1 = temporal [n+1];
 
-									debugger;
 						//Iteramos los horarios desde las 08:00 y entre reservas para colocarlos como disponibles
 						if (Number(horadesde.replace(":","")) < horaDesde1.replace(":","")) {
 							horaDesde = horadesde;
