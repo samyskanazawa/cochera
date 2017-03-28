@@ -13,12 +13,15 @@ import { Usuarios } from '../../providers/usuarios';
 export class HomePage {
 
     public disponibles: any;
+	public disponiblesParcial: any;
 	public noDisponibles: any;
 	public fechaActual = new Date().toISOString();
 	public tmpDispo;
+	public tmpDispoParcial;
 	public tmpNoDispo;
 	public allUsuariosArray = [];
 	public indiceCocheraDisponible: any;
+	public indiceCocheraDisponibleParcial: any;
 	public indiceCocheraNoDisponible: any;
 	public indiceOcupado: any;
 	public indiceLlamar;
@@ -29,6 +32,7 @@ export class HomePage {
 	public extenderReserva: boolean;
 	public telefonoNoDisponible:number;
 	public flagDisponibleNoDisponible;
+	public flagDisponibleParcial;
 	public mail = window.localStorage.getItem("email");
 
     constructor(public navCtrl: NavController,  public reservasService: Reservas, public usuariosService: Usuarios,  public cocherasService: Cocheras, public alertCtrl: AlertController) {
@@ -39,7 +43,7 @@ export class HomePage {
 		var indexDisponibles = this.disponibles.indexOf(i);	
 		var diaActual = new Date();
 		var hora = diaActual.getHours();
-		var minutos = diaActual.getMinutes();	
+		var minutos = diaActual.getMinutes();
 		var v_DispoFila = this.disponibles[indexDisponibles].v_Dispo;
 		var v_DispoActual;
 		var dispo;
@@ -80,7 +84,11 @@ export class HomePage {
 				return "#DAF291"; //verde 
 		}
     }
- 
+	
+	devolverColorFilaDisponibleParcial(i){
+		return "#FFFA93"; //amarillo	
+	}
+	
     devolverColorFilaNoDisponible(i){
 		var indexNoDisponibles = this.noDisponibles.indexOf(i);	
 		
@@ -103,6 +111,25 @@ export class HomePage {
 			this.indiceOcupado = index;	
 		}
 		
+		this.flagDisponibleParcial = false;
+		this.indiceCocheraDisponibleParcial = null;
+		this.flagDisponibleNoDisponible = false;
+	}
+	
+	marcarRadioCocheraDisponibleParcial(i){
+		this.indiceCocheraDisponible = i;
+		this.indiceCocheraNoDisponible = null;
+		this.indiceOcupado = null;
+		this.indiceLlamar = null;
+		var index = this.disponiblesParcial.indexOf(this.indiceCocheraDisponible);
+		var horaDesde = this.disponiblesParcial[index].horaDesde;
+		
+		if(!(horaDesde > this.getHoraActual())){
+			this.indiceOcupado = index;	
+		}
+		
+		this.flagDisponibleParcial = true;
+		this.indiceCocheraDisponibleParcial = i;
 		this.flagDisponibleNoDisponible = false;
 	}
 	  
@@ -128,6 +155,7 @@ export class HomePage {
 		}
 		
 		this.indiceCocheraDisponible = null;
+		this.indiceCocheraDisponibleParcial = null;
 		this.flagDisponibleNoDisponible = true;
 	}
 	
@@ -159,39 +187,49 @@ export class HomePage {
 		return(horaActual);			
 	}
 	
+	agregarEspacio(nombre: string){
+		var valorAAgregar = " ";
+		var posicion = 5;
+		
+		if(nombre.length == 7){
+			posicion = 6;
+		}
+		
+		var nombreAMostrar = [nombre.slice(0, posicion), valorAAgregar, nombre.slice(posicion)].join('');
+		return nombreAMostrar;
+	}
+	
   
 	ocuparCochera(){
 		
-		var index: number;
-		var mail;
-		var nombreCochera;
-		var espacioCochera;
-		var numeroEspacioCochera;
-		var fechaRese;
-		var horaDesde;
-		var horaHasta;
+		var index = this.disponibles.indexOf(this.indiceCocheraDisponible);
+		var mail = this.mail;
+		var nombreCochera = this.disponibles[index].v_nombre;
+		var espacioCochera = this.disponibles[index].v_espacio;
+		var fechaRese = this.disponibles[index].v_fecha;
+		var horaDesde = this.disponibles[index].horaDesde;
+		var horaHasta = this.disponibles[index].horaHasta;
 		var id;
 		
-		if(!this.flagDisponibleNoDisponible){
-			index = this.disponibles.indexOf(this.indiceCocheraDisponible);
-			mail = this.mail;
-			nombreCochera = this.disponibles[index].v_nombre;
-			numeroEspacioCochera = this.disponibles[index].v_espacio;
-			fechaRese = this.disponibles[index].v_fecha;
-			horaDesde = this.disponibles[index].horaDesde;
-			horaHasta = this.disponibles[index].horaHasta;
-		} else {
+		if(this.flagDisponibleNoDisponible){
 			index = this.noDisponibles.indexOf(this.indiceCocheraNoDisponible);
 			id = this.noDisponibles[index].id;
-			mail = this.noDisponibles[index].v_mail;
+			mail = this.mail;
 			nombreCochera = this.noDisponibles[index].v_nombre;
-			numeroEspacioCochera = this.noDisponibles[index].v_espacio;
+			espacioCochera = this.noDisponibles[index].v_espacio;
 			fechaRese = this.noDisponibles[index].v_fecha;
 			horaDesde = this.noDisponibles[index].horaDesde;
 			horaHasta = this.noDisponibles[index].horaHasta;
+		} else if(this.flagDisponibleParcial) {
+			index = this.disponiblesParcial.indexOf(this.indiceCocheraDisponibleParcial);
+			mail = this.disponiblesParcial[index].v_mail;
+			nombreCochera = this.disponiblesParcial[index].v_nombre;
+			espacioCochera = this.disponiblesParcial[index].v_espacio;
+			fechaRese = this.disponiblesParcial[index].v_fecha;
+			horaDesde = this.disponiblesParcial[index].horaDesde;
+			horaHasta = this.disponiblesParcial[index].horaHasta;
 		}
 		
-		espacioCochera = numeroEspacioCochera.toString();
 		this.indiceCocheraDisponible = null;
 		this.indiceOcupado = null;
 		var reserva = [];
@@ -209,7 +247,7 @@ export class HomePage {
 				outerThis.buscar();
 			});
 		} else {		
-			this.obtenerCocheras(horaDesde, horaHasta, fechaRese, mail, nombreCochera, numeroEspacioCochera, function(){
+			this.obtenerCocheras(horaDesde, horaHasta, fechaRese, mail, nombreCochera, espacioCochera, function(){
 				if(!outerThis.errorLimiteHoras){
 					if(!outerThis.errorMismaCochera){
 						if(!outerThis.extenderReserva){
@@ -243,17 +281,32 @@ export class HomePage {
 	
 	
 	reservarCochera(){
-		var index = this.disponibles.indexOf(this.indiceCocheraDisponible);
+		
 		this.indiceCocheraDisponible = null;
 		this.indiceOcupado = null;		
 		var reserva = [];
-		var mail = this.disponibles[index].v_mail;
-		var nombreCochera = this.disponibles[index].v_nombre;
-		var espacioCochera: String;
-		espacioCochera = (this.disponibles[index].v_espacio).toString();
-		var fechaRese = this.disponibles[index].v_fecha;
-		var horaDesde = this.disponibles[index].horaDesde;
-		var horaHasta = this.disponibles[index].horaHasta;
+		var index;
+		
+		debugger;
+		
+		if (this.flagDisponibleParcial){
+			index = this.disponiblesParcial.indexOf(this.indiceCocheraDisponibleParcial);
+			var mail = this.disponiblesParcial[index].v_mail;
+			var nombreCochera = this.disponiblesParcial[index].v_nombre;
+			var espacioCochera = this.disponiblesParcial[index].v_espacio;
+			var fechaRese = this.disponiblesParcial[index].v_fecha;
+			var horaDesde = this.disponiblesParcial[index].horaDesde;
+			var horaHasta = this.disponiblesParcial[index].horaHasta;
+		} else{
+			index = this.disponibles.indexOf(this.indiceCocheraDisponible);
+			var mail = this.disponibles[index].v_mail;
+			var nombreCochera = this.disponibles[index].v_nombre;
+			var espacioCochera = this.disponibles[index].v_espacio;
+			var fechaRese = this.disponibles[index].v_fecha;
+			var horaDesde = this.disponibles[index].horaDesde;
+			var horaHasta = this.disponibles[index].horaHasta;
+		}
+		
 		var horaDesdeSort = Number(horaDesde.replace(":",""));
 		var estado = "Reservado";
 		var fechaAlta = "";
@@ -320,7 +373,9 @@ export class HomePage {
 			v_mail = outerThis.mail;
 			this.tmpDispo = [];
 			this.tmpNoDispo = [];
+			this.tmpDispoParcial = [];
 			this.disponibles =  [];
+			this.disponiblesParcial =  [];
 			this.noDisponibles = [];
 			this.allUsuariosArray = [];
 			
@@ -336,11 +391,13 @@ export class HomePage {
 				this.queryReservas(v_nombre, v_espacio, v_fecha, estado, v_mail, horaDesde, horaHasta, allreservasArray );
 			}			
 			this.disponibles = this.tmpDispo;
+			this.disponiblesParcial = this.tmpDispoParcial;
 			this.noDisponibles = this.tmpNoDispo;
 		});
 	}
 
     ionViewDidEnter() {	
+				
 		var v_items;
 		var v_item;
 		var v_espacio;
@@ -380,8 +437,11 @@ export class HomePage {
 				v_items = data;		
 				v_mail = outerThis.mail;
 				this.tmpDispo = [];
-				this.tmpNoDispo = [];		
-				this.disponibles =  [];
+				this.tmpNoDispo = [];
+				this.tmpDispoParcial = [];				
+				this.disponibles = [];
+				this.noDisponibles = [];
+				this.disponiblesParcial = [];
 				this.allUsuariosArray = [];
 				
 				//Itero las cocheras encontradas para buscar reservas actuales
@@ -397,8 +457,8 @@ export class HomePage {
 				}
 				
 				this.disponibles = this.tmpDispo;
+				this.disponiblesParcial = this.tmpDispoParcial;
 				this.noDisponibles = this.tmpNoDispo;
-			
 			});
 		}
    }
@@ -482,13 +542,14 @@ export class HomePage {
 						var horaDesde1 = temporal[n];
 						var horaHasta1 = temporal [n+1];
 
+									debugger;
 						//Iteramos los horarios desde las 08:00 y entre reservas para colocarlos como disponibles
 						if (Number(horadesde.replace(":","")) < horaDesde1.replace(":","")) {
 							horaDesde = horadesde;
 							horaHasta = horaDesde1;
 							v_Dispo = this.reservasService.obtenerDiferenciaDeTiempo(horaDesde, horaHasta);
 							if(horaDesde != horaHasta){
-								this.tmpDispo.push({v_mail , v_nombre, v_espacio, v_fecha, horaDesde, horaHasta, v_Dispo});
+								this.tmpDispoParcial.push({v_mail , v_nombre, v_espacio, v_fecha, horaDesde, horaHasta, v_Dispo});
 							}
 							var desdeTemporal = horaHasta1;
 							if(diaActual.toISOString().substr(0, 10) == v_fecha.substr(0,10) && (Number(horaActual.replace(":","")) > Number(desdeTemporal.replace(":","")))){
@@ -562,7 +623,7 @@ export class HomePage {
 				horaHasta = "20:00"
 				horaDesde = horadesde;
 				v_Dispo = this.reservasService.obtenerDiferenciaDeTiempo(horaDesde, horaHasta);
-				this.tmpDispo.push({v_mail, v_nombre, v_espacio, v_fecha, horaDesde, horaHasta, v_Dispo});
+				this.tmpDispoParcial.push({v_mail, v_nombre, v_espacio, v_fecha, horaDesde, horaHasta, v_Dispo});
 			}
 		}
 	});
@@ -578,7 +639,7 @@ export class HomePage {
    
   
     
-	obtenerCocheras(horaDesde: string, horaHasta: string, v_fecha: string, v_mail: string, nombre: string, espacio: number, callback){		
+	obtenerCocheras(horaDesde: string, horaHasta: string, v_fecha: string, v_mail: string, nombre: string, espacio: string, callback){		
 		var allreservasArray;
 		var outerThis = this;
 		this.reservasService.getReservasByFechaRese(v_fecha).then((data) => {
@@ -588,7 +649,6 @@ export class HomePage {
 		var temporalReservasOtrosUsuarios = [];
 		var cocherasResevadasOtrosUsuarios = [];
 		var horariosDisponibles = [];
-		var espacioCocheraPropia = [];
 		var horaDesdeCampoHora: number = Number((horaDesde).substr(0,2));
 		var horaHastaCampoHora: number = Number((horaHasta).substr(0,2));
 		var p;
@@ -609,7 +669,6 @@ export class HomePage {
 									temporal.push(allreservasArray[z].horaDesde);
 									temporal.push(allreservasArray[z].horaHasta);
 									temporal.sort();
-									espacioCocheraPropia.push({'espacio': allreservasArray[z].espacioCochera, 'horaDesde' : allreservasArray[z].horaDesde, 'horaHasta' : allreservasArray[z].horaHasta});
 								} else {
 									temporalReservasOtrosUsuarios.push(allreservasArray[z].horaDesde);
 									temporalReservasOtrosUsuarios.push(allreservasArray[z].horaHasta);
@@ -637,7 +696,7 @@ export class HomePage {
 					
 					//Verificamos si estamos reservando una cochera que ya tiene una o más reservas de otros usuarios
 					for(r = 0; r < cocherasResevadasOtrosUsuarios.length; r++){
-						if (Number(cocherasResevadasOtrosUsuarios[r].espacio) == espacio && mismaCochera == false){
+						if (cocherasResevadasOtrosUsuarios[r].espacio == espacio && mismaCochera == false){
 							mismaCochera = true;
 						}
 					}
@@ -742,12 +801,7 @@ export class HomePage {
 												if(((numeroHoraDesde > 800 && horaHastaDisponible > 800) && ((numeroHoraDesde - horaDesdeDisponible) < 100)) 
 													|| (((horaHastaDisponible - numeroHoraHasta) < 100) && (numeroHoraDesde < 2000 && horaHastaDisponible < 2000))){
 													
-													//Si es en horario concatenado y a otra de mis reservas sobre una misma cochera
-													if(outerThis.contieneCochera(espacioCocheraPropia, espacio, numeroHoraDesde, numeroHoraHasta)){
-														outerThis.extenderReserva = true;
-													} else {
-														outerThis.error = false;
-													}
+													outerThis.extenderReserva = true;
 												} else {
 													outerThis.error = false;
 												}
@@ -785,7 +839,7 @@ export class HomePage {
 		return resultado;
 	}
 	
-	contieneCochera(array: any[], espacio: number, numeroHoraDesde: number, numeroHoraHasta: number) {
+	contieneCochera(array: any[], espacio: string, numeroHoraDesde: number, numeroHoraHasta: number) {
 		
 		var resultado = false;
 		var itemArray;

@@ -66,7 +66,7 @@ export class TabsPage {
 
 			  let alert = this.alertCtrl.create({	  
 				title: 'Reserva',
-				message: 'Usted tiene reservada la cochera N° ' + reserva.espacioCochera + ' en ' + reserva.nombreCochera + ' ¿Desea realizar alguna acci\u00F3n? ' ,
+				message: 'Usted tiene reservada la cochera ' + reserva.espacioCochera + '. ¿Desea realizar alguna acci\u00F3n? ' ,
 				buttons: [
 				  {
 					text: 'Ocupar',
@@ -97,7 +97,7 @@ export class TabsPage {
 			
 			 let alert = this.alertCtrl.create({	  
 				title: 'Reserva',
-				message: 'Usted tiene reservada la cochera N° ' + reserva.espacioCochera + ' en el horario desde las ' + reserva.horaDesde +  ' hs hasta las ' + reserva.horaHasta + ' hs en: ' + reserva.nombreCochera + ' ¿Desea liberarla? ' ,
+				message: 'Usted tiene reservada la cochera ' + reserva.espacioCochera + ' en el horario desde las ' + reserva.horaDesde +  ' hs hasta las ' + reserva.horaHasta + ' hs. ¿Desea liberarla? ' ,
 				buttons: [
 				  {
 					text: 'Liberar',
@@ -136,7 +136,7 @@ export class TabsPage {
     alertaCocheraOcupada(reserva) {
 	  let alert = this.alertCtrl.create({
 		title: 'Cochera',
-		message: 'Actualmente est\u00E1 ocupando la cochera N° ' + reserva.espacioCochera  + ' en ' + reserva.nombreCochera + ' ¿Desea liberarla? ',
+		message: 'Actualmente est\u00E1 ocupando la cochera ' + reserva.espacioCochera + '. ¿Desea liberarla? ',
 		buttons: [
 		  {
 			text: 'Liberar',

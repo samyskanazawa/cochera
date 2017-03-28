@@ -25,7 +25,8 @@ import { OrderBy } from '../pipes/sort';
   imports: [
     IonicModule.forRoot(MyApp, {
 		backButtonText: "Volver"
-	})
+	}),
+	IonicModule.forRoot(MyApp, { scrollAssist: false, autoFocusAssist: false } ),
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -38,4 +39,6 @@ import { OrderBy } from '../pipes/sort';
   ],
   providers: [AuthService, Reservas, Usuarios, Cocheras]
 })
-export class AppModule {}
+export class AppModule {
+	
+}

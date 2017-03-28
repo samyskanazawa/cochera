@@ -22,13 +22,16 @@ export class CocherasPage {
 	public horaHasta: string;
 	public ocultarResultados: boolean;
 	public disponibles: any;
+	public disponiblesParcial: any;
 	public noDisponibles: any;
 	public habilitarBoton: string = "habilitado";
 	public tmpDispo;
+	public tmpDispoParcial;
 	public tmpNoDispo;
 	public allUsuariosArray = [];
 	public hoy: string;
 	public indiceCocheraDisponible: any;
+	public indiceCocheraDisponibleParcial: any;
 	public indiceCocheraNoDisponible: any;
 	public indiceRadio: any;
 	public minDate = new Date().toISOString();
@@ -39,6 +42,7 @@ export class CocherasPage {
 	public errorRangoHorarios: boolean;
 	public extenderReserva: boolean;
 	public flagColores: boolean;
+	public flagDisponibleParcial;
 	public ultimoColor;
 	public telefonoNoDisponible: Number;
 	public mail = window.localStorage.getItem("email");
@@ -151,6 +155,9 @@ export class CocherasPage {
 	 return this.ultimoColor;
   }
   
+  devolverColorFilaDisponibleParcial(i){
+		return "#FFFA93"; //amarillo	
+  }
   
   devolverColorFilaNoDisponible(i){
 	  var indexNoDisponibles = this.noDisponibles.indexOf(i);
@@ -164,10 +171,18 @@ export class CocherasPage {
   
   marcarRadioCocheraDisponible(i){
 	  this.indiceCocheraDisponible = i;
+	  this.flagDisponibleParcial = false;
+  }
+  
+  marcarRadioCocheraDisponibleParcial(i){
+	  this.indiceCocheraDisponibleParcial = i;
+	  this.indiceCocheraDisponible = i;
+	  this.flagDisponibleParcial = true;
   }
   
   marcarRadioCocheraNoDisponible(i){
 	this.indiceCocheraNoDisponible = null;
+	this.flagDisponibleParcial = false;
 	var index = this.noDisponibles.indexOf(i);
 	this.telefonoNoDisponible = this.noDisponibles[index].v_telefono;
 	
@@ -369,7 +384,7 @@ export class CocherasPage {
 							v_Dispo = this.reservasService.obtenerDiferenciaDeTiempo(horaDesde, horaHasta);
 							
 							if(horaDesde != horaHasta){
-								this.tmpDispo.push({v_mail , v_nombre, v_espacio, v_fecha, horaDesde, horaHasta, v_Dispo});
+								this.tmpDispoParcial.push({v_mail , v_nombre, v_espacio, v_fecha, horaDesde, horaHasta, v_Dispo});
 							}
 							
 							var desdeTemporal = horaHasta1;
@@ -439,7 +454,7 @@ export class CocherasPage {
 				horaHasta = "20:00"
 				horaDesde = horadesde;
 				v_Dispo = this.reservasService.obtenerDiferenciaDeTiempo(horaDesde, horaHasta);
-				this.tmpDispo.push({v_mail, v_nombre, v_espacio, v_fecha, horaDesde, horaHasta, v_Dispo});
+				this.tmpDispoParcial.push({v_mail, v_nombre, v_espacio, v_fecha, horaDesde, horaHasta, v_Dispo});
 			}
 		}
 	});
@@ -473,8 +488,10 @@ export class CocherasPage {
 		
 		v_items = data;
 		this.tmpDispo = [];
+		this.tmpDispoParcial = [];
 		this.tmpNoDispo = [];
 		this.disponibles =  [];
+		this.disponiblesParcial = [];
 		this.noDisponibles = [];
 		this.allUsuariosArray = [];
 		
@@ -491,6 +508,7 @@ export class CocherasPage {
 		}
 		
 		this.disponibles = this.tmpDispo;
+		this.disponiblesParcial = this.tmpDispoParcial;
 		this.noDisponibles = this.tmpNoDispo;
 	});
  }
@@ -498,15 +516,26 @@ export class CocherasPage {
  
   showPrompt(subtitulo: string) {
 	
+	var index;
+	var vector;
+	
+	if(this.flagDisponibleParcial){
+		index = this.disponiblesParcial.indexOf(this.indiceCocheraDisponibleParcial);
+		vector = this.disponiblesParcial[index];
+	} else {
+		index = this.disponibles.indexOf(this.indiceCocheraDisponible);
+		vector = this.disponibles[index];
+	}
+
 	var texto;
 	if (subtitulo == null || subtitulo == ""){
 		texto = "";
 	} else {
 		texto = "<br/><center><b>" + subtitulo + "</b></center>";
 	}
-	var index = this.disponibles.indexOf(this.indiceCocheraDisponible);
+	
     let prompt = this.alertCtrl.create({
-      title: 'D\u00EDa: ' + this.reservasService.formatearFecha(this.disponibles[index].v_fecha) + ' - Cochera: ' + this.disponibles[index].v_espacio,
+      title: 'D\u00EDa: ' + this.reservasService.formatearFecha(vector.v_fecha) + ' - Cochera: ' + vector.v_espacio,
 	  enableBackdropDismiss: false,
       inputs: [
 	  
@@ -514,13 +543,13 @@ export class CocherasPage {
           name: 'desde',
 		  placeholder: 'Desde',
 		  type: 'time',
-		  value: this.disponibles[index].horaDesde
+		  value: vector.horaDesde
         },
 		{
 		  name: 'hasta',
 		  placeholder: 'Hasta',
 		  type: 'time',
-		  value: this.disponibles[index].horaHasta
+		  value: vector.horaHasta
 		},	
       ],
 	  message: texto,
@@ -529,7 +558,7 @@ export class CocherasPage {
           text: 'Guardar',
           handler: data => {
 			window.localStorage.setItem("noCancel", 'true');
-			this.guardar(data, index);
+			this.guardar(data, vector);
           }
         },
 		{
@@ -549,13 +578,13 @@ export class CocherasPage {
   }
   
   
-  guardar(data, index){  
+  guardar(data, vector){  
 	var reserva = [];
-	var mail = this.disponibles[index].v_mail;
-	var nombreCochera = this.disponibles[index].v_nombre;
+	var mail = vector.v_mail;
+	var nombreCochera = vector.v_nombre;
 	var espacioCochera: String;
-	espacioCochera = (this.disponibles[index].v_espacio).toString();
-	var fechaRese = this.disponibles[index].v_fecha;
+	espacioCochera = vector.v_espacio;
+	var fechaRese = vector.v_fecha;
 	var horaDesde = data.desde;
 	var horaHasta = data.hasta;
 	var horaDesdeSort = Number(horaDesde.replace(":",""));
@@ -586,14 +615,14 @@ export class CocherasPage {
 
 	if(window.localStorage.getItem("noCancel") == 'true'){
 		window.localStorage.removeItem("noCancel");
-		this.obtenerCocheras(horaDesde, horaHasta, fechaRese, mail, nombreCochera, this.disponibles[index].v_espacio, function(){
+		this.obtenerCocheras(horaDesde, horaHasta, fechaRese, mail, nombreCochera, vector.v_espacio, function(){
 			if(!outerThis.errorHorarios){
 				if(!outerThis.errorRangoHorarios){
 					if(!outerThis.errorLimiteHoras){
 						if(!outerThis.errorMismaCochera){
 							if(!outerThis.extenderReserva){
 								if(!outerThis.error){
-									if(data.desde >= outerThis.disponibles[index].horaDesde && data.hasta <= outerThis.disponibles[index].horaHasta){
+									if(data.desde >= vector.horaDesde && data.hasta <= vector.horaHasta){
 										reserva.push({mail, nombreCochera, espacioCochera, fechaRese, horaDesde, horaHasta, fechaAlta, estado, fechaOcupa, fechaLibre, horaDesdeSort});
 										outerThis.reservasService.createReserva(reserva[0], function(resultado: boolean){
 												outerThis.buscar();
@@ -624,7 +653,7 @@ export class CocherasPage {
 						outerThis.showPrompt(subtitulo);
 					}
 				} else {
-					if ((diaActual.toISOString().substr(0, 10) == outerThis.disponibles[index].v_fecha.substr(0,10)) && (Number(horaDesde.replace(":","")) > 800)){
+					if ((diaActual.toISOString().substr(0, 10) == vector.v_fecha.substr(0,10)) && (Number(horaDesde.replace(":","")) > 800)){
 						var subtitulo = 'El horario permitido es entre las ' + horaActualString + ' hs y las 20:00 hs';
 					} else {
 						var subtitulo = 'El horario permitido es entre las 08:00 hs y las 20:00 hs';
@@ -642,7 +671,7 @@ export class CocherasPage {
   }
   
   	
-	obtenerCocheras(horaDesde: string, horaHasta: string, v_fecha: string, v_mail: string, nombre: string, espacio: number, callback){
+	obtenerCocheras(horaDesde: string, horaHasta: string, v_fecha: string, v_mail: string, nombre: string, espacio: string, callback){
 		
 		var allreservasArray;
 		var outerThis = this;
@@ -654,7 +683,6 @@ export class CocherasPage {
 			var temporalReservasOtrosUsuarios = [];
 			var cocherasResevadasOtrosUsuarios = [];
 			var horariosDisponibles = [];
-			var espacioCocheraPropia = [];
 			var horaDesdeCampoHora: number = Number((horaDesde).substr(0,2));
 			var horaHastaCampoHora: number = Number((horaHasta).substr(0,2));
 			var diaActual = new Date();
@@ -692,7 +720,6 @@ export class CocherasPage {
 									temporal.push(allreservasArray[z].horaDesde);
 									temporal.push(allreservasArray[z].horaHasta);
 									temporal.sort();
-									espacioCocheraPropia.push({'espacio': allreservasArray[z].espacioCochera, 'horaDesde' : allreservasArray[z].horaDesde, 'horaHasta' : allreservasArray[z].horaHasta});
 								} else {
 									temporalReservasOtrosUsuarios.push(allreservasArray[z].horaDesde);
 									temporalReservasOtrosUsuarios.push(allreservasArray[z].horaHasta);
@@ -720,7 +747,7 @@ export class CocherasPage {
 							
 							//Verificamos si estamos reservando una cochera que ya tiene una o más reservas de otros usuarios
 							for(r = 0; r < cocherasResevadasOtrosUsuarios.length; r++){
-								if (Number(cocherasResevadasOtrosUsuarios[r].espacio) == espacio && mismaCochera == false){
+								if (cocherasResevadasOtrosUsuarios[r].espacio == espacio && mismaCochera == false){
 									mismaCochera = true;
 								}
 							}
@@ -840,12 +867,7 @@ export class CocherasPage {
 													if(((numeroHoraDesde > 800 && horaHastaDisponible > 800) && ((numeroHoraDesde - horaDesdeDisponible) < 100)) 
 														|| (((horaHastaDisponible - numeroHoraHasta) < 100) && (numeroHoraDesde < 2000 && horaHastaDisponible < 2000))){
 														
-														//Si es en horario concatenado y a otra de mis reservas sobre una misma cochera
-														if(outerThis.contieneCochera(espacioCocheraPropia, espacio, numeroHoraDesde, numeroHoraHasta)){
-															outerThis.extenderReserva = true;
-														} else {
-															outerThis.error = false;
-														}
+														outerThis.extenderReserva = true;
 													} else {
 														outerThis.error = false;
 													}
@@ -887,7 +909,7 @@ export class CocherasPage {
 		return resultado;
 	}
 	
-	contieneCochera(array: any[], espacio: number, numeroHoraDesde: number, numeroHoraHasta: number) {
+	contieneCochera(array: any[], espacio: string, numeroHoraDesde: number, numeroHoraHasta: number) {
 		
 		var resultado = false;
 		var itemArray;
@@ -925,6 +947,7 @@ export class CocherasPage {
 		this.buscar();
 	} else {
 		this.disponibles = [];
+		this.disponiblesParcial = [];
 		this.noDisponibles = [];
 		this.habilitarBoton = null;
 	}

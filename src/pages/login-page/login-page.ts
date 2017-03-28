@@ -1,5 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, AlertController, LoadingController, Loading } from 'ionic-angular';
+import { NavController, AlertController, LoadingController, Loading, Platform } from 'ionic-angular';
+import { Keyboard } from 'ionic-native';
 import { AuthService } from '../../providers/auth-service';
 import { TabsPage } from '../tabs/tabs';
 import { Usuarios } from '../../providers/usuarios';
@@ -19,7 +20,7 @@ export class LoginPage {
   public flagCancelclicked = false;
   public flagFocus;
  
-  constructor(public nav: NavController, public auth: AuthService, public alertCtrl: AlertController, public loadingCtrl: LoadingController, public usuariosService: Usuarios) {}
+  constructor(public nav: NavController, public auth: AuthService, public alertCtrl: AlertController, public loadingCtrl: LoadingController, public usuariosService: Usuarios, public platform: Platform) {}
   
  validateEmail(email) {
 	if (email != "" && ! /^[a-zA-Z0-9_]+\.[a-zA-Z0-9_]+@softtek.com/.test(email.toLowerCase())){
@@ -80,6 +81,17 @@ export class LoginPage {
 	  }
   }
 
+	ionViewDidEnter() {
+		this.platform.ready().then(() => {
+		  Keyboard.disableScroll(true);
+		});
+	}
+
+	ionViewWillLeave() {
+		this.platform.ready().then(() => {
+		  Keyboard.disableScroll(false);
+		});
+	}
 
   ionViewWillLoad() {
 	  this.isChecked = false;

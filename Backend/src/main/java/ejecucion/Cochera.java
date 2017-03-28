@@ -8,7 +8,7 @@ public class Cochera {
 	private String id;
 
 	private String nombre;
-	private int espacio;
+	private String espacio;
 	private String direccion;
 	private String teléfono;
 	private String fechaAlta;
@@ -30,11 +30,11 @@ public class Cochera {
 		this.nombre = nombre;
 	}
 
-	public int getEspacio() {
+	public String getEspacio() {
 		return espacio;
 	}
 
-	public void setEspacio(int espacio) {
+	public void setEspacio(String espacio) {
 		this.espacio = espacio;
 	}
 

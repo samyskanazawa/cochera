@@ -16,15 +16,15 @@ export class OrderBy implements PipeTransform {
 	  b = [dtbcomps[0],dtbcomps[1],dtbcomps[2]].join('');
 	}
 	
-    if((isNaN(parseFloat(a)) || !isFinite(a)) || (isNaN(parseFloat(b)) || !isFinite(b))){
+    if((isNaN(Number(a)) || !isFinite(a)) || (isNaN(Number(b)) || !isFinite(b))){
       //Si no son numeros, hago toLowerCase para comparar apropiadamente
       if(a.toLowerCase() < b.toLowerCase()) return -1;
       if(a.toLowerCase() > b.toLowerCase()) return 1;
     }
     else{
       //Parsear los strings como numeros para comparar apropiadamente
-      if(parseFloat(a) < parseFloat(b)) return -1;
-      if(parseFloat(a) > parseFloat(b)) return 1;
+      if(Number(a) < Number(b)) return -1;
+      if(Number(a) > Number(b)) return 1;
     }
     
     return 0; //Iguales
