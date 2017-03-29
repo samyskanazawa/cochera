@@ -198,13 +198,13 @@ export class HomePage {
   
 	ocuparCochera(){
 		
-		var index = this.disponibles.indexOf(this.indiceCocheraDisponible);
-		var mail = this.mail;
-		var nombreCochera = this.disponibles[index].v_nombre;
-		var espacioCochera = this.disponibles[index].v_espacio;
-		var fechaRese = this.disponibles[index].v_fecha;
-		var horaDesde = this.disponibles[index].horaDesde;
-		var horaHasta = this.disponibles[index].horaHasta;
+		var index;
+		var mail;
+		var nombreCochera;
+		var espacioCochera;
+		var fechaRese;
+		var horaDesde;
+		var horaHasta;
 		var id;
 		
 		if(this.flagDisponibleNoDisponible){
@@ -224,6 +224,14 @@ export class HomePage {
 			fechaRese = this.disponiblesParcial[index].v_fecha;
 			horaDesde = this.disponiblesParcial[index].horaDesde;
 			horaHasta = this.disponiblesParcial[index].horaHasta;
+		} else {
+			index = this.disponibles.indexOf(this.indiceCocheraDisponible);
+			mail = this.mail;
+			nombreCochera = this.disponibles[index].v_nombre;
+			espacioCochera = this.disponibles[index].v_espacio;
+			fechaRese = this.disponibles[index].v_fecha;
+			horaDesde = this.disponibles[index].horaDesde;
+			horaHasta = this.disponibles[index].horaHasta;
 		}
 		
 		this.indiceCocheraDisponible = null;
@@ -276,10 +284,7 @@ export class HomePage {
 	}
 	
 	
-	reservarCochera(){
-		
-		this.indiceCocheraDisponible = null;
-		this.indiceOcupado = null;		
+	reservarCochera(){	
 		var reserva = [];
 		var index;
 		
@@ -301,6 +306,7 @@ export class HomePage {
 			var horaHasta = this.disponibles[index].horaHasta;
 		}
 		
+		this.indiceCocheraDisponible = null;     
 		var horaDesdeSort = Number(horaDesde.replace(":",""));
 		var estado = "Reservado";
 		var fechaAlta = "";

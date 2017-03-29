@@ -160,9 +160,7 @@ export class CocherasPage {
 	  if(this.mail == this.noDisponibles[indexNoDisponibles].v_mail){
 		  return "#FFFADD";
 	  }
-	  
   }
-  
   
   marcarRadioCocheraDisponible(i){
 	  this.indiceCocheraDisponible = i;

@@ -155,6 +155,7 @@ export class LoginPage {
 				outerThis.showAdv("Credenciales incorrectas");
 				outerThis.registerCredentials.email="";
 				outerThis.registerCredentials.password="";
+				outerThis.flagFocus = false;
 				
 				if(outerThis.isChecked == true){
 					outerThis.isChecked = false;
@@ -169,6 +170,7 @@ export class LoginPage {
   buscarsUsuarios (callback) {
 	  if(this.flagFocus){
 		this.showLoading();
+		this.flagFocus = false;
 		this.usuariosService.getUsuarios().then((data) => {
 			this.allUsuariosArray.push(data);
 			callback();
@@ -246,6 +248,7 @@ export class LoginPage {
 			  text: 'OK',
 			  handler: data => {
 				  if(titulo == "Datos Actualizados"){
+						window.localStorage.setItem("email", this.registerCredentials.email);
 						this.nav.setRoot(TabsPage);
 					}
 			  }
