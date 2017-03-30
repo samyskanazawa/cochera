@@ -27,7 +27,7 @@ export class Reservas {
   getReservasByMailAndFechaRese(mail: string, fecha: string){
     return new Promise(resolve => {
  
-      this.http.get('http://localhost:8080/reserva/search/findByMailAndFechaRese?mail=' + mail + '&fechaRese=' + fecha)
+      this.http.get('http://softteklabagents.eastus.cloudapp.azure.com/api/cocheras/java/reserva/search/findByMailAndFechaRese?mail=' + mail + '&fechaRese=' + fecha)
         .map(res => res.json())
         .subscribe(data => {
           this.data = data;
@@ -41,7 +41,7 @@ export class Reservas {
   getReservasByFechaReseAndEstado(fechaRese: string, estado: string){
     return new Promise(resolve => {
  
-      this.http.get('http://localhost:8080/reserva/search/findByFechaReseAndEstado?fechaRese=' + fechaRese + '&estado=' + estado)
+      this.http.get('http://softteklabagents.eastus.cloudapp.azure.com/api/cocheras/java/reserva/search/findByFechaReseAndEstado?fechaRese=' + fechaRese + '&estado=' + estado)
         .map(res => res.json())
         .subscribe(data => {
           this.data = data;
@@ -55,7 +55,7 @@ export class Reservas {
   getReservasByFechaRese(fecha: string){
     return new Promise(resolve => {
  
-      this.http.get('http://localhost:8080/reserva/search/findByFechaRese?fechaRese=' + fecha)
+      this.http.get('http://softteklabagents.eastus.cloudapp.azure.com/api/cocheras/java/reserva/search/findByFechaRese?fechaRese=' + fecha)
         .map(res => res.json())
         .subscribe(data => {
           this.data = data;
@@ -69,7 +69,7 @@ export class Reservas {
   getReservasByMail(mail: string){
     return new Promise(resolve => {
  
-      this.http.get('http://localhost:8080/reserva/search/findByMail?mail=' + mail)
+      this.http.get('http://softteklabagents.eastus.cloudapp.azure.com/api/cocheras/java/reserva/search/findByMail?mail=' + mail)
         .map(res => res.json())
         .subscribe(data => {
           this.data = data._embedded.reserva;
@@ -82,7 +82,7 @@ export class Reservas {
  findByQuery( nombreCochera: string, espacioCochera: string, fechaRese: string, estado: string){
     return new Promise(resolve => {
 	
-      this.http.get('http://localhost:8080/reserva/search/findByQuery?nombreCochera='+ nombreCochera + '&espacioCochera=' + espacioCochera + '&fechaRese=' + fechaRese + '&estado' + estado)
+      this.http.get('http://softteklabagents.eastus.cloudapp.azure.com/api/cocheras/java/reserva/search/findByQuery?nombreCochera='+ nombreCochera + '&espacioCochera=' + espacioCochera + '&fechaRese=' + fechaRese + '&estado' + estado)
         .map(res => res.json())
         .subscribe(data => {
           this.data = data;
@@ -258,7 +258,7 @@ export class Reservas {
 
 												headers.append('Content-Type', 'application/json');
 											 
-												this.http.put('http://localhost:8080/reserva/' + id, JSON.stringify(reserva), {headers: headers})
+												this.http.put('http://softteklabagents.eastus.cloudapp.azure.com/api/cocheras/java/reserva/' + id, JSON.stringify(reserva), {headers: headers})
 												  .subscribe(res => {
 												 //Si falla, se mostrará un mensaje de error
 													if(res.status < 200 || res.status >= 300) {
@@ -336,7 +336,7 @@ export class Reservas {
 		}
 	}
   
-    this.http.put('http://localhost:8080/reserva/' + id, JSON.stringify(reserva), {headers: headers})
+    this.http.put('http://softteklabagents.eastus.cloudapp.azure.com/api/cocheras/java/reserva/' + id, JSON.stringify(reserva), {headers: headers})
       .subscribe(res => {
 		 //Si falla, se mostrará un mensaje de error
 		if(res.status < 200 || res.status >= 300) {
@@ -372,7 +372,7 @@ export class Reservas {
 	var titulo;
 	var subtitulo;
  
-    this.http.post('http://localhost:8080/reserva', JSON.stringify(reserva), {headers: headers})
+    this.http.post('http://softteklabagents.eastus.cloudapp.azure.com/api/cocheras/java/reserva', JSON.stringify(reserva), {headers: headers})
       .subscribe(res => {
 		//Si falla, se mostrará un mensaje de error
 		if(res.status < 200 || res.status >= 300) {
@@ -406,7 +406,7 @@ export class Reservas {
 	var titulo;
 	var subtitulo;
  
-    this.http.delete('http://localhost:8080/reserva/' + id).subscribe((res) => {
+    this.http.delete('http://softteklabagents.eastus.cloudapp.azure.com/api/cocheras/java/reserva/' + id).subscribe((res) => {
 	  //Si falla, se mostrará un mensaje de error
 		if(res.status < 200 || res.status >= 300) {
 			titulo = "Error";
@@ -430,10 +430,7 @@ export class Reservas {
 				this.alertGenerico(titulo, subtitulo);
 			}
 		}
-    });    
- 
-
-	  
+    });      
   }
   
   obtenerDiferenciaDeTiempo(horaDesde: string, horaHasta: string){

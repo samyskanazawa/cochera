@@ -22,7 +22,7 @@ public mensaje: string;
   getUsuariosByMail(mail: string){
     return new Promise<any>(resolve => {
  
-      this.http.get('http://localhost:8080/usuario/search/findByMail?mail=' + mail)
+      this.http.get('http://softteklabagents.eastus.cloudapp.azure.com/api/cocheras/java/usuario/search/findByMail?mail=' + mail)
         .map(res => res.json())
         .subscribe(data => {
           this.data = data._embedded.usuario;
@@ -36,7 +36,7 @@ public mensaje: string;
   getUsuarios(){
     return new Promise(resolve => {
  
-      this.http.get('http://localhost:8080/usuario')
+      this.http.get('http://softteklabagents.eastus.cloudapp.azure.com/api/cocheras/java/usuario')
         .map(res => res.json())
         .subscribe(data => {
           this.data = data._embedded.usuario;
@@ -73,13 +73,13 @@ public mensaje: string;
   
   actualizarDatosUsuario(usuario: any, mensaje: string, callback){
 	  
-	  let id = (usuario._links.self.href).substr(30);
+	  let id = usuario.id;
 	  let headers = new Headers();
 	  headers.append('Content-Type', 'application/json');
    	  var titulo;
 	  var subtitulo;
 	  
-	  this.http.put('http://localhost:8080/usuario/' + id, JSON.stringify(usuario), {headers: headers})
+	  this.http.put('http://softteklabagents.eastus.cloudapp.azure.com/api/cocheras/java/usuario/' + id, JSON.stringify(usuario), {headers: headers})
       .subscribe(res => {
 		 //Si falla, se mostrará un mensaje de error
 		if(res.status < 200 || res.status >= 300) {
