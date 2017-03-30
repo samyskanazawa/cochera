@@ -58,10 +58,9 @@ export class LoginPage {
 				outerThis.registerCredentials.email="";
 			} else{
 				var mensaje = outerThis.auth.login(outerThis.registerCredentials.email, outerThis.registerCredentials.password, usuario);
-							
 				if (mensaje == "Primer ingreso"){
 					var titulo = "Informaci\u00F3n adicional requerida";
-					var subtitulo = "<br/><center><b>Por favor ingrese su n\u00FAmero de tel\u00E9fono celular (c\u00F3digo de area + n\u00FAmero) y contrase\u00f1a para contirunar</b></center>";
+					var subtitulo = "<br/><center><b>Por favor ingrese su n\u00FAmero de tel\u00E9fono celular (c\u00F3digo de area + n\u00FAmero) y contrase\u00f1a para continuar</b></center>";
 					outerThis.promptGenerico(titulo, subtitulo, usuario);
 				}
 			}
@@ -330,24 +329,24 @@ export class LoginPage {
 									var subtituloCorrecto = "Los datos fueron actualizados correctamente";
 									outerThis.alertGenerico(tituloCorrecto, subtituloCorrecto);
 								} else {
-									subtituloError = "<center><b>Error. No se pudo actualizar la informaci\u00F3n.</b></center><br>" + "<center><b>Por favor ingrese su n\u00FAmero de tel\u00E9fono celular (c\u00F3digo de area + n\u00FAmero) y contrase\u00f1a para contirunar</b></center>";
+									subtituloError = "<center><b>Error. No se pudo actualizar la informaci\u00F3n.</b></center><br>" + "<center><b>Por favor ingrese su n\u00FAmero de tel\u00E9fono celular (c\u00F3digo de area + n\u00FAmero) y contrase\u00f1a para continuar</b></center>";
 									outerThis.promptGenerico(titulo, subtituloError, usuario);
 								}
 							});
 						} else {
-							subtituloError = "<center><b>Formato de n\u00FAmero telef\u00F3nico inv\u00E1lido.</b></center><br>" + "<center><b>Por favor ingrese su n\u00FAmero de tel\u00E9fono celular (c\u00F3digo de area + n\u00FAmero) y contrase\u00f1a para contirunar</b></center>";
+							subtituloError = "<center><b>Formato de n\u00FAmero telef\u00F3nico inv\u00E1lido.</b></center><br>" + "<center><b>Por favor ingrese su n\u00FAmero de tel\u00E9fono celular (c\u00F3digo de area + n\u00FAmero) y contrase\u00f1a para continuar</b></center>";
 							this.promptGenerico(titulo, subtituloError, usuario);
 						}
 				  } else {
-						subtituloError = "<center><b>Las contrase\u00f1as no coinciden.</b></center><br>" + "<center><b>Por favor ingrese su n\u00FAmero de tel\u00E9fono celular (c\u00F3digo de area + n\u00FAmero) y contrase\u00f1a para contirunar</b></center>";
+						subtituloError = "<center><b>Las contrase\u00f1as no coinciden.</b></center><br>" + "<center><b>Por favor ingrese su n\u00FAmero de tel\u00E9fono celular (c\u00F3digo de area + n\u00FAmero) y contrase\u00f1a para continuar</b></center>";
 						this.promptGenerico(titulo, subtituloError, usuario);
 				  }
 			  } else {
-				  subtituloError = "<center><b>Las contrase\u00f1a requiere como m\u00EDnimo ocho d\u00EDgitos.</b></center><br>" + "<center><b>Por favor ingrese su n\u00FAmero de tel\u00E9fono celular (c\u00F3digo de area + n\u00FAmero) y contrase\u00f1a para contirunar</b></center>";
+				  subtituloError = "<center><b>Las contrase\u00f1a requiere como m\u00EDnimo ocho d\u00EDgitos.</b></center><br>" + "<center><b>Por favor ingrese su n\u00FAmero de tel\u00E9fono celular (c\u00F3digo de area + n\u00FAmero) y contrase\u00f1a para continuar</b></center>";
 				  this.promptGenerico(titulo, subtituloError, usuario);
 			  }
 		  } else {
-			  subtituloError = "<center><b>Por favor ingrese su n\u00FAmero de tel\u00E9fono celular (c\u00F3digo de area + n\u00FAmero) y contrase\u00f1a para contirunar</b></center>";
+			  subtituloError = "<center><b>Por favor ingrese su n\u00FAmero de tel\u00E9fono celular (c\u00F3digo de area + n\u00FAmero) y contrase\u00f1a para continuar</b></center>";
 			  this.promptGenerico(titulo, subtituloError, usuario);
 		  }
 	  }
