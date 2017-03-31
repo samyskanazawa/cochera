@@ -577,22 +577,13 @@ export class HomePage {
 			var outerThis = this;
 			var vectorHoras = i;
 			var iteradorMails = 0;
-			var q;
 			var index = -1;
 			var f = 0;
 			
 			//Itero las reservas para agregar los tramos que las conforman como no disponibles 
 			for (item in mailTemporal){
 				this.buscarUsuarios(mailTemporal[iteradorMails], function (){
-							
-							/*var searchTerm = mailTemporal[iteradorMails];
-							
-							for(q = 0; q < outerThis.allUsuariosArray[0].length; q++) {
-								if (outerThis.allUsuariosArray[0][q].mail == searchTerm && index == -1) {
-									index = q;
-								}
-							}*/
-								
+									
 							var usuario = outerThis.allUsuariosArray[0];
 							index = -1;
 							v_nombreCompleto = usuario.nombre + " " + usuario.apellido;

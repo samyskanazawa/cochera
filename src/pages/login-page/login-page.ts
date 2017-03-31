@@ -37,9 +37,6 @@ export class LoginPage {
 		
 	} else {
 		var outerThis = this;
-		var x;
-		var index = -1;
-		
 		this.buscarsUsuarios(this.registerCredentials.email.toLowerCase(), function(){
 
 			var usuario = outerThis.allUsuariosArray[0];
@@ -98,8 +95,6 @@ export class LoginPage {
 	  
 	this.flagFocus = true;  
 	var outerThis = this;
-	var q;
-	var index = -1;
 	
 	if (this.registerCredentials.email === null || this.registerCredentials.password === null) {
       var titulo = "Error";
