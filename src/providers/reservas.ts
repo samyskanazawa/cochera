@@ -351,7 +351,7 @@ export class Reservas {
 				subtitulo = "Cochera ocupada exitosamente"				
 			}else {				
 				titulo = "Ocupando cochera";
-			    subtitulo = "Ocupaci\u00F3n exitosa de la cochera N° " + reserva.espacioCochera + " en " + reserva.nombreCochera + " en el horario de: " 
+			    subtitulo = "Ocupaci\u00F3n exitosa de la cochera N° " + reserva.espacioCochera + " en el horario de: " 
 				+ reserva.horaDesde + ' hs a ' + reserva.horaHasta + " hs";
 			}					
 

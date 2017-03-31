@@ -40,16 +40,9 @@ export class LoginPage {
 		var x;
 		var index = -1;
 		
-		this.buscarsUsuarios(function(){
-			var searchTerm = outerThis.registerCredentials.email;
-					
-			for(x = 0; x < outerThis.allUsuariosArray[0].length; x++) {
-				if (outerThis.allUsuariosArray[0][x].mail == searchTerm && index == -1) {
-					index = x;
-				}
-			}
-			
-			var usuario = outerThis.allUsuariosArray[0][index];
+		this.buscarsUsuarios(this.registerCredentials.email.toLowerCase(), function(){
+
+			var usuario = outerThis.allUsuariosArray[0];
 			
 			if(outerThis.registerCredentials.email !== "" && usuario == null){
 				var titulo = "Acceso denegado";
@@ -121,17 +114,9 @@ export class LoginPage {
 		  window.localStorage.setItem("pass", this.registerCredentials.password);
 		}
 		
-		this.buscarsUsuarios(function(){
+		this.buscarsUsuarios(this.registerCredentials.email.toLowerCase(), function(){
 			
-			var searchTerm = outerThis.registerCredentials.email;
-			
-			for(q = 0; q < outerThis.allUsuariosArray[0].length; q++) {
-				if (outerThis.allUsuariosArray[0][q].mail == searchTerm && index == -1) {
-					index = q;
-				}
-			}
-			
-			var usuario = outerThis.allUsuariosArray[0][index];
+			var usuario = outerThis.allUsuariosArray[0];
 			
 			if (usuario == null || (usuario.habilitado == false && usuario.telefono != "" && usuario.clave != "")){
 				if(outerThis.isChecked == true){
@@ -166,18 +151,18 @@ export class LoginPage {
 	}
   }
   
-  buscarsUsuarios (callback) {
+  buscarsUsuarios (email: string, callback) {
 	  if(this.flagFocus){
 		this.showLoading();
 		this.flagFocus = false;
-		this.usuariosService.getUsuarios().then((data) => {
-			this.allUsuariosArray.push(data);
+		this.usuariosService.getUsuariosByMail(email).then((data) => {
+			this.allUsuariosArray = data;
 			callback();
 		});
 		this.loading.dismiss();
 	  } else {
-		this.usuariosService.getUsuarios().then((data) => {
-			this.allUsuariosArray.push(data);
+		this.usuariosService.getUsuariosByMail(email).then((data) => {
+			this.allUsuariosArray = data;
 			callback();
 		});
 	  }

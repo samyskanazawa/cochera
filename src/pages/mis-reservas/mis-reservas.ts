@@ -223,7 +223,6 @@ export class MisReservasPage {
 					if (subtitulo == ""){
 						outerThis.marcarRadioButton(outerThis.indice);
 					} else if (subtitulo != "No se pudo ocupar la cochera" || subtitulo != "Los horarios fueron modificados exitosamente"){
-						window.localStorage.setItem("noCancel", 'true');
 						outerThis.showPrompt(subtitulo);
 					}
 				});
@@ -236,21 +235,28 @@ export class MisReservasPage {
 		  ]
 		});
 		prompt.onDidDismiss((data) => {
-						if(window.localStorage.getItem("noCancel") == null){
-							outerThis.reservasService.editReserva(outerThis.reservas[index], data.desde, data.hasta, 
-							function(subtitulo){
-								if (subtitulo == ""){
-									outerThis.marcarRadioButton(outerThis.indice);
-								} else if (subtitulo != "No se pudo ocupar la cochera" || subtitulo != "Los horarios fueron modificados exitosamente"){
-									outerThis.showPrompt(subtitulo);
-								}
-							});
-						} else {
+				if(window.localStorage.getItem("noCancel") !== null){
+					outerThis.reservasService.editReserva(outerThis.reservas[index], data.desde, data.hasta, 
+					function(subtitulo){
+						if (subtitulo == ""){
 							outerThis.marcarRadioButton(outerThis.indice);
-							window.localStorage.removeItem("noCancel");
+						} else if (subtitulo != "No se pudo ocupar la cochera" || subtitulo != "Los horarios fueron modificados exitosamente"){
+							outerThis.showPrompt(subtitulo);
 						}
-					}
-				);
+						window.localStorage.removeItem("noCancel");
+					});
+				} else {
+					outerThis.marcarRadioButton(outerThis.indice);
+					window.localStorage.removeItem("noCancel");
+				}
+			}
+		);
+		onkeypress = function(e) {
+			var key = e.charCode || e.keyCode || 0;     
+			if (key == 13) {
+				window.localStorage.setItem("noCancel", 'true');
+			}
+		}
 		prompt.present();
 	  }
   });

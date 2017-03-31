@@ -399,7 +399,6 @@ export class CocherasPage {
 						n = n + 2;
 					}
 				}
-				
 				mailTemporal.push(allreservasArray[z].mail);
 				z = z + 1;		
 			}
@@ -413,17 +412,17 @@ export class CocherasPage {
 			
 			//Itero las reservas para agregar los tramos que las conforman como no disponibles 
 			for (item in mailTemporal){
-				this.buscarsUsuarios(function (){
-							
+				this.buscarUsuarios(mailTemporal[iteradorMails], function (){
 							var searchTerm = mailTemporal[iteradorMails];
 							
-							for(q = 0; q < outerThis.allUsuariosArray[0].length; q++) {
-								if (outerThis.allUsuariosArray[0][q].mail == searchTerm && index == -1) {
+							for(q = 0; q < outerThis.allUsuariosArray.length; q++) {
+								if (outerThis.allUsuariosArray[q][0].mail == searchTerm && index == -1) {
 									index = q;
+									break;
 								}
 							}
 							
-							var usuario = outerThis.allUsuariosArray[0][index];//[outerThis.allUsuariosArray.length-1];
+							var usuario = outerThis.allUsuariosArray[index][0];//[outerThis.allUsuariosArray.length-1];
 							index = -1;
 							v_nombreCompleto = usuario.nombre + " " + usuario.apellido;
 							v_telefono = usuario.telefono;
@@ -454,8 +453,8 @@ export class CocherasPage {
   };
   
   
-  buscarsUsuarios (callback) {
-	  this.usuariosService.getUsuarios().then((data) => {
+  buscarUsuarios (mail: string, callback) {
+	  this.usuariosService.getUsuariosByMail(mail).then((data) => {
 		this.allUsuariosArray.push(data);
 		callback();
 	});
@@ -566,7 +565,7 @@ export class CocherasPage {
 			window.localStorage.setItem("noCancel", 'true');
 		}
 	}
-	prompt.onDidDismiss((data) => this.guardar(data, index));
+	prompt.onDidDismiss((data) => this.guardar(data, vector));
     prompt.present();
   }
   
