@@ -1,0 +1,287 @@
+{
+    "_id" : ObjectId("597759937bba8099a1aba16a"),
+    "nombre" : "Cristian",
+    "apellido" : "Sanchez",
+    "telefono" : "",
+    "flag" : true,
+    "mail" : "cristian.sanchez@softtek.com",
+    "clave" : "",
+    "habilitado" : true,
+    "IS" : "CASA",
+    "EsAdmin" : "N"
+}
+{
+    "_id" : ObjectId("597759937bba8099a1aba16b"),
+    "nombre" : "Juan José",
+    "apellido" : "D'Alessandro",
+    "telefono" : "",
+    "flag" : false,
+    "mail" : "juan.dalessandro@softtek.com",
+    "clave" : "",
+    "habilitado" : true,
+    "IS" : "JJD",
+    "EsAdmin" : "N"
+}
+{
+    "_id" : ObjectId("597759937bba8099a1aba16c"),
+    "nombre" : "Paulo",
+    "apellido" : "Mattioda",
+    "telefono" : "",
+    "flag" : false,
+    "mail" : "paulo.mattioda@softtek.com",
+    "clave" : "",
+    "habilitado" : true,
+    "IS" : "PAM",
+    "EsAdmin" : "N"
+}
+{
+    "_id" : ObjectId("597759937bba8099a1aba16d"),
+    "nombre" : "Nestor",
+    "apellido" : "Henriquez",
+    "telefono" : "",
+    "flag" : false,
+    "mail" : "nestor.henriquez@softtek.com",
+    "clave" : "",
+    "habilitado" : true,
+    "IS" : "NDH",
+    "EsAdmin" : "N"
+}
+{
+    "_id" : ObjectId("597759947bba8099a1aba16e"),
+    "nombre" : "Maria Ines",
+    "apellido" : "Drago",
+    "telefono" : "",
+    "flag" : false,
+    "mail" : "maria.drago@softtek.com",
+    "clave" : "",
+    "habilitado" : true,
+    "IS" : "MID1",
+    "EsAdmin" : "N"
+}
+{
+    "_id" : ObjectId("597759947bba8099a1aba16f"),
+    "nombre" : "Marisol",
+    "apellido" : "Gentilini",
+    "telefono" : "",
+    "flag" : false,
+    "mail" : "marisol.gentilini@softtek.com",
+    "clave" : "",
+    "habilitado" : true,
+    "IS" : "MAGE1",
+    "EsAdmin" : "N"
+}
+{
+    "_id" : ObjectId("597759947bba8099a1aba170"),
+    "nombre" : "Emiliano",
+    "apellido" : "Dato",
+    "telefono" : "",
+    "flag" : false,
+    "mail" : "emiliano.dato@softtek.com",
+    "clave" : "",
+    "habilitado" : true,
+    "IS" : "EAD",
+    "EsAdmin" : "N"
+}
+{
+    "_id" : ObjectId("597759947bba8099a1aba171"),
+    "nombre" : "Emanuel",
+    "apellido" : "Sanchez",
+    "telefono" : "",
+    "flag" : false,
+    "mail" : "emanuel.sanchez@softtek.com",
+    "clave" : "",
+    "habilitado" : true,
+    "IS" : "EMSA",
+    "EsAdmin" : "N"
+}
+{
+    "_id" : ObjectId("597759947bba8099a1aba172"),
+    "nombre" : "Sebastian",
+    "apellido" : "Machabanski",
+    "telefono" : "",
+    "flag" : false,
+    "mail" : "smachabanski@softtek.com",
+    "clave" : "",
+    "habilitado" : true,
+    "IS" : "SMM2",
+    "EsAdmin" : "N"
+}
+{
+    "_id" : ObjectId("597759957bba8099a1aba173"),
+    "nombre" : "Alejandro",
+    "apellido" : "Radovic",
+    "telefono" : "",
+    "flag" : false,
+    "mail" : "alejandro.radovic@softtek.com",
+    "clave" : "",
+    "habilitado" : true,
+    "IS" : "AJR",
+    "EsAdmin" : "N"
+}
+{
+    "_id" : ObjectId("597759957bba8099a1aba174"),
+    "nombre" : "Laura",
+    "apellido" : "Podesta",
+    "telefono" : "",
+    "flag" : false,
+    "mail" : "laura.podesta@softtek.com",
+    "clave" : "",
+    "habilitado" : true,
+    "IS" : "LAPO1",
+    "EsAdmin" : "N"
+}
+{
+    "_id" : ObjectId("597759957bba8099a1aba175"),
+    "nombre" : "Omar",
+    "apellido" : "Salvucci",
+    "telefono" : "",
+    "flag" : false,
+    "mail" : "omar.salvucci@softtek.com",
+    "clave" : "",
+    "habilitado" : true,
+    "IS" : "FOS",
+    "EsAdmin" : "N"
+}
+{
+    "_id" : ObjectId("597759957bba8099a1aba176"),
+    "nombre" : "Mariela",
+    "apellido" : "Brazzola",
+    "telefono" : "",
+    "flag" : false,
+    "mail" : "mariela.brazzola@softtek.com",
+    "clave" : "",
+    "habilitado" : true,
+    "IS" : "MABR",
+    "EsAdmin" : "N"
+}
+{
+    "_id" : ObjectId("597759957bba8099a1aba177"),
+    "nombre" : "Julieta",
+    "apellido" : "Peguet",
+    "telefono" : "",
+    "flag" : false,
+    "mail" : "julieta.peguet@softtek.com",
+    "clave" : "",
+    "habilitado" : true,
+    "IS" : "MJP3",
+    "EsAdmin" : "N"
+}
+{
+    "_id" : ObjectId("597759957bba8099a1aba178"),
+    "nombre" : "Rodrigo",
+    "apellido" : "Suarez",
+    "telefono" : "15-5789-5747",
+    "flag" : false,
+    "mail" : "rodrigo.suarez@softtek.com",
+    "clave" : "",
+    "habilitado" : true,
+    "IS" : "RSM",
+    "EsAdmin" : "N"
+}
+{
+    "_id" : ObjectId("597759957bba8099a1aba179"),
+    "nombre" : "Ariela",
+    "apellido" : "Fefer",
+    "telefono" : "",
+    "flag" : false,
+    "mail" : "afefer@softtek.com",
+    "clave" : "",
+    "habilitado" : true,
+    "IS" : "AFF1",
+    "EsAdmin" : "N"
+}
+{
+    "_id" : ObjectId("597759967bba8099a1aba17a"),
+    "nombre" : "Victoria",
+    "apellido" : "Vecchio",
+    "telefono" : "",
+    "flag" : false,
+    "mail" : "victoria.vecchio@softtek.com",
+    "clave" : "",
+    "habilitado" : true,
+    "IS" : "MVVE",
+    "EsAdmin" : "N"
+}
+{
+    "_id" : ObjectId("597759967bba8099a1aba17b"),
+    "nombre" : "Hernan",
+    "apellido" : "Ruiz",
+    "telefono" : "12345678900",
+    "flag" : false,
+    "mail" : "hernan.ruiz@softtek.com",
+    "clave" : "hernan2488",
+    "habilitado" : true,
+    "IS" : "HERU2",
+    "EsAdmin" : "N"
+}
+{
+    "_id" : ObjectId("597759967bba8099a1aba17d"),
+    "nombre" : "Leandro",
+    "apellido" : "Fragala",
+    "telefono" : "",
+    "flag" : false,
+    "mail" : "leandro.fragala @softtek.com",
+    "clave" : "",
+    "habilitado" : true,
+    "IS" : "LEFR2",
+    "EsAdmin" : "N"
+}
+{
+    "_id" : ObjectId("597759967bba8099a1aba17f"),
+    "nombre" : "Secretaria",
+    "apellido" : "Secretaria",
+    "telefono" : "",
+    "flag" : false,
+    "mail" : "secretaria@softtek.com",
+    "clave" : "",
+    "habilitado" : true,
+    "EsAdmin" : "S"
+}
+{
+    "_id" : ObjectId("5978f347d195dc9206958178"),
+    "nombre" : "Ariel ",
+    "apellido" : "Piccoli",
+    "telefono" : "",
+    "flag" : false,
+    "mail" : "ariel.piccoli@softtek.com",
+    "clave" : "",
+    "habilitado" : true,
+    "IS" : "ARPI",
+    "EsAdmin" : "N"
+}
+{
+    "_id" : ObjectId("5978f5bad195dc920695817a"),
+    "nombre" : "Mauro",
+    "apellido" : "Mattioda",
+    "telefono" : "",
+    "flag" : false,
+    "mail" : "mmattioda@softtek.com",
+    "clave" : "",
+    "habilitado" : true,
+    "IS" : "MGM1",
+    "EsAdmin" : "N"
+}
+{
+    "_id" : ObjectId("597f3c2b2a8cab8a5618bc62"),
+    "nombre" : "Ariel",
+    "apellido" : "Pinto",
+    "telefono" : "",
+    "flag" : false,
+    "mail" : "ariel.pinto@softtek.com",
+    "clave" : "1234",
+    "habilitado" : true,
+    "IS" : "ARP4",
+    "EsAdmin" : "N"
+}
+{
+    "_id" : ObjectId("59809c5b7bba8099a1aba181"),
+    "nombre" : "Dario",
+    "apellido" : "Cohen",
+    "telefono" : "",
+    "flag" : false,
+    "mail" : "dario.cohen@softtek.com",
+    "clave" : "",
+    "habilitado" : true,
+    "IS" : "DACO3",
+    "EsAdmin" : "N"
+}
