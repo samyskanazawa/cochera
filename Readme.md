@@ -24,14 +24,35 @@ para ello se decidió hacer una aplicación mobile hibrida que permita ver el es
 
 ### **Integrantes**
 
-
 + Ariel Szocki
-+ Daniel Camacho
++ Ariel Pinto
 + Dario Cohen
-+ Hernan Ruiz
-+ Joaquin Rivera
++ Julian Alessandrini
 + Leandro Fragala
 + Maximiliano Mussetto
-+ Melisa Rocha
-+ Soledad Nuñez
++ Pablo Garcia
++ Pablo Sartorio Mechoso
++ Pablo Torres Nimo
+
+
+### **Diseño de solución**
+
+El proyecto está desarrollado con Ionic Framework y Angular, ambos versión 2 (FrontEnd) y Spring Boot (en Java, BackEnd). 
+Se consumen los servicios de tipo rest.
+El repositorio se divide principalmente en BackEnd (pojos, controllers e interfaces llamadas repositorys) y FrontEnd (pages).
+
+Respecto a la base de datos, se definieron las siguientes colecciones principales: Usuario, Cocheras, y Reservas.
+En la presente versión, se utilizan funciones personalizadas de MongoDb para la gestión de reservas recurrentes y de los maestros de usuarios y cocheras.
+
+
+### **Deploy a Producción**
+
+Respecto a la base de datos, se deben actualizar las colecciones Cocheras y Usuarios, usando el contenido de los archivos de mismos nombres ubicados en la carpeta BD del repositorio.
+Asimismo, se deberán crear las siguientes funciones personalizadas (functions de MongoDb). Las mismas se obtienen desde la carpeta BD/Scripts del repositorio.
++ AsignarTercero
++ CocheraDisponible
++ DiaDelAnio
++ ReservarEliminarRecurrente
++ cocheras
++ usuarios
 
