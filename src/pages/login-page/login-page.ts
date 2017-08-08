@@ -16,6 +16,7 @@ export class LoginPage {
   registerCredentials = {email: '', password: ''};
   public allUsuariosArray = [];
   public isChecked: boolean = false;
+  public flagLogin; 
   public flagOnDismiss = false;
   public flagCancelclicked = false;
   public flagFocus;
@@ -110,7 +111,6 @@ export class LoginPage {
 		}
 		
 		this.buscarsUsuarios(this.registerCredentials.email.toLowerCase(), function(){
-			
 			var usuario = outerThis.allUsuariosArray[0];
 			
 			if (usuario == null || (usuario.habilitado == false && usuario.telefono != "" && usuario.clave != "")){
@@ -131,16 +131,25 @@ export class LoginPage {
 					outerThis.nav.setRoot(TabsPage);	
 				});
 			} else {
-				outerThis.showAdv("Credenciales incorrectas");
-				outerThis.registerCredentials.email="";
-				outerThis.registerCredentials.password="";
-				outerThis.flagFocus = false;
-				
-				if(outerThis.isChecked == true){
-					outerThis.isChecked = false;
-					window.localStorage.removeItem("mail");
-					window.localStorage.removeItem("pass");
-				}
+				outerThis.loginUsuario(outerThis.registerCredentials.email.toLowerCase().split('@')[0], outerThis.registerCredentials.password, function(){
+					if(outerThis.flagLogin) {
+						setTimeout(() => {
+							window.localStorage.setItem("email", outerThis.registerCredentials.email);
+							outerThis.nav.setRoot(TabsPage);	
+						});
+					} else {
+						outerThis.showAdv("Credenciales incorrectas");
+						outerThis.registerCredentials.email="";
+						outerThis.registerCredentials.password="";
+						outerThis.flagFocus = false;
+						
+						if(outerThis.isChecked == true){
+							outerThis.isChecked = false;
+							window.localStorage.removeItem("mail");
+							window.localStorage.removeItem("pass");
+						}	
+					}
+				});
 			}
 		});
 	}
@@ -158,6 +167,25 @@ export class LoginPage {
 	  } else {
 		this.usuariosService.getUsuariosByMail(email).then((data) => {
 			this.allUsuariosArray = data;
+			callback();
+		});
+	  }
+	  
+	  
+  }
+
+    loginUsuario (email: string, password: string, callback) {
+	  if(this.flagFocus){
+		this.showLoading();
+		this.flagFocus = false;
+		this.usuariosService.login(email,password).then((data) => {
+			this.flagLogin = data;
+			callback();
+		});
+		this.loading.dismiss();
+	  } else {
+		this.usuariosService.login(email,password).then((data) => {
+			this.flagLogin = data;
 			callback();
 		});
 	  }

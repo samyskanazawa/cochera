@@ -15,6 +15,8 @@ export class Reservas {
 
   data: any;
   public resultado: boolean;
+
+   ip_dinamica ="10.5.10.151";
  
   constructor(public http: Http, public alertCtrl: AlertController) {
     this.data = null;

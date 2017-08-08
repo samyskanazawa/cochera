@@ -15,6 +15,8 @@ export class Usuarios {
 data: any;
 public mensaje: string;
  
+ ip_dinamica ="10.5.10.151";
+ 
   constructor(public http: Http, public alertCtrl: AlertController) {
     this.data = null;
   }
@@ -40,6 +42,19 @@ public mensaje: string;
         .map(res => res.json())
         .subscribe(data => {
           this.data = data._embedded.usuario;
+          resolve(this.data);
+        });
+    });
+ 
+  }
+
+  login(username: string, password: string){
+    return new Promise(resolve => {
+ 
+      this.http.get('http://softteklabagents.eastus.cloudapp.azure.com/api/cocheras/java/login?username=' + username + '&password=' + password)
+        .map(res => res.json())
+        .subscribe(data => {
+          this.data = data;
           resolve(this.data);
         });
     });
