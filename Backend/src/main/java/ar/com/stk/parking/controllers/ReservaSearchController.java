@@ -7,6 +7,7 @@ import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -18,6 +19,7 @@ import ar.com.stk.parking.repositories.ReservaRepository;
  * utilizar un repository personalizado para la obtención de datos se defina el
  * controller explicitamente.
  */
+@CrossOrigin
 @RepositoryRestController
 public class ReservaSearchController {
 
