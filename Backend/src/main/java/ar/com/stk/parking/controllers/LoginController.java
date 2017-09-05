@@ -16,10 +16,9 @@ public class LoginController {
 	private UserCenterClient ucClient;
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public Boolean greeting(@RequestParam(value = "username") String username,
+	public Boolean login(@RequestParam(value = "username") String username,
 			@RequestParam(value = "password") String password) {
-		GetUserForAppResponse userForApp = null;
-
+		GetUserForAppResponse userForApp = null; 
 		try {
 			userForApp = ucClient.getUserForApp(username, password);
 		} catch (Exception e) {
@@ -28,7 +27,7 @@ public class LoginController {
 		if (userForApp != null) {
 			if (userForApp.getGetUserForApp() != null) {
 				return Boolean.TRUE;
-			}
+			} 
 		}
 		return Boolean.FALSE;
 	}

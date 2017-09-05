@@ -251,12 +251,6 @@ export class MisReservasPage {
 				}
 			}
 		);
-		onkeypress = function(e) {
-			var key = e.charCode || e.keyCode || 0;     
-			if (key == 13) {
-				window.localStorage.setItem("noCancel", 'true');
-			}
-		}
 		prompt.present();
 	  }
   });

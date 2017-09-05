@@ -7,8 +7,11 @@ import { AuthService } from '../providers/auth-service';
 import { Reservas } from '../providers/reservas';
 import { Usuarios } from '../providers/usuarios';
 import { Cocheras } from '../providers/cocheras';
+import { ReservaRecurrente } from '../providers/reserva-recurrente';
 import { MisReservasPage } from '../pages/mis-reservas/mis-reservas';
 import { CocherasPage } from '../pages/cocheras/cocheras';
+import { AdminPage } from '../pages/admin/admin';
+import { ReservaRecurrentePage } from '../pages/reserva-recurrente/reserva-recurrente';
 import { TabsPage } from '../pages/tabs/tabs';
 import { OrderBy } from '../pipes/sort';
  
@@ -18,14 +21,16 @@ import { OrderBy } from '../pipes/sort';
     HomePage,
     LoginPage,
 	TabsPage,
-	MisReservasPage,
+	MisReservasPage,  
 	CocherasPage,
+  AdminPage,
+  ReservaRecurrentePage,
 	OrderBy
   ],
   imports: [
-    IonicModule.forRoot(MyApp, {
-		backButtonText: "Volver"
-	}),
+  //  IonicModule.forRoot(MyApp, {
+	//	backButtonText: "Volver"
+	//}),
 	IonicModule.forRoot(MyApp, { scrollAssist: false, autoFocusAssist: false } ),
   ],
   bootstrap: [IonicApp],
@@ -35,9 +40,11 @@ import { OrderBy } from '../pipes/sort';
     LoginPage,
 	TabsPage,
 	MisReservasPage,
-	CocherasPage
+	CocherasPage,
+  AdminPage,
+  ReservaRecurrentePage
   ],
-  providers: [AuthService, Reservas, Usuarios, Cocheras]
+  providers: [AuthService, Reservas, Usuarios, Cocheras,ReservaRecurrente]
 })
 export class AppModule {
 	

@@ -3,6 +3,8 @@ import { NavController , LoadingController, Loading, Platform } from 'ionic-angu
 import { HomePage } from '../home/home';
 import { MisReservasPage } from '../mis-reservas/mis-reservas';
 import { CocherasPage } from '../cocheras/cocheras';
+import { AdminPage } from '../admin/admin';
+import { ReservaRecurrentePage } from '../reserva-recurrente/reserva-recurrente';
 import { Reservas } from '../../providers/reservas';
 import { Usuarios } from '../../providers/usuarios';
 import { AlertController } from 'ionic-angular';
@@ -14,6 +16,9 @@ export class TabsPage {
   tab1Root: any = HomePage;
   tab2Root: any = MisReservasPage;
   tab3Root: any = CocherasPage;
+  tab4Root: any = AdminPage;
+  tab5Root: any = ReservaRecurrentePage;
+
 
   public tieneReserva:boolean;
   public estaOcupandoCochera:boolean;

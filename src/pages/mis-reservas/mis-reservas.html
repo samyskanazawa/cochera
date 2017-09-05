@@ -8,14 +8,17 @@
 			  <ion-col width-15 class="col">Horario</ion-col>
 			  <ion-col width-10 class="col" ></ion-col>
 			</ion-row >
-			<ion-list radio-group>
-				<ion-row class="row" *ngFor="let reserva of reservas | orderBy : ['horaDesde'] | orderBy : ['fechaRese']; let i of reservas.length" [ngStyle]="{'background-color': devolverColorFila(i)}">
-				  <ion-col width-15 class="col">{{(reservasService.formatearFecha(reserva.fechaRese)).substr(0,5)}}</ion-col>
-				  <ion-col width-50 class="col">{{reserva.espacio}}</ion-col>
-				  <ion-col width-15 class="col">{{reserva.horaDesde}}<br/>{{reserva.horaHasta}}</ion-col>
-				  <ion-col width-10 class="col"><ion-radio (click)="marcarRadioButton(i)"></ion-radio></ion-col>
-				</ion-row>
-			</ion-list>
+
+        	<ion-scroll style="width:95vw;height:65vh" scrollY="true">
+				<ion-list radio-group>
+					<ion-row class="row" *ngFor="let reserva of reservas | orderBy : ['horaDesde'] | orderBy : ['fechaRese']; let i of reservas.length" [ngStyle]="{'background-color': devolverColorFila(i)}">
+					  <ion-col width-15 class="col">{{(reservasService.formatearFecha(reserva.fechaRese)).substr(0,5)}}</ion-col>
+					  <ion-col width-50 class="col">{{reserva.espacio}}</ion-col>
+					  <ion-col width-15 class="col">{{reserva.horaDesde}}<br/>{{reserva.horaHasta}}</ion-col>
+					  <ion-col width-10 class="col"><ion-radio (click)="marcarRadioButton(i)"></ion-radio></ion-col>
+					</ion-row>
+				</ion-list>
+			</ion-scroll>
 		</div>
 		<ion-label class="label"><b> </b>
 		<button ion-button type="button" class="boton-mis-reservas" style="color: #222;" [disabled]="indice==null" (click)="showPrompt('')"><ion-label style="text-align: center">Editar: <ion-icon name="create"></ion-icon></ion-label></button>

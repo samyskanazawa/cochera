@@ -1,6 +1,5 @@
 package ar.com.stk.parking.repositories;
 
-import java.lang.annotation.Annotation;
 import java.util.List;
 
 import org.springframework.data.mongodb.repository.MongoRepository;

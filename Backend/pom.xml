@@ -45,28 +45,6 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-
-			<plugin>
-				<groupId>org.jvnet.jaxb2.maven2</groupId>
-				<artifactId>maven-jaxb2-plugin</artifactId>
-				<version>0.13.1</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>generate</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<schemaLanguage>WSDL</schemaLanguage>
-					<generatePackage>ar.com.stk.uc.wsdl</generatePackage>
-					<schemas>
-						<schema>
-							<url>http://172.16.80.85:8080/uc/ws/UserCenterWS?wsdl=UserCenterWS.wsdl</url>
-						</schema>
-					</schemas>
-				</configuration>
-			</plugin>
 		</plugins>
 
 	</build>

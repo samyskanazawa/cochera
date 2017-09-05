@@ -1,0 +1,41 @@
+<!--
+  Generated template for the AbmCocheras page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<h1 class="titulo">Actualizacion de Cocheras</h1>
+
+
+<ion-content padding>
+
+
+
+		<div overflow-scroll="false">
+			<ion-row class="row header">
+			  <ion-col width-20 class="col">Numero</ion-col>
+			  <ion-col width-20 class="col">Ubicacion</ion-col>
+			  <ion-col width-20 class="col">Dueño habitual</ion-col>
+			  <ion-col width-20 class="col">Direccion</ion-col>
+			  <ion-col width-20 class="col">Peso</ion-col>
+			  <ion-col width-20 class="col" ></ion-col>
+			</ion-row >
+			<ion-list radio-group>
+				<ion-row class="row" *ngFor="let cochera of cocheras | orderBy : ['Numero']; let i of cocheras.length" [ngStyle]="{'background-color': devolverColorFila(i)}">
+				  <ion-col width-20 class="col">{{(cochera.nombre)}}</ion-col>
+				  <ion-col width-20 class="col">{{cochera.espacio}}</ion-col>
+				  <ion-col width-20 class="col">{{cochera.espacio}}</ion-col>
+				  <ion-col width-20 class="col">{{cochera.direccion}}</ion-col>
+				  <ion-col width-20 class="col">{{cochera.peso}}</ion-col>
+				  <ion-col width-20 class="col"><ion-radio (click)="marcarRadioButton(i)"></ion-radio></ion-col>
+				</ion-row>
+			</ion-list>
+		</div>
+		<ion-label class="label"><b> </b>
+		<button ion-button type="button" class="boton-abm" style="color: #222;" [disabled]="indiceAgregar==null" (click)="agregarCochera()"><ion-label style="text-align: center">Agregar: <ion-icon name="create"></ion-icon></ion-label></button>
+		<button ion-button type="button" class="boton-abm" style="color: #222;" [disabled]="indiceEditar==null" (click)="showPrompt('')"><ion-label style="text-align: center">Editar: <ion-icon name="create"></ion-icon></ion-label></button>
+		<button ion-button type="button" class="boton-abm" style="color: #222;" [disabled]="indiceBorrar==null" (click)="eliminarCochera()"><ion-label style="text-align: center">Borrar: <ion-icon name="trash"></ion-icon></ion-label></button></ion-label>
+</ion-content>
+
+
+

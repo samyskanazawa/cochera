@@ -31,7 +31,7 @@ public class Reserva {
 	@DateTimeFormat(iso = ISO.DATE_TIME)
 	private Date fechaLibre;
 	
-	private int horaDesdeSort;
+	private String horaDesdeSort;
 	
 	public String getMail() {
 		return mail;
@@ -113,11 +113,11 @@ public class Reserva {
 		this.fechaLibre = fechaLibre;
 	}
 	
-	public int getHoraDesdeSort() {
+	public String getHoraDesdeSort() {
 		return horaDesdeSort;
 	}
 	
-	public void setHoraDesdeSort(int horaDesdeSort) {
+	public void setHoraDesdeSort(String horaDesdeSort) {
 		this.horaDesdeSort = horaDesdeSort;
 	}
 

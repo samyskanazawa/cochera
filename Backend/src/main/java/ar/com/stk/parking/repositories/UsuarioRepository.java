@@ -12,6 +12,7 @@ import ar.com.stk.parking.entities.Usuario;
 /**
  * Repository implementado genericamente por spring boot.
  */
+@CrossOrigin
 @RepositoryRestResource(collectionResourceRel = "usuario", path = "usuario")
 public interface UsuarioRepository extends MongoRepository<Usuario, String> {
 
