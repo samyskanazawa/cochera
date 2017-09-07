@@ -10,30 +10,30 @@
 
 <ion-row>
 	<ion-item>
-		<ion-label>Desde:</ion-label>
-		<ion-datetime displayFormat="DD/MM/YYYY" pickerFormat="DD MMMM YYYY" [(ngModel)]="FechaDesde"></ion-datetime>
+		<ion-label class="small-font">Desde:</ion-label>
+		<ion-datetime displayFormat="DD/MM/YYYY" pickerFormat="DD MMMM YYYY" class="small-font" [(ngModel)]="FechaDesde"></ion-datetime>
 	
 	</ion-item>
 	<ion-item>
-		<ion-label>Desde:</ion-label>
-		<ion-datetime displayFormat="HH:mm" pickerFormat="HH mm"[(ngModel)]="HoraDesde"></ion-datetime>
+		<ion-label class="small-font">Desde:</ion-label>
+		<ion-datetime displayFormat="HH:mm" pickerFormat="HH mm" class="small-font" [(ngModel)]="HoraDesde"></ion-datetime>
 	</ion-item>
 </ion-row>
 <br>
 
 <ion-row>
 	<ion-item>
-		<ion-label>Hasta:</ion-label>
-		<ion-datetime displayFormat="DD/MM/YYYY" pickerFormat="DD MMMM YYYY" [(ngModel)]="FechaHasta"></ion-datetime>
+		<ion-label class="small-font">Hasta:</ion-label>
+		<ion-datetime displayFormat="DD/MM/YYYY" pickerFormat="DD MMMM YYYY" class="small-font" [(ngModel)]="FechaHasta"></ion-datetime>
 	</ion-item>
 	
 	<ion-item>
-		<ion-label>Hasta:</ion-label>
-		<ion-datetime displayFormat="HH:mm" pickerFormat="HH mm"[(ngModel)]="HoraHasta"></ion-datetime>
+		<ion-label class="small-font">Hasta:</ion-label>
+		<ion-datetime displayFormat="HH:mm" pickerFormat="HH mm" class="small-font" [(ngModel)]="HoraHasta"></ion-datetime>
 	</ion-item>
 
 </ion-row>
-<button ion-button round class="submit-btn-recurrence" >Remover Recurrencia</button>
+<button ion-button round class="submit-btn-recurrence" (click)="removeReservaRecurrente()">Remover Recurrencia</button>
 <br><br><br>
 
 <ion-list radio-group [(ngModel)]="Recurrence">

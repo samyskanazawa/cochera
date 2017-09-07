@@ -25,11 +25,23 @@ export class Cocheras {
   getCocheras(){
     return new Promise(resolve => {
  
-      this.http.get('http://softteklabagents.eastus.cloudapp.azure.com/api/cocheras/java/cochera')
+      this.http.get('http://localhost:8080/cochera')
 
         .map(res => res.json())
         .subscribe(data => {
           this.data = data._embedded.cochera;
+          resolve(this.data);
+        });
+    });
+  }
+
+  deleteCochera(id : string) {
+   return new Promise(resolve => {
+      this.http.delete('http://localhost:8080/cochera/' + id)
+
+        .map(res => res)
+        .subscribe(data => {
+          this.data = data;
           resolve(this.data);
         });
     });

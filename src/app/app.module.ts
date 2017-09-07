@@ -10,6 +10,7 @@ import { Cocheras } from '../providers/cocheras';
 import { ReservaRecurrente } from '../providers/reserva-recurrente';
 import { MisReservasPage } from '../pages/mis-reservas/mis-reservas';
 import { CocherasPage } from '../pages/cocheras/cocheras';
+import { ABMCocherasPage } from '../pages/abm-cocheras/abm-cocheras';
 import { AdminPage } from '../pages/admin/admin';
 import { ReservaRecurrentePage } from '../pages/reserva-recurrente/reserva-recurrente';
 import { TabsPage } from '../pages/tabs/tabs';
@@ -23,6 +24,7 @@ import { OrderBy } from '../pipes/sort';
 	TabsPage,
 	MisReservasPage,  
 	CocherasPage,
+  ABMCocherasPage,
   AdminPage,
   ReservaRecurrentePage,
 	OrderBy
@@ -41,6 +43,7 @@ import { OrderBy } from '../pipes/sort';
 	TabsPage,
 	MisReservasPage,
 	CocherasPage,
+  ABMCocherasPage,
   AdminPage,
   ReservaRecurrentePage
   ],

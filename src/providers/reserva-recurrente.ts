@@ -25,7 +25,7 @@ export class ReservaRecurrente {
 			usuario_alta : string){
     return new Promise(resolve => {
  
-      this.http.get('http://localhost:8080/reserva/execute/ReservarEliminarRecurrente?fecha_desde=' + fecha_desde 
+      this.http.get('http://softteklabagents.eastus.cloudapp.azure.com/api/cocheras/java/reserva/execute/ReservarEliminarRecurrente?fecha_desde=' + fecha_desde 
       	 + '&fecha_hasta=' + fecha_hasta
       	 + '&hora_desde=' + hora_desde 
       	 + '&hora_hasta=' + hora_hasta 

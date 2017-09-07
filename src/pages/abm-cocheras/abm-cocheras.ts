@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
-import { NavController, ViewController, LoadingController, Loading } from 'ionic-angular';
-import { AlertController } from 'ionic-angular';
+import { Component } from '@angular/core';	
+import { NavController, AlertController, LoadingController, Loading, Platform } from 'ionic-angular';
 import { Cocheras } from '../../providers/cocheras';
+
 /*
   Generated class for the AbmCocheras page.
 
@@ -12,61 +12,61 @@ import { Cocheras } from '../../providers/cocheras';
   selector: 'page-abm-cocheras',
   templateUrl: 'abm-cocheras.html'
 })
-export class AbmCocherasPage {
+export class ABMCocherasPage {
  
- public indiceAgregar;
- public indiceEditar;
- public indiceBorrar;
- 
- public loading: Loading;
- public loadingCtrl: LoadingController;
- public alertCtrl: AlertController;
+ public index;
+ public cocheras;
+ public cocheraSeleccionada;
 
+ public direccion;
+ public espacio;
+ public localidad;
+ public nombre;
+
+ public loading: Loading;
+ 
 ionViewDidEnter() {
     
-	//implementar con las cocheras
+//Traigo de la base todas las cocheras
+  this.cocherasService.getCocheras().then((data) => {
+      this.cocheras = data;
+      console.log(this.cocheras);
+    });	
   }
 
-  constructor(public navCtrl: NavController) {}
+  constructor(public navCtrl: NavController,public cocherasService: Cocheras,public loadingCtrl: LoadingController, public alertCtrl: AlertController) {}
 
   showPrompt(subtitulo: string) {
   
   }
   
   eliminarCochera() {
-	// var textoBoton;
-	// var index = this.reservas.indexOf(this.indiceAlert);
-		// if (this.reservas[index].estado == "Reservado"){
-			// var titulo = 'Eliminar Reserva';
-			// var subtitulo = '¿Desea eliminar esta reserva?';
-			// textoBoton = 'Eliminar';
-		// } else {
-			// var titulo = 'Liberar Cochera';
-			// var subtitulo = '¿Desea liberar la cochera seleccionada?';
-			// textoBoton = 'Liberar';
-		// }
-	// let alert = this.alertCtrl.create({
-    // title: titulo,
-	// enableBackdropDismiss: false,
-    // subTitle: subtitulo,
-    // buttons: [
-      // {
-        // text: textoBoton,
-        // handler: () => {
-			// this.deleteReserva(this.reservas[index], textoBoton);
-			// this.indiceOcupado = null;
-			// this.indiceLiberar = null;
-		// }
-      // },
-	   // {
-        // text: 'Cerrar',
-        // role: 'cancel',
-      // },
-    // ]
-  // });
-  // alert.present();
-// }
-}
+    var cochera = this.cocheras[this.index];  
+    this.cocherasService.deleteCochera(cochera.id);
+    this.cocheras.splice(this.index,1);
+  }
+
+  agregarCochera() {
+    var cochera = this.cocheras[this.index];  
+    this.cocherasService.deleteCochera(cochera.id);
+    this.cocheras.splice(this.index,1);
+  }
+
+  editarCochera() {
+    var cochera = this.cocheras[this.index];  
+    this.cocherasService.deleteCochera(cochera.id);
+    this.cocheras.splice(this.index,1);
+  }
+
+  marcarRadioButton(i){
+    this.index = this.cocheras.indexOf(i);
+    this.cocheraSeleccionada = this.cocheras[this.index];
+    this.espacio = this.cocheraSeleccionada.espacio;
+    this.direccion = this.cocheraSeleccionada.direccion;
+    this.localidad = this.cocheraSeleccionada.localidad;
+    this.nombre = this.cocheraSeleccionada.nombre;
+  }
+  
 
   showLoading() {
     this.loading = this.loadingCtrl.create({
@@ -76,17 +76,17 @@ ionViewDidEnter() {
   }
 
   alertGenerico(titulo: string, subtitulo: string) {
-	let alert = this.alertCtrl.create({
-    title: titulo,
-	enableBackdropDismiss: false,
-    subTitle: subtitulo,
-    buttons: [
-      {
-        text: 'OK',
-        role: 'cancel',
-      },
-    ]
-  });
-  alert.present();
+  	let alert = this.alertCtrl.create({
+      title: titulo,
+  	enableBackdropDismiss: false,
+      subTitle: subtitulo,
+      buttons: [
+        {
+          text: 'OK',
+          role: 'cancel',
+        },
+      ]
+    });
+    alert.present();
   }
 }

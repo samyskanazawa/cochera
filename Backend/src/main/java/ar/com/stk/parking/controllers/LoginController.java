@@ -18,7 +18,7 @@ public class LoginController {
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public Boolean login(@RequestParam(value = "username") String username,
 			@RequestParam(value = "password") String password) {
-		GetUserForAppResponse userForApp = null; 
+		GetUserForAppResponse userForApp = null;  
 		try {
 			userForApp = ucClient.getUserForApp(username, password);
 		} catch (Exception e) {

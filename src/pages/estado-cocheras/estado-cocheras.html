@@ -1,0 +1,40 @@
+<!--
+  Generated template for the EstadoCocheras page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+
+
+
+
+<ion-content padding>
+
+<h1 class="titulo">Reporte estado de Cocheras</h1>
+
+<ion-row>
+	<ion-item>
+		<ion-label>Desde:</ion-label>
+		<ion-datetime displayFormat="DD/MM/YYYY" pickerFormat="DD MMMM YYYY" [(ngModel)]="ReporteFechaDesde"></ion-datetime>
+	</ion-item>
+</ion-row>
+
+<ion-row>
+	<ion-item>
+		<ion-label>Hasta:</ion-label>
+		<ion-datetime displayFormat="DD/MM/YYYY" pickerFormat="DD MMMM YYYY" [(ngModel)]="ReporteFechaHasta"></ion-datetime>
+	</ion-item>
+</ion-row>
+
+<br><br><br>
+
+
+
+
+<ion-label class="label_boton"><b> </b>
+	<button ion-button type="button" class="submit-btn-ok" style="color: #222;" >
+		<ion-label style="text-align: center">Generar Reporte <ion-icon name="ReservaCochera"></ion-icon></ion-label>
+	</button>
+</ion-label>
+
+</ion-content>

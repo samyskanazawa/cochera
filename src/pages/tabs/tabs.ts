@@ -5,6 +5,7 @@ import { MisReservasPage } from '../mis-reservas/mis-reservas';
 import { CocherasPage } from '../cocheras/cocheras';
 import { AdminPage } from '../admin/admin';
 import { ReservaRecurrentePage } from '../reserva-recurrente/reserva-recurrente';
+import { ABMCocherasPage } from '../abm-cocheras/abm-cocheras';
 import { Reservas } from '../../providers/reservas';
 import { Usuarios } from '../../providers/usuarios';
 import { AlertController } from 'ionic-angular';
@@ -332,5 +333,10 @@ export class TabsPage {
 	  });	
 
     }
+
+
+	openABMCocherasPage() {
+		this.nav.push(ABMCocherasPage);
+  	}
 
 }
