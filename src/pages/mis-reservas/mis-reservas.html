@@ -1,7 +1,7 @@
 <ion-content class="padding">
 <br/>
-	<ion-content padding>
-		<div overflow-scroll="false">
+	<ion-content>
+		<div overflow-scroll="false" style="padding-left:10px;padding-right:10px;">
 			<ion-row class="row header">
 			  <ion-col width-15 class="col">Fecha</ion-col>
 			  <ion-col width-50 class="col">Dirección y Espacio</ion-col>
@@ -9,7 +9,7 @@
 			  <ion-col width-10 class="col" ></ion-col>
 			</ion-row >
 
-        	<ion-scroll style="width:95vw;height:65vh" scrollY="true">
+        	<ion-scroll style="width:100%;height:64vh" scrollY="true">
 				<ion-list radio-group>
 					<ion-row class="row" *ngFor="let reserva of reservas | orderBy : ['horaDesde'] | orderBy : ['fechaRese']; let i of reservas.length" [ngStyle]="{'background-color': devolverColorFila(i)}">
 					  <ion-col width-15 class="col">{{(reservasService.formatearFecha(reserva.fechaRese)).substr(0,5)}}</ion-col>
