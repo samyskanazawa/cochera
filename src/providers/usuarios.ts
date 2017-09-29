@@ -23,8 +23,12 @@ public mensaje: string;
  
   getUsuariosByMail(mail: string){
     return new Promise<any>(resolve => {
- 
-      this.http.get('http://softteklabagents.eastus.cloudapp.azure.com/api/cocheras/java/usuario/search/findByMail?mail=' + mail)
+      
+      /* PRODUCCION */
+      /* this.http.get('http://softteklabagents.eastus.cloudapp.azure.com/api/cocheras/java/usuario/search/findByMail?mail=' + mail) */
+
+      /* LOCAL */
+      this.http.get('http://localhost:8080/usuario/search/findByMail?mail=' + mail)
         .map(res => res.json())
         .subscribe(data => {
           this.data = data._embedded.usuario;
@@ -34,11 +38,15 @@ public mensaje: string;
  
   }
   
-  
   getUsuarios(){
     return new Promise(resolve => {
- 
-      this.http.get('http://softteklabagents.eastus.cloudapp.azure.com/api/cocheras/java/usuario')
+      
+      /* PRODUCCION */
+      /* this.http.get('http://softteklabagents.eastus.cloudapp.azure.com/api/cocheras/java/usuario') */
+
+      /* LOCAL*/
+      /* TODO - TRAER CANTIDAD TOTAL DE USUARIOS */
+      this.http.get('http://localhost:8080/usuario?page=0&size=24')
         .map(res => res.json())
         .subscribe(data => {
           this.data = data._embedded.usuario;
@@ -51,7 +59,11 @@ public mensaje: string;
   login(username: string, password: string){
     return new Promise(resolve => {
  
-      this.http.get('http://softteklabagents.eastus.cloudapp.azure.com/api/cocheras/java/login?username=' + username + '&password=' + password)
+      /* PRODUCCION */
+      /* this.http.get('http://softteklabagents.eastus.cloudapp.azure.com/api/cocheras/java/login?username=' + username + '&password=' + password) */
+
+       /* LOCAL*/
+      this.http.get('http://localhost:8081/login?username=' + username + '&password=' + password) 
         .map(res => res.json())
         .subscribe(data => {
           this.data = data;
@@ -63,27 +75,27 @@ public mensaje: string;
   
   habilitarUsuario(usuario, mensaje, telefono, callback){
  
-	usuario.telefono = telefono;
-	usuario.habilitado = true;
-	var outerThis = this;
+    usuario.telefono = telefono;
+    usuario.habilitado = true;
+    var outerThis = this;
 
     this.actualizarDatosUsuario(usuario, mensaje, function(){
-		mensaje = outerThis.mensaje;
-		callback(mensaje);
-	});
+		  mensaje = outerThis.mensaje;
+		  callback(mensaje);
+    });
   }
   
   habilitarUsuarioConContrasena(usuario, mensaje, telefono, contrasena, callback){
  
-	usuario.telefono = telefono;
-	usuario.clave = contrasena;
-	usuario.habilitado = true;
-	var outerThis = this;
+    usuario.telefono = telefono;
+    usuario.clave = contrasena;
+    usuario.habilitado = true;
+    var outerThis = this;
 
     this.actualizarDatosUsuario(usuario, mensaje, function(){
-		mensaje = outerThis.mensaje;
-		callback(mensaje);
-	});
+      mensaje = outerThis.mensaje;
+      callback(mensaje);
+    });
   }
   
   actualizarDatosUsuario(usuario: any, mensaje: string, callback){
@@ -93,8 +105,12 @@ public mensaje: string;
 	  headers.append('Content-Type', 'application/json');
    	  var titulo;
 	  var subtitulo;
-	  
-	  this.http.put('http://softteklabagents.eastus.cloudapp.azure.com/api/cocheras/java/usuario/' + id, JSON.stringify(usuario), {headers: headers})
+
+	  /* PRODUCCION*/
+	  /* this.http.put('http://softteklabagents.eastus.cloudapp.azure.com/api/cocheras/java/usuario/' + id, JSON.stringify(usuario), {headers: headers}) */
+
+    /* LOCAL */
+    this.http.put('http://localhost:8081/usuario/' + id, JSON.stringify(usuario), {headers: headers})
       .subscribe(res => {
 		 //Si falla, se mostrará un mensaje de error
 		if(res.status < 200 || res.status >= 300) {
@@ -115,18 +131,17 @@ public mensaje: string;
   }
   
   alertGenerico(titulo: string, subtitulo: string) {
-	let alert = this.alertCtrl.create({
-    title: titulo,
-	enableBackdropDismiss: false,
-    subTitle: subtitulo,
-    buttons: [
-      {
-        text: 'OK',
-        role: "cancel",
-      },
-    ]
-  });
-  alert.present();
-}
-
+    let alert = this.alertCtrl.create({
+      title: titulo,
+      enableBackdropDismiss: false,
+      subTitle: subtitulo,
+      buttons: [
+        {
+          text: 'OK',
+          role: "cancel",
+        },
+      ]
+    });
+    alert.present();
+  }
 }
