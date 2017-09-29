@@ -138,12 +138,12 @@ export class CocherasPage {
 			dispo  =   v_DispoActual - v_DispoFila;
 				
 			if (dispo <= 0 ) {
-				this.ultimoColor = "#DAF291"; //verde
+				this.ultimoColor = "#679a35"; //verde
 			}
 			
 		 } else {
 			if(this.disponibles[indexDisponibles].v_Dispo == 1200) {
-					this.ultimoColor = "#DAF291"; //verde
+					this.ultimoColor = "#679a35"; //verde
 			}
 		 }
 	 }
@@ -158,8 +158,11 @@ export class CocherasPage {
 	  var indexNoDisponibles = this.noDisponibles.indexOf(i);
 	  
 	  if(this.mail == this.noDisponibles[indexNoDisponibles].v_mail){
-		  return "#FFFADD";
+		  return "#E1DEDE"; //Gris
+	  } else {
+	  	return " #FD7D7D"; //Rojo
 	  }
+	 
   }
   
   marcarRadioCocheraDisponible(i){

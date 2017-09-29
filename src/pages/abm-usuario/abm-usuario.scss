@@ -1,0 +1,41 @@
+page-abm-usuario {
+
+
+.col {
+    border: solid 1px grey;
+    border-bottom-style: none;
+    border-right-style: none;
+	align-items: center!important;
+	text-align: center;
+	justify-content: center;
+	display: flex;
+	font-size: 16px;
+}
+.header .col {
+		background-color:lightgrey;
+		align-items: center!important;
+		text-align: center;
+		justify-content: center;
+		display: flex;
+		font-size: 14px;
+	}
+	
+.boton-abm {
+   background: #B5E61D;
+   border-radius: 30px !important;
+   border: 2px solid #000000;
+   font-size: 90%;
+}
+
+
+.label {
+	align-items: center!important;
+	justify-content: center;
+	display: flex;
+}
+
+
+}
+
+
+

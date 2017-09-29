@@ -14,6 +14,7 @@ public class Usuario {
 	private String mail;
 	private String clave;
 	private boolean habilitado;
+	private String EsAdmin;
 
 	public String getId() {
 		return id;
@@ -87,4 +88,12 @@ public class Usuario {
 		this.habilitado = habilitado;
 	}
 
+	public String getEsAdmin() {
+		return EsAdmin;
+	}
+
+	public void setEsAdmin(String esAdmin) {
+		EsAdmin = esAdmin;
+	}
+	
 }

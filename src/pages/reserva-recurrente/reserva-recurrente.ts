@@ -26,30 +26,89 @@ export class ReservaRecurrentePage {
 	public Miercoles;
 	public Jueves;
 	public Viernes;
+
+	public Recurrence = "Diario";
 	
 	constructor(public navCtrl: NavController, public reservaRecurrenteService: ReservaRecurrente) {}
 
 	executeReservaRecurrente(){ 
+
+		var esAdmin = window.localStorage.getItem("esAdmin");
+		var mailCambioUsuario = window.sessionStorage.getItem("mailCambioUsuario");
+
+  		if ( esAdmin == 'S' && mailCambioUsuario) {
+
+  			this.mail = mailCambioUsuario;
+  		}
+    
 		var frec_semanal = "";
 
-		if(this.Lunes)
-			frec_semanal += "1";
-		if(this.Martes)
-			frec_semanal += "2";
-		if(this.Miercoles)
-			frec_semanal += "3";
-		if(this.Jueves)
-			frec_semanal += "4";
-		if(this.Viernes)
-			frec_semanal += "5";
-
-		this.reservaRecurrenteService.executeReservaRecurrente("2017-10-04", "2017-12-01",
+		if(this.Recurrence == "Semanal"){
+			if(this.Lunes)
+				frec_semanal += "1";
+			if(this.Martes)
+				frec_semanal += "2";
+			if(this.Miercoles)
+				frec_semanal += "3";
+			if(this.Jueves)
+				frec_semanal += "4";
+			if(this.Viernes)
+				frec_semanal += "5";
+		}
+		var fechaDesdeParse = this.FechaDesde.substr(0,10);
+		var fechaHastaParse = this.FechaHasta.substr(0,10);
+		
+		this.reservaRecurrenteService.executeReservaRecurrente(fechaDesdeParse, fechaHastaParse,
 			this.HoraDesde, this.HoraHasta, this.mail, "1", frec_semanal,
 			this.mail /*deberia ser el usuario administrador*/);
 	}
+
+	removeReservaRecurrente(){ 
+
+		var esAdmin = window.localStorage.getItem("esAdmin");
+		var mailCambioUsuario = window.sessionStorage.getItem("mailCambioUsuario");
+
+  		if ( esAdmin == 'S' && mailCambioUsuario) {
+
+  			this.mail = mailCambioUsuario;
+  		}
+  		
+		var frec_semanal = "";
+
+		if(this.Recurrence == "Semanal"){
+			if(this.Lunes)
+				frec_semanal += "1";
+			if(this.Martes)
+				frec_semanal += "2";
+			if(this.Miercoles)
+				frec_semanal += "3";
+			if(this.Jueves)
+				frec_semanal += "4";
+			if(this.Viernes)
+				frec_semanal += "5";
+		}
+		var fechaDesdeParse = this.FechaDesde.substr(0,10);
+		var fechaHastaParse = this.FechaHasta.substr(0,10);
+		
+		this.reservaRecurrenteService.executeReservaRecurrente(fechaDesdeParse, fechaHastaParse,
+			this.HoraDesde, this.HoraHasta, this.mail, "2", frec_semanal,
+			this.mail /*deberia ser el usuario administrador*/);
+	}
   
-	
-
-
-
+	getNombreMeses(): Array<string> {
+	  	return [
+			"Enero",
+			" Febrero",
+	        " Marzo",
+	        " Abril",
+			" Mayo",
+	        " Junio",
+			" Julio",
+	        " Agosto",
+			" Septiembre",
+	        " Octubre",
+	        " Noviembre",
+			" Diciembre"
+	  	];
+  	}
 }

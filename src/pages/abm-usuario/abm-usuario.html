@@ -1,0 +1,43 @@
+<!--
+  Generated template for the AbmCocheras page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<h1 class="titulo">Actualizacion de Usuarios</h1>
+
+
+<ion-content padding>
+
+
+
+		<div overflow-scroll="false">
+			<ion-row class="row header">
+			  <ion-col width-20 class="col">Nombre</ion-col>
+			  <ion-col width-20 class="col">Apellido</ion-col>
+			  <ion-col width-20 class="col">Mail</ion-col>
+			  <ion-col width-15 class="col">IS</ion-col>
+			  <ion-col width-20 class="col">Telefono</ion-col>
+			  
+			  <ion-col width-10 class="col" ></ion-col>
+			</ion-row >
+			<ion-list radio-group>
+				<ion-row class="row" *ngFor="let usuario of usuarios | orderBy : ['mail']; let i of usuarios.length" [ngStyle]="{'background-color': devolverColorFila(i)}">
+				  <ion-col width-20 class="col">{{(usuario.nombre)}}</ion-col>
+				  <ion-col width-20 class="col">{{usuario.apellido}}</ion-col>
+				  <ion-col width-20 class="col">{{usuario.mail}}</ion-col>
+				  <ion-col width-15 class="col">{{usuario.IS}}</ion-col>
+				  <ion-col width-20 class="col">{{usuario.telefono}}</ion-col>
+				  
+				  <ion-col width-10 class="col"><ion-radio (click)="marcarRadioButton(i)"></ion-radio></ion-col>
+				</ion-row>
+			</ion-list>
+		</div>
+		<ion-label class="label"><b> </b>
+		<button ion-button type="button" class="boton-abm" style="color: #222;" [disabled]="indiceAgregar==null"><ion-label style="text-align: center">Agregar: <ion-icon name="create"></ion-icon></ion-label></button>
+		<button ion-button type="button" class="boton-abm" style="color: #222;" [disabled]="indiceEditar==null"><ion-label style="text-align: center">Editar: <ion-icon name="create"></ion-icon></ion-label></button>
+		<button ion-button type="button" class="boton-abm" style="color: #222;" [disabled]="indiceBorrar==null"><ion-label style="text-align: center">Borrar: <ion-icon name="trash"></ion-icon></ion-label></button></ion-label>
+</ion-content>
+
+
+

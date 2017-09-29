@@ -1,10 +1,10 @@
-<ion-content class="login-content" padding>
+<ion-content class="login-content" style=" background: #34495e;" padding>
 <ion-row class="logo-row">
 	<ion-col>
-	  <img src="assets/images/logo2.png"/>
+	  <img src="assets/images/splash.png" style="width: 50%;height: 50%;"/>
 	</ion-col>
 </ion-row>
-  <div class="login-box">
+  <div class="login-box" style=" background: #34495e;">
     <form (ngSubmit)="login()" #registerForm="ngForm">
       <ion-row>
         <ion-col>
@@ -20,7 +20,7 @@
 			
           </ion-list>
 		  
-		  <ion-label><ion-checkbox [(ngModel)]="isChecked" [ngModelOptions]="{standalone: true}" [disabled]="registerCredentials.email == '' || registerCredentials.password == ''" (click)="recordarDatos(isChecked)" checked={{isChecked}}>Checkbox Label</ion-checkbox> Recordarme</ion-label>
+		  <ion-label><ion-checkbox [(ngModel)]="isChecked" [ngModelOptions]="{standalone: true}" [disabled]="registerCredentials.email == '' || registerCredentials.password == ''" (click)="recordarDatos(isChecked)" checked={{isChecked}}>Checkbox Label</ion-checkbox> <b style="color: #fff;">Recordarme</b></ion-label>
 		  
         </ion-col>
 		
@@ -28,7 +28,7 @@
       
       <ion-row>
         <ion-col class="signup-col">
-          <button ion-button class="submit-btn-login" style="color: black;" full type="submit" [disabled]="!registerForm.form.valid"><b>Ingresar</b></button>
+          <button ion-button class="submit-btn-login" style="color: #fff;" full type="submit" [disabled]="!registerForm.form.valid"><b>Ingresar</b></button>
         </ion-col>
       </ion-row>
       

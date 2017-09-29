@@ -30,6 +30,14 @@ export class MisReservasPage {
   
   
   ionViewDidEnter() {
+
+  	var esAdmin = window.localStorage.getItem("esAdmin");
+	var mailCambioUsuario = window.sessionStorage.getItem("mailCambioUsuario");
+
+  	if ( esAdmin == 'S' && mailCambioUsuario) {
+
+  		this.mail = mailCambioUsuario;
+  	}
     
 	this.reservasService.getReservasByMailAndFechaRese(this.mail, this.fechaRese).then((data) => {
 	  this.reservas = data;
@@ -108,7 +116,7 @@ export class MisReservasPage {
 	var diaActual = new Date();
 	
 	if (diaActual.toISOString().substr(0, 10) == this.reservas[index].fechaRese.substr(0,10)){
-		return "#FFFADD";
+		return "#E1DEDE";
 	}
   }
   

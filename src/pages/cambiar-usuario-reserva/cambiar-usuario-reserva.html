@@ -1,0 +1,19 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Cambiar Usuario</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="body-color" padding>
+  <ion-item>
+    	<ion-label color="primary">Seleccione Usuario</ion-label>
+    	<ion-select [(ngModel)]="usuario" [selectOptions]="selectOptions" okText="ACEPTAR" cancelText="CANCELAR" (ionChange)="changeSelect(usuario)">
+      		<ion-option *ngFor="let usuario of usuarios" [value]="usuario.mail">{{usuario.apellido}} {{usuario.nombre}}</ion-option>
+    	</ion-select>
+  	</ion-item>
+</ion-content>
+
+

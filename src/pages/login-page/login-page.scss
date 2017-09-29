@@ -20,7 +20,7 @@ page-login {
      }
  
      ion-item {
-         border-radius: 30px !important;
+         border-radius: 5px !important;
          padding-left: 30px !important;
          font-size: 0.9em;
          margin-bottom: 10px;
@@ -38,8 +38,8 @@ page-login {
      }
  
      .submit-btn-login {
-       background: #B5E61D;
-       border-radius: 30px !important;
+       background: #679a35;
+       border-radius: 5px !important;
        border: 2px solid #000000;
      }
  
@@ -53,29 +53,24 @@ page-login {
     *::-webkit-scrollbar {
       display: none;
     }
-
-
- 
 }
   
 .alert-md .alert-wrapper {
-       max-width: 350px;
-    border-radius: 30px;
+    max-width: 350px;
+    border-radius: 5px;
     background-color: #e1f5a4;
     box-shadow: 0 16px 20px rgba(0, 0, 0, 0.4);
-        color: #222;
-    }
-    .alert-title {
+    color: #222;
+}
+    
+.alert-title {
     font-size: 22px;
     text-align: center;
 }
 .alert-md .alert-button .button-inner {
-     justify-content: center;
-         color: #222;
+    justify-content: center;
+    color: #fff;
 }
-
-
-
 
 .alert-button-group {
     -webkit-flex-wrap: wrap-reverse;
@@ -93,3 +88,4 @@ page-login {
     font-size: 16px;
     text-align: center;
 }
+

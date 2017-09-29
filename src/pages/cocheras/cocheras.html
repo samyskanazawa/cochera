@@ -1,7 +1,14 @@
-<ion-content padding>
+<ion-header>
+  	<ion-navbar>
+    	<button ion-button menuToggle>
+      		<ion-icon name="menu"></ion-icon>
+    	</button>
+    	<ion-title>Disponibilidad de Cocheras</ion-title>
+  	</ion-navbar>
+</ion-header>
 
-		<h1><ion-label text-center>Disponibilidad de Cocheras</ion-label></h1><br/>
-			<ion-item><ion-label style="Sposition: absolute;">Día: </ion-label><ion-datetime 
+<ion-content padding class="body-color">
+	<ion-item><ion-label style="Sposition: absolute;">Día: </ion-label><ion-datetime 
 			displayFormat="DD/MM/YYYY" 
 			pickerFormat="DD MMMM YYYY"
 			[min]="minDate"
@@ -19,14 +26,14 @@
 				<ion-col><ion-item><ion-label>Hasta: </ion-label><ion-datetime displayFormat="HH:00" hourValues="08, 09, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20" cancelText="Cancelar" doneText="Acpetar" [(ngModel)]="horaHasta" (click)="setHoraHasta()"></ion-datetime></ion-item></ion-col>-->
 			</ion-row>
 			<ion-col class="signup-col">
-			  <button ion-button type="button" style="color: #222;" (click)="buscar()" [disabled]="habilitarBoton==null" class="submit-btn-cocheras"><b>Buscar</b></button>
+			  <button ion-button type="button" style="color: #fff;" (click)="buscar()" [disabled]="habilitarBoton==null" class="submit-btn-cocheras"><b>Buscar&nbsp;<ion-icon name="search"></ion-icon></b></button>
 			</ion-col>
 			
 			<br/>
 			
 			<div [hidden]="ocultarResultados">
 				<div>
-					<ion-row><ion-label class="label_cocheras" text-center><b>Cocheras Disponibles</b></ion-label></ion-row>
+					<ion-row><ion-label class="label_cocheras" text-center><h2 class="titulo" style="color: #fff;">COCHERAS DISPONIBLES</h2></ion-label></ion-row>
 						<ion-row class="row header">
 						  <ion-col class="col">Dirección y Espacio</ion-col>
 						  <ion-col width-25 class="col">Horario</ion-col>
@@ -52,7 +59,7 @@
 				</ion-label>
 				
 				<div>
-						<ion-row><ion-label class="label_cocheras" text-center><b>Cocheras sin Disponibilidad</b></ion-label></ion-row>
+						<ion-row><ion-label class="label_cocheras" text-center><h2 class="titulo" style="color: #fff;">SIN DISPONIBILIDAD</h2></ion-label></ion-row>
 						<ion-row class="row header">
 						  <ion-col width-30 class="col">Dirección</ion-col>
 						  <ion-col width-15 class="col">Horario</ion-col>
@@ -74,7 +81,7 @@
 					</button>
 				</ion-label>
 			</div>
-			<ion-label text-center class="labelTexto" style="width: 90%"><b>NOTA: </b>no se pueden hacer reservas en horario posterior a las 20:00 hs.</ion-label>
+			<ion-label text-center class="labelTexto" style="width: 100%;color: #fff;"><b>NOTA: </b>no se pueden hacer reservas para el día actual en horario posterior a las 20:00 hs.</ion-label>
 </ion-content>
 			   
 	

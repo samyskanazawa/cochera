@@ -74,10 +74,10 @@ export class HomePage {
 
 		if(numeroHoraActual >= 800){
 			if (dispo <= 0) {
-				return "#DAF291"; //verde 
+				return "#679a35"; //verde 
 			}
 		} else if(v_DispoFila >= 1200){
-			return "#DAF291"; //verde 
+			return "#679a35"; //verde 
 		}
     }
 	
@@ -206,6 +206,7 @@ export class HomePage {
 		var horaDesde;
 		var horaHasta;
 		var id;
+
 		
 		if(this.flagDisponibleNoDisponible){
 			index = this.noDisponibles.indexOf(this.indiceCocheraNoDisponible);
@@ -287,6 +288,7 @@ export class HomePage {
 	reservarCochera(){	
 		var reserva = [];
 		var index;
+
 		
 		if (this.flagDisponibleParcial){
 			index = this.disponiblesParcial.indexOf(this.indiceCocheraDisponibleParcial);
@@ -322,7 +324,7 @@ export class HomePage {
 						if(!outerThis.error){		
 							reserva.push({mail, nombreCochera, espacioCochera, fechaRese, horaDesde, horaHasta, fechaAlta, estado, fechaOcupa, fechaLibre, horaDesdeSort});
 							outerThis.reservasService.createReserva(reserva[0], function(resultado: boolean){
-									outerThis.buscar();
+									outerThis.buscar();		
 							});
 						}else {
 							var titulo = 'Horario Inv\u00e1lido';
@@ -346,6 +348,8 @@ export class HomePage {
 		
 		});						
 	}
+
+	
 	
     buscar(){
 	  this.obtenerCocherasSinRango(this.fechaActual);
@@ -433,6 +437,14 @@ export class HomePage {
 		
 			//Traigo de la base todas las cocheras
 			this.cocherasService.getCocheras().then((data) => {
+
+				var esAdmin = window.localStorage.getItem("esAdmin");
+				var mailCambioUsuario = window.sessionStorage.getItem("mailCambioUsuario");
+
+  				if ( esAdmin == 'S' && mailCambioUsuario) {
+
+  					outerThis.mail = mailCambioUsuario;
+  				}
 			
 				v_items = data;		
 				v_mail = outerThis.mail;

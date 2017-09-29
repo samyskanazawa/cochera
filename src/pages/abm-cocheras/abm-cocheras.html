@@ -1,40 +1,52 @@
-<!--
-  Generated template for the AbmCocheras page.
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>ABM Cocheras</ion-title>
+  </ion-navbar>
+</ion-header>
 
-  See http://ionicframework.com/docs/v2/components/#navigation for more info on
-  Ionic pages and navigation.
--->
-<h1 class="titulo">Actualizacion de Cocheras</h1>
-
-
-<ion-content padding>
-
-
-
+<ion-content class="body-color" padding>
 		<div overflow-scroll="false">
 			<ion-row class="row header">
-			  <ion-col width-20 class="col">Numero</ion-col>
-			  <ion-col width-20 class="col">Ubicacion</ion-col>
-			  <ion-col width-20 class="col">Dueño habitual</ion-col>
-			  <ion-col width-20 class="col">Direccion</ion-col>
-			  <ion-col width-20 class="col">Peso</ion-col>
-			  <ion-col width-20 class="col" ></ion-col>
+			  <ion-col width-20 class="col small-font">Dirección</ion-col>
+			  <ion-col width-20 class="col small-font">Espacio</ion-col>
+			  <ion-col width-20 class="col small-font">Localidad</ion-col>
+			  <ion-col width-20 class="col small-font">Nombre</ion-col>
+			  <ion-col width-20 class="col small-font"></ion-col>
 			</ion-row >
 			<ion-list radio-group>
-				<ion-row class="row" *ngFor="let cochera of cocheras | orderBy : ['Numero']; let i of cocheras.length" [ngStyle]="{'background-color': devolverColorFila(i)}">
-				  <ion-col width-20 class="col">{{(cochera.nombre)}}</ion-col>
-				  <ion-col width-20 class="col">{{cochera.espacio}}</ion-col>
-				  <ion-col width-20 class="col">{{cochera.espacio}}</ion-col>
-				  <ion-col width-20 class="col">{{cochera.direccion}}</ion-col>
-				  <ion-col width-20 class="col">{{cochera.peso}}</ion-col>
-				  <ion-col width-20 class="col"><ion-radio (click)="marcarRadioButton(i)"></ion-radio></ion-col>
+				<ion-row class="row" *ngFor="let cochera of cocheras | orderBy : ['nombre']; let i of cocheras.length">
+				  <ion-col width-20 class="col small-font">{{(cochera.direccion)}}</ion-col>
+				  <ion-col width-20 class="col small-font">{{cochera.espacio}}</ion-col>
+				  <ion-col width-20 class="col small-font">{{cochera.localidad}}</ion-col>
+				  <ion-col width-20 class="col small-font">{{cochera.nombre}}</ion-col>
+				  <ion-col width-20 class="col small-font"><ion-radio (click)="marcarRadioButton(i)"></ion-radio></ion-col>
 				</ion-row>
 			</ion-list>
 		</div>
 		<ion-label class="label"><b> </b>
-		<button ion-button type="button" class="boton-abm" style="color: #222;" [disabled]="indiceAgregar==null" (click)="agregarCochera()"><ion-label style="text-align: center">Agregar: <ion-icon name="create"></ion-icon></ion-label></button>
-		<button ion-button type="button" class="boton-abm" style="color: #222;" [disabled]="indiceEditar==null" (click)="showPrompt('')"><ion-label style="text-align: center">Editar: <ion-icon name="create"></ion-icon></ion-label></button>
-		<button ion-button type="button" class="boton-abm" style="color: #222;" [disabled]="indiceBorrar==null" (click)="eliminarCochera()"><ion-label style="text-align: center">Borrar: <ion-icon name="trash"></ion-icon></ion-label></button></ion-label>
+		<button ion-button type="button" class="boton-abm" style="color: #222;" (click)="agregarCochera()"><ion-label style="text-align: center">Agregar:&nbsp;<ion-icon name="create"></ion-icon></ion-label></button>
+		<button ion-button type="button" class="boton-abm" style="color: #222;" [disabled]="index==null" (click)="showPrompt('')"><ion-label style="text-align: center">Editar:&nbsp;<ion-icon name="create"></ion-icon></ion-label></button>
+		<button ion-button type="button" class="boton-abm" style="color: #222;" [disabled]="index==null" (click)="eliminarCochera()"><ion-label style="text-align: center">Borrar:&nbsp;<ion-icon name="trash"></ion-icon></ion-label></button></ion-label>
+
+        <ion-item>
+            <ion-label floating>Dirección</ion-label>
+            <ion-input type="text" value="" [(ngModel)]="direccion"></ion-input>         
+        </ion-item>
+        <ion-item>
+            <ion-label floating>Espacio</ion-label>
+            <ion-input type="text" value="" [(ngModel)]="espacio"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label floating>Localidad</ion-label>
+            <ion-input type="text" value="" [(ngModel)]="localidad"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label floating>Nombre</ion-label>
+            <ion-input type="text" value="" [(ngModel)]="nombre"></ion-input>
+        </ion-item>
 </ion-content>
 
 

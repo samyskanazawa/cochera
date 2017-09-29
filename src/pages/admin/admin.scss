@@ -142,10 +142,10 @@ scroll-content {
 }
 
 .picker-button:hover {
-    background-color: rgba(23, 90, 204, 0.22) !important;
+    background-color: red;
     transition: 90ms all ease-in-out !important;
-    border: solid !important;
-    color: #3474e1 !important;
+    border: none;
+    color: #fff !important;
 }
 
 .picker-md .picker-button, .picker-md .picker-button.activated {

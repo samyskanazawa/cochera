@@ -1,22 +1,23 @@
-<!--
-  Generated template for the ReservasRecurrentes page.
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Reservas Recurrentes</ion-title>
+  </ion-navbar>
+</ion-header>
 
-  See http://ionicframework.com/docs/v2/components/#navigation for more info on
-  Ionic pages and navigation.
--->
-<ion-content padding>
-
-<h1 class="titulo">Gestión de Reservas Recurrentes</h1>
+<ion-content class="body-color" padding>
 
 <ion-row>
 	<ion-item>
 		<ion-label>Desde:</ion-label>
-		<ion-datetime displayFormat="DD/MM/YYYY" pickerFormat="DD MMMM YYYY" [(ngModel)]="FechaDesde"></ion-datetime>
+		<ion-datetime displayFormat="DD/MM/YYYY" pickerFormat="DD MMMM YYYY" [(ngModel)]="FechaDesde" cancelText="Cancelar" doneText="Aceptar" monthNames = {{getNombreMeses()}} ></ion-datetime>
 	
 	</ion-item>
 	<ion-item>
 		<ion-label>Desde:</ion-label>
-		<ion-datetime displayFormat="HH:mm" pickerFormat="HH mm"[(ngModel)]="HoraDesde"></ion-datetime>
+		<ion-datetime displayFormat="HH:mm" pickerFormat="HH mm"[(ngModel)]="HoraDesde" cancelText="Cancelar" doneText="Aceptar"></ion-datetime>
 	</ion-item>
 </ion-row>
 <br>
@@ -24,61 +25,61 @@
 <ion-row>
 	<ion-item>
 		<ion-label>Hasta:</ion-label>
-		<ion-datetime displayFormat="DD/MM/YYYY" pickerFormat="DD MMMM YYYY" [(ngModel)]="FechaHasta"></ion-datetime>
+		<ion-datetime displayFormat="DD/MM/YYYY" pickerFormat="DD MMMM YYYY" [(ngModel)]="FechaHasta" cancelText="Cancelar" doneText="Aceptar" monthNames = {{getNombreMeses()}}></ion-datetime>
 	</ion-item>
 	
 	<ion-item>
 		<ion-label>Hasta:</ion-label>
-		<ion-datetime displayFormat="HH:mm" pickerFormat="HH mm"[(ngModel)]="HoraHasta"></ion-datetime>
+		<ion-datetime displayFormat="HH:mm" pickerFormat="HH mm"[(ngModel)]="HoraHasta" cancelText="Cancelar" doneText="Aceptar" ></ion-datetime>
 	</ion-item>
 
 </ion-row>
-<button ion-button round class="submit-btn-recurrence" >Remover Recurrencia</button>
+<button ion-button round class="submit-btn-recurrence" (click)="removeReservaRecurrente()">Remover Recurrencia</button>
 <br><br><br>
 
 <ion-list radio-group [(ngModel)]="Recurrence">
 
-	<ion-list-header>
-		<b>Configuracion de reserva</b>
+	<ion-list-header class="body-color">
+		<b style="color:#fff;">CONFIGURACI&Oacute;N DE RESERVA</b>
 	</ion-list-header>
 	
-	<ion-item>
-		<ion-label>Diario</ion-label>
+	<ion-item class="body-color">
+		<ion-label style="color:#fff;">Diario</ion-label>
 		<ion-radio value="Diario"></ion-radio>
 	</ion-item>
 	
-	<ion-item>
-		<ion-label>Semanal</ion-label>
+	<ion-item class="body-color">
+		<ion-label style="color:#fff;">Semanal</ion-label>
 		<ion-radio value="Semanal"></ion-radio>
 	</ion-item>
   
 </ion-list>
 
 
-<ion-list *ngIf="Recurrence == 'Semanal'">
+<ion-list *ngIf="Recurrence == 'Semanal'" class="body-color">
 
-	<ion-item>
-		<ion-label>Lunes</ion-label>
+	<ion-item class="body-color">>
+		<ion-label style="color:#fff;">Lunes</ion-label>
 		<ion-checkbox [(ngModel)]="Lunes"></ion-checkbox>
 	</ion-item>
 
-	<ion-item>
-		<ion-label>Martes</ion-label>
+	<ion-item class="body-color">>
+		<ion-label style="color:#fff;">Martes</ion-label>
 		<ion-checkbox [(ngModel)]="Martes"></ion-checkbox>
 	</ion-item>
 
-	<ion-item>
-		<ion-label>Miercoles</ion-label>
+	<ion-item class="body-color">>
+		<ion-label style="color:#fff;">Miercoles</ion-label>
 		<ion-checkbox [(ngModel)]="Miercoles"></ion-checkbox>
 	</ion-item>
 
-    <ion-item>
-		<ion-label>Jueves</ion-label>
+    <ion-item class="body-color">>
+		<ion-label style="color:#fff;">Jueves</ion-label>
 		<ion-checkbox [(ngModel)]="Jueves"></ion-checkbox>
 	</ion-item>
   
-	<ion-item>
-		<ion-label>Viernes</ion-label>
+	<ion-item class="body-color">>
+		<ion-label style="color:#fff;">Viernes</ion-label>
 		<ion-checkbox [(ngModel)]="Viernes"></ion-checkbox>
 	</ion-item>
 

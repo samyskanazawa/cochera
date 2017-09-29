@@ -1,58 +1,67 @@
-<ion-content class="padding">
-<br/>
-	<ion-content>
-		<div overflow-scroll="false">
-				<h1 class="titulo">Estado Actual de las Cocheras</h1>
-        		<br/>
-				<div style="padding-left:10px;padding-right:10px;">
-					<ion-row class="row header">
-					  <ion-col width-40  class="col" style="text-align: center">Dirección y Espacio</ion-col>
-					  <ion-col width-15  class="col" style="text-align: center">Horario</ion-col>
-					  <ion-col width-15  class="col" style="text-align: center">Usuario</ion-col>
-					  <ion-col width-10 class="col" style="text-align: center"></ion-col>
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Home</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="body-color">
+	<div overflow-scroll="false">
+		<h1 class="titulo" style="color: #fff;">ESTADO ACTUAL DE LAS COCHERAS</h1>
+        <br/>
+		<div style="padding-left:10px;padding-right:10px;">
+			<ion-row class="row header">
+				<ion-col width-40  class="col" style="text-align: center">Dirección y Espacio</ion-col>
+				<ion-col width-15  class="col" style="text-align: center">Horario</ion-col>
+				<ion-col width-15  class="col" style="text-align: center">Usuario</ion-col>
+				<ion-col width-10 class="col" style="text-align: center"></ion-col>
+			</ion-row>
+			<ion-scroll style="width:100%;height:25vh" scrollY="true">		
+				<ion-list radio-group>
+					<ion-row class="row" *ngFor="let item of disponibles | orderBy : ['v_nombre']; let i of disponibles.length" [ngStyle]="{'background-color': devolverColorFilaDisponible(i)}">
+						<ion-col width-40 class="col" style="text-align: center">{{item.v_espacio}}</ion-col>
+						<ion-col width-15  class="col" style="text-align: center">{{item.horaDesde}}<br>{{item.horaHasta}}</ion-col>
+						<ion-col width-15  class="col" style="text-align: center"></ion-col>
+						<ion-col width-10 class="col" style="text-align: center"><ion-radio (click)="marcarRadioCocheraDisponible(i)"></ion-radio></ion-col>			
 					</ion-row>
-					<ion-scroll style="width:100%;height:25vh" scrollY="true">		
-						<ion-list radio-group>
-							<ion-row class="row" *ngFor="let item of disponibles | orderBy : ['v_nombre']; let i of disponibles.length" [ngStyle]="{'background-color': devolverColorFilaDisponible(i)}">
-							<ion-col width-40 class="col" style="text-align: center">{{item.v_espacio}}</ion-col>
-							<ion-col width-15  class="col" style="text-align: center">{{item.horaDesde}}<br>{{item.horaHasta}}</ion-col>
-						    <ion-col width-15  class="col" style="text-align: center"></ion-col>
-							<ion-col width-10 class="col" style="text-align: center"><ion-radio (click)="marcarRadioCocheraDisponible(i)"></ion-radio></ion-col>			
-							</ion-row>
-							<ion-row class="row" *ngFor="let item of disponiblesParcial | orderBy : ['-v_Dispo']; let i of disponiblesParcial.length" [ngStyle]="{'background-color': devolverColorFilaDisponibleParcial(i)}">
-							<ion-col width-40 class="col" style="text-align: center">{{item.v_espacio}}</ion-col>
-							<ion-col width-15  class="col" style="text-align: center">{{item.horaDesde}}<br>{{item.horaHasta}}</ion-col>
-						    <ion-col width-15  class="col" style="text-align: center"></ion-col>
-							<ion-col width-10 class="col" style="text-align: center"><ion-radio (click)="marcarRadioCocheraDisponibleParcial(i)"></ion-radio></ion-col>			
-							</ion-row>			
-							<ion-row class="row" *ngFor="let item of noDisponibles | orderBy : ['-v_Dispo']; let i of noDisponibles.length" [ngStyle]="{'background-color': devolverColorFilaNoDisponible(i)}">
-							<ion-col width-40 class="col"  style="text-align: center">{{item.v_espacio}}</ion-col>
-							<ion-col width-15 class="col"  style="text-align: center">{{item.horaDesde}}<br/>{{item.horaHasta}}</ion-col>
-							<ion-col width-15 class="col"  style="text-align: center">{{item.v_nombreCompleto}}</ion-col>
-							<ion-col width-10 class="col"  style="text-align: center"><ion-radio  (click)="marcarRadioCocheraNoDisponible(i)"></ion-radio></ion-col>
-							</ion-row>			
-						</ion-list>
-					</ion-scroll>
-				</div>
-		</div>		
-			<ion-col class="signup-col"> <b> </b>
-	          <button ion-button type="button" style="color: #222;" [disabled]="indiceCocheraDisponible==null" (click)="reservarCochera()" class="submit-btn"><ion-label style="text-align: center">Reservar: <ion-icon name="car"></ion-icon></ion-label></button>
-			  <button ion-button type="button" style="color: #222;" [disabled]="indiceOcupado==null" (click)="ocuparCochera()" class="boton"><ion-label style="text-align: center">Ocupar: <ion-icon name="create"></ion-icon></ion-label></button>
-	          <button ion-button type="button" style="color: #222;" [disabled]="indiceLlamar==null" (click)="llamar()" class="submit-btn"><ion-label style="text-align: center">Llamar: <ion-icon name="call"></ion-icon></ion-label></button>
-	        </ion-col>
-			<ion-col>
-				<ion-label text-center><b>Referencias:</b></ion-label>
-				<ion-row class="row">
-					<ion-col class="col" style="background-color: #DAF291;" class="referencias">Disponible</ion-col>
-					<ion-col class="col" style="background-color: #FFFA93;" class="referencias">Disponible<br>Parcialmente</ion-col>
-				</ion-row>
-				<ion-row class="row">
-					<ion-col class="col" style="background-color: #FD7D7D;" class="referencias">No Disponible</ion-col>
-					<ion-col class="col" style="background-color: #E1DEDE;" class="referencias">Reservas<br>Propias</ion-col>
-				</ion-row>
-				<br/>
-				<ion-label text-center class="labelTexto" style="width: 85%"><b>NOTA: </b>no se pueden hacer reservas para el día actual en horario posterior a las 20:00 hs.</ion-label>
-			</ion-col>
-		
+					<ion-row class="row" *ngFor="let item of disponiblesParcial | orderBy : ['-v_Dispo']; let i of disponiblesParcial.length" [ngStyle]="{'background-color': devolverColorFilaDisponibleParcial(i)}">
+						<ion-col width-40 class="col" style="text-align: center">{{item.v_espacio}}</ion-col>
+						<ion-col width-15  class="col" style="text-align: center">{{item.horaDesde}}<br>{{item.horaHasta}}</ion-col>
+						<ion-col width-15  class="col" style="text-align: center"></ion-col>
+						<ion-col width-10 class="col" style="text-align: center"><ion-radio (click)="marcarRadioCocheraDisponibleParcial(i)"></ion-radio></ion-col>			
+					</ion-row>			
+					<ion-row class="row" *ngFor="let item of noDisponibles | orderBy : ['-v_Dispo']; let i of noDisponibles.length" [ngStyle]="{'background-color': devolverColorFilaNoDisponible(i)}">
+						<ion-col width-40 class="col"  style="text-align: center">{{item.v_espacio}}</ion-col>
+						<ion-col width-15 class="col"  style="text-align: center">{{item.horaDesde}}<br/>{{item.horaHasta}}</ion-col>
+						<ion-col width-15 class="col"  style="text-align: center">{{item.v_nombreCompleto}}</ion-col>
+						<ion-col width-10 class="col"  style="text-align: center"><ion-radio  (click)="marcarRadioCocheraNoDisponible(i)"></ion-radio></ion-col>
+					</ion-row>			
+				</ion-list>
+			</ion-scroll>
+		</div>
+	</div>		
+	<ion-col class="signup-col"> <b> </b>
+	   <button ion-button type="button" style="color: #679a35;" [disabled]="indiceCocheraDisponible==null" (click)="reservarCochera()" class="submit-btn"><ion-label style="text-align: center">Reservar: <ion-icon name="car"></ion-icon></ion-label></button>
+		<button ion-button type="button" style="color: #679a35;" [disabled]="indiceOcupado==null" (click)="ocuparCochera()" class="boton"><ion-label style="text-align: center">Ocupar: <ion-icon name="create"></ion-icon></ion-label></button>
+	   <button ion-button type="button" style="color: #679a35;" [disabled]="indiceLlamar==null" (click)="llamar()" class="submit-btn"><ion-label style="text-align: center">Llamar: <ion-icon name="call"></ion-icon></ion-label></button>
+	</ion-col>
+	<ion-col>
+		<ion-label text-center><h6 style="color: #fff;">REFERENCIAS</h6></ion-label>
+		<ion-row class="row">
+			<ion-col class="col" style="background-color: #679a35;" class="referencias">Disponible</ion-col>
+			<ion-col class="col" style="background-color: #FFFA93;" class="referencias">Disponible<br>Parcialmente</ion-col>
+		</ion-row>
+		<ion-row class="row">
+			<ion-col class="col" style="background-color: #FD7D7D;" class="referencias">No Disponible</ion-col>
+			<ion-col class="col" style="background-color: #E1DEDE;" class="referencias">Reservas<br>Propias</ion-col>
+		</ion-row>
+		<br/>
+		<ion-label text-center class="labelTexto" style="width: 100%;color: #fff;"><b>NOTA: </b>no se pueden hacer reservas para el día actual en horario posterior a las 20:00 hs.</ion-label>
+	</ion-col>
 </ion-content>
+
+
+	
 

@@ -2,9 +2,9 @@ import { Component, ViewChild } from '@angular/core';
 import { NavController, AlertController, LoadingController, Loading, Platform } from 'ionic-angular';
 import { Keyboard } from 'ionic-native';
 import { AuthService } from '../../providers/auth-service';
-import { TabsPage } from '../tabs/tabs';
+//import { TabsPage } from '../tabs/tabs';
 import { Usuarios } from '../../providers/usuarios';
-
+import { HomePage } from '../home/home';
 
 @Component({
   selector: 'page-login',
@@ -127,15 +127,17 @@ export class LoginPage {
 			
 			} else if(outerThis.registerCredentials.password == usuario.clave){
 				setTimeout(() => {
-					window.localStorage.setItem("email", outerThis.registerCredentials.email);
-					outerThis.nav.setRoot(TabsPage);	
+					window.localStorage.setItem("email", outerThis.registerCredentials.email.trim());
+					window.localStorage.setItem("esAdmin", usuario.esAdmin);
+					window.sessionStorage.clear();
+					outerThis.nav.setRoot(HomePage);	
 				});
 			} else {
 				outerThis.loginUsuario(outerThis.registerCredentials.email.toLowerCase().split('@')[0], outerThis.registerCredentials.password, function(){
 					if(outerThis.flagLogin) {
 						setTimeout(() => {
 							window.localStorage.setItem("email", outerThis.registerCredentials.email);
-							outerThis.nav.setRoot(TabsPage);	
+							//outerThis.nav.setRoot(HomePage);	
 						});
 					} else {
 						outerThis.showAdv("Credenciales incorrectas");
@@ -256,7 +258,7 @@ export class LoginPage {
 			  handler: data => {
 				  if(titulo == "Datos Actualizados"){
 						window.localStorage.setItem("email", this.registerCredentials.email);
-						this.nav.setRoot(TabsPage);
+						this.nav.setRoot(HomePage);
 					}
 			  }
 			},

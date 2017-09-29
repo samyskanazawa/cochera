@@ -1,6 +1,8 @@
 {
   "name": "Stk_Parking",
   "app_id": "",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "ionic-angular"
 }

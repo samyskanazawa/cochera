@@ -1,27 +1,34 @@
-<ion-content class="padding">
-<br/>
-	<ion-content>
-		<div overflow-scroll="false" style="padding-left:10px;padding-right:10px;">
-			<ion-row class="row header">
-			  <ion-col width-15 class="col">Fecha</ion-col>
-			  <ion-col width-50 class="col">Dirección y Espacio</ion-col>
-			  <ion-col width-15 class="col">Horario</ion-col>
-			  <ion-col width-10 class="col" ></ion-col>
-			</ion-row >
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Mis Reservas</ion-title>
+  </ion-navbar>
+</ion-header>
 
-        	<ion-scroll style="width:100%;height:64vh" scrollY="true">
-				<ion-list radio-group>
-					<ion-row class="row" *ngFor="let reserva of reservas | orderBy : ['horaDesde'] | orderBy : ['fechaRese']; let i of reservas.length" [ngStyle]="{'background-color': devolverColorFila(i)}">
-					  <ion-col width-15 class="col">{{(reservasService.formatearFecha(reserva.fechaRese)).substr(0,5)}}</ion-col>
-					  <ion-col width-50 class="col">{{reserva.espacio}}</ion-col>
-					  <ion-col width-15 class="col">{{reserva.horaDesde}}<br/>{{reserva.horaHasta}}</ion-col>
-					  <ion-col width-10 class="col"><ion-radio (click)="marcarRadioButton(i)"></ion-radio></ion-col>
-					</ion-row>
-				</ion-list>
-			</ion-scroll>
-		</div>
-		<ion-label class="label"><b> </b>
-		<button ion-button type="button" class="boton-mis-reservas" style="color: #222;" [disabled]="indice==null" (click)="showPrompt('')"><ion-label style="text-align: center">Editar: <ion-icon name="create"></ion-icon></ion-label></button>
-		<button ion-button type="button" class="boton-mis-reservas" style="color: #222;" [disabled]="indiceOcupado==null" (click)="ocuparReserva()"><ion-label style="text-align: center">Ocupar: <ion-icon name="create"></ion-icon></ion-label></button>
-		<button ion-button type="button" class="boton-mis-reservas" style="color: #222;" [disabled]="indiceLiberar==null" (click)="eliminarReserva()"><ion-label style="text-align: center">Liberar: <ion-icon name="trash"></ion-icon></ion-label></button></ion-label>
+<ion-content class="body-color">
+	<div overflow-scroll="false" style="padding-left:10px;padding-right:10px;padding-top:10px;">
+		<ion-row class="row header">
+			<ion-col width-15 class="col">Fecha</ion-col>
+			<ion-col width-50 class="col">Dirección y Espacio</ion-col>
+			<ion-col width-15 class="col">Horario</ion-col>
+			<ion-col width-10 class="col" ></ion-col>
+		</ion-row >
+
+      <ion-scroll style="width:100%;height:64vh" scrollY="true">
+			<ion-list radio-group>
+				<ion-row class="row" *ngFor="let reserva of reservas | orderBy : ['horaDesde'] | orderBy : ['fechaRese']; let i of reservas.length" [ngStyle]="{'background-color': devolverColorFila(i)}">
+					<ion-col width-15 class="col">{{(reservasService.formatearFecha(reserva.fechaRese)).substr(0,5)}}</ion-col>
+					<ion-col width-50 class="col">{{reserva.espacio}}</ion-col>
+					<ion-col width-15 class="col">{{reserva.horaDesde}}<br/>{{reserva.horaHasta}}</ion-col>
+					<ion-col width-10 class="col"><ion-radio (click)="marcarRadioButton(i)"></ion-radio></ion-col>
+				</ion-row>
+			</ion-list>
+		</ion-scroll>
+	</div>
+	<ion-label class="label"><b> </b>
+	<button ion-button type="button" class="boton-mis-reservas" style="color: #222;" [disabled]="indice==null" (click)="showPrompt('')"><ion-label style="text-align: center">Editar: <ion-icon name="create"></ion-icon></ion-label></button>
+	<button ion-button type="button" class="boton-mis-reservas" style="color: #222;" [disabled]="indiceOcupado==null" (click)="ocuparReserva()"><ion-label style="text-align: center">Ocupar: <ion-icon name="create"></ion-icon></ion-label></button>
+	<button ion-button type="button" class="boton-mis-reservas" style="color: #222;" [disabled]="indiceLiberar==null" (click)="eliminarReserva()"><ion-label style="text-align: center">Liberar: <ion-icon name="trash"></ion-icon></ion-label></button></ion-label>
 </ion-content>
